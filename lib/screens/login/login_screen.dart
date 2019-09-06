@@ -1,6 +1,6 @@
 import 'package:dpa/app_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:dpa/screens/login/components/loginForm.dart';
+import 'package:dpa/screens/login/components/login_form.dart';
 
 class LoginScreen extends StatelessWidget {
   @override

@@ -1,8 +1,9 @@
+import 'package:dpa/screens/signup/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:dpa/blocprovs/example-bloc-prov.dart';
 import 'package:dpa/blocs/example-bloc.dart';
 import 'package:dpa/theme/style.dart';
-import 'package:dpa/screens/login/loginScreen.dart';
+import 'package:dpa/screens/login/login_screen.dart';
 import 'package:dpa/screens/home/home.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -24,6 +25,7 @@ class ExampleApp extends StatelessWidget {
           routes: <String, WidgetBuilder>{
             "/": (BuildContext context) => LoginScreen(),
             "/home": (BuildContext context) => HomeScreen(),
+            "/sign_up": (BuildContext context) => SignUpScreen(),
           },
           localizationsDelegates: [
             AppLocalizations.delegate,

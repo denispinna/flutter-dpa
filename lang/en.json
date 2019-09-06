@@ -1,11 +1,17 @@
 {
   "app_name": "Don't play alone",
-  "username": "Username",
-  "username_hint": "Enter your username",
-  "invalid_unsername": "Please enter a valid username",
+  "email": "Email",
+  "email_hint": "Enter your email",
+  "invalid_email": "Please enter a valid email",
   "password": "Password",
+  "confirm_password": "Confirm password",
   "password_hint": "Enter your password",
   "invalid_password": "Please enter a valid password",
-  "login": "Login",
-  "login_message": "Logging in ..."
+  "different_passwords": "the passwords don't match",
+  "login": "Sign in",
+  "login_message": "Signing in ...",
+  "sign_up_message": "Signing up ...",
+  "no_account_message": "You don't have an account yet? ",
+  "sign_up": "Sign up",
+  "create_account": "Create an account"
 }
