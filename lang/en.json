@@ -1,0 +1,11 @@
+{
+  "app_name": "Don't play alone",
+  "username": "Username",
+  "username_hint": "Enter your username",
+  "invalid_unsername": "Please enter a valid username",
+  "password": "Password",
+  "password_hint": "Enter your password",
+  "invalid_password": "Please enter a valid password",
+  "login": "Login",
+  "login_message": "Logging in ..."
+}
