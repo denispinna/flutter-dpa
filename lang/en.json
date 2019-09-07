@@ -13,5 +13,10 @@
   "sign_up_message": "Signing up ...",
   "no_account_message": "You don't have an account yet? ",
   "sign_up": "Sign up",
-  "create_account": "Create an account"
+  "create_account": "Create an account",
+  "google_login": "Sign in with Google",
+  "facebook_login": "Continue with Facebook",
+  "email_login": "Sign in with email",
+  "or": "Or",
+  "welcome_message": "We've been expecting you,\n please sign in to find new game partners!"
 }

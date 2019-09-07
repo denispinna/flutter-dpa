@@ -52,6 +52,9 @@ PODS:
     - GoogleUtilities/Environment (~> 6.0)
     - GoogleUtilities/UserDefaults (~> 6.0)
   - Flutter (1.0.0)
+  - google_sign_in (0.0.1):
+    - Flutter
+    - GoogleSignIn (~> 4.0)
   - GoogleAppMeasurement (6.1.1):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -62,6 +65,18 @@ PODS:
   - GoogleDataTransportCCTSupport (1.0.2):
     - GoogleDataTransport (~> 1.1)
     - nanopb
+  - GoogleSignIn (4.4.0):
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleToolboxForMac/DebugUtils (2.2.1):
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+  - GoogleToolboxForMac/Defines (2.2.1)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.1)":
+    - GoogleToolboxForMac/DebugUtils (= 2.2.1)
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.1)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.2.1)"
   - GoogleUtilities/AppDelegateSwizzler (6.2.5):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -92,6 +107,7 @@ DEPENDENCIES:
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
+  - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -106,6 +122,8 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
+    - GoogleSignIn
+    - GoogleToolboxForMac
     - GoogleUtilities
     - GTMSessionFetcher
     - nanopb
@@ -119,11 +137,13 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
     :path: ".symlinks/flutter/ios"
+  google_sign_in:
+    :path: ".symlinks/plugins/google_sign_in/ios"
 
 SPEC CHECKSUMS:
   Firebase: 291d7b0a7b393f252358083b5d224884126fa46d
   firebase_analytics: 5afaaf8f43ae6a640f200d98f3ecff32e9873538
-  firebase_auth: 00d6e1ab6d890cd6d3c624df61702e3a7072d1e3
+  firebase_auth: 1e3b7bdd37b9fbd4ef75ba1d985b00be09e02d3d
   firebase_core: ae55ea92448ec8675d325da4db22cf3b4d58a54d
   FirebaseAnalytics: 843c7f64a8f9c79f0d03281197ebe7bb1d58d477
   FirebaseAuth: e7f86c2dfc57281cd01f7da5e4b40e01e4510a4a
@@ -133,9 +153,12 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnosticsInterop: 6829da2b8d1fc795ff1bd99df751d3788035d2cb
   FirebaseInstanceID: 8b42755db950682e7de0d167bc6fb26a57b244af
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  google_sign_in: 27e70a98b529f0b076d4b19f231b81da28b1750b
   GoogleAppMeasurement: 86a82f0e1f20b8eedf8e20326530138fd71409de
   GoogleDataTransport: 91e682bd60a49d3f8f69f2e909a66efaed5a1e7a
   GoogleDataTransportCCTSupport: 6b545f7149111180763dc18c6f372c963de4a310
+  GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
+  GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
   GoogleUtilities: e7dc37039b19df7fe543479d3e4a02ac8d11bb69
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48

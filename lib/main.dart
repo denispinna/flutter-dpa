@@ -1,3 +1,4 @@
+import 'package:dpa/screens/main/main_screen.dart';
 import 'package:dpa/screens/signup/sign_up_screen.dart';
 import 'package:dpa/util/logger.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -30,9 +31,10 @@ class DpaApp extends StatelessWidget {
           theme: appTheme(),
           initialRoute: '/',
           routes: <String, WidgetBuilder>{
-            "/": (BuildContext context) => LoginScreen(),
-            "/home": (BuildContext context) => HomeScreen(),
+            "/": (BuildContext context) => HomeScreen(),
+            "/login": (BuildContext context) => LoginScreen(),
             "/sign_up": (BuildContext context) => SignUpScreen(),
+            "/main": (BuildContext context) => MainScreen(),
           },
           navigatorObservers: [
             FirebaseAnalyticsObserver(analytics: analytics),
