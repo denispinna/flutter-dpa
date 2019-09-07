@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "24536428262",
+    "firebase_url": "https://dontplayalone-251610.firebaseio.com",
+    "project_id": "dontplayalone-251610",
+    "storage_bucket": "dontplayalone-251610.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24536428262:android:4bc81092f3547f7ffc5527",
+        "android_client_info": {
+          "package_name": "denispinna.eu.dpa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24536428262-h8jea9jrsb7ar1bp51vj8mkr45uhcihg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyiTsO9fI4AuS8CJRJe6ZTzi9VqmMZDRk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24536428262-h8jea9jrsb7ar1bp51vj8mkr45uhcihg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "24536428262-iv7jdl16inpp03qceld4uk7fpt64i387.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "denispinna.eu.dpa"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24536428262:android:2b2edc2382da064f",
+        "android_client_info": {
+          "package_name": "fr.denispinna.dpa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24536428262-esup75p6cjmp2jir6doe84hf2n3smskh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fr.denispinna.dpa",
+            "certificate_hash": "98a67f6a6c333f0beb1d1ffcefa024c58a313eb7"
+          }
+        },
+        {
+          "client_id": "24536428262-h8jea9jrsb7ar1bp51vj8mkr45uhcihg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyiTsO9fI4AuS8CJRJe6ZTzi9VqmMZDRk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24536428262-h8jea9jrsb7ar1bp51vj8mkr45uhcihg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "24536428262-iv7jdl16inpp03qceld4uk7fpt64i387.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "denispinna.eu.dpa"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

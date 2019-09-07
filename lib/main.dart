@@ -1,4 +1,7 @@
 import 'package:dpa/screens/signup/sign_up_screen.dart';
+import 'package:dpa/util/logger.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:dpa/blocprovs/example-bloc-prov.dart';
 import 'package:dpa/blocs/example-bloc.dart';
@@ -10,10 +13,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'app_localization.dart';
 
 void main() {
-  runApp(ExampleApp());
+  runApp(DpaApp());
 }
 
-class ExampleApp extends StatelessWidget {
+FirebaseAnalytics analytics = FirebaseAnalytics();
+
+class DpaApp extends StatelessWidget {
+  static const String TAG = "DpaApp";
+
   @override
   Widget build(BuildContext context) {
     return ExampleProvider(
@@ -27,6 +34,9 @@ class ExampleApp extends StatelessWidget {
             "/home": (BuildContext context) => HomeScreen(),
             "/sign_up": (BuildContext context) => SignUpScreen(),
           },
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: analytics),
+          ],
           localizationsDelegates: [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -34,15 +44,19 @@ class ExampleApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: [
-            const Locale('en', 'US'),
+            const Locale('en'),
           ],
           localeResolutionCallback: (locale, supportedLocales) {
-            for (var supportedLocale in supportedLocales) {
-              if (supportedLocale.languageCode == locale.languageCode &&
-                  supportedLocale.countryCode == locale.countryCode) {
-                return supportedLocale;
+            try {
+              for (var supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale.languageCode) {
+                  return supportedLocale;
+                }
               }
+            } catch(e) {
+              Logger.logError(TAG, "Error while resolving locale", e);
             }
+
             return supportedLocales.first;
           }),
     );

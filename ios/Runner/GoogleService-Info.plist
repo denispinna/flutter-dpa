@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>24536428262-iv7jdl16inpp03qceld4uk7fpt64i387.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.24536428262-iv7jdl16inpp03qceld4uk7fpt64i387</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>24536428262-esup75p6cjmp2jir6doe84hf2n3smskh.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB4RCjdCtca_jJIHzqCgVWl0oaAyIiqbt4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>24536428262</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>denispinna.eu.dpa</string>
+	<key>PROJECT_ID</key>
+	<string>dontplayalone-251610</string>
+	<key>STORAGE_BUCKET</key>
+	<string>dontplayalone-251610.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:24536428262:ios:626316e8291989d2fc5527</string>
+	<key>DATABASE_URL</key>
+	<string>https://dontplayalone-251610.firebaseio.com</string>
+</dict>
+</plist>
