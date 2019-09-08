@@ -1,7 +1,9 @@
 import 'package:dpa/app_localization.dart';
 import 'package:dpa/components/centerHorizontal.dart';
+import 'package:dpa/services/login.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/util/text_util.dart';
+import 'package:dpa/util/view_util.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +15,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class LoginFormState extends State<LoginForm> {
+  final authApi = AuthAPI.instance;
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -55,7 +58,7 @@ class LoginFormState extends State<LoginForm> {
                         AppLocalizations.of(context).translate('password')),
                 obscureText: true,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value.length < 6) {
                     return AppLocalizations.of(context)
                         .translate('invalid_password');
                   }
@@ -67,10 +70,13 @@ class LoginFormState extends State<LoginForm> {
             child: CenterHorizontal(RaisedButton(
               onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text(AppLocalizations.of(context)
-                          .translate('login_message'))));
-//                  authApi.signIn();
+                  displayMessage("login_message", context);
+
+                  authApi.signInWithMail(
+                      emailController.text,
+                      passwordController.text,
+                      context,
+                      (user) => Navigator.of(context).pushNamedAndRemoveUntil('/main', ModalRoute.withName('/'), arguments: user));
                 }
               },
               child: Text(AppLocalizations.of(context).translate('login')),

@@ -8,7 +8,7 @@ import 'package:dpa/theme/images.dart';
 import 'package:flutter/material.dart';
 
 class DetailedScreen extends StatelessWidget {
-  final authApi = AuthAPI();
+  final authApi = AuthAPI.instance;
   final User user;
 
   DetailedScreen({Key key, @required this.user}) : super(key: key);
@@ -23,25 +23,23 @@ class DetailedScreen extends StatelessWidget {
           width: Dimens.profile_image_width,
           child: AspectRatio(
             aspectRatio: 1,
-            child: CircleAvatar(
-              backgroundImage: NetworkImage(user.photoUrl),
-              minRadius: 90,
-              maxRadius: 150,
+            child: ProfileImage(
+              imageUrl: user.imageUrl,
             ),
           ),
         ),
       )),
       Padding(
-          padding: const EdgeInsets.fromLTRB(
-              0, 0, 0, Dimens.padding_xxxxl),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, Dimens.padding_xxxxl),
           child: new Text(
-            user.displayName,
+            user.email,
             textAlign: TextAlign.center,
             style: new TextStyle(
                 fontWeight: FontWeight.bold, fontSize: Dimens.font_xl),
           )),
       CenterHorizontal(FlatButton(
-        onPressed: () => authApi.signOut(user.signInMethod, (success) => Navigator.of(context).pop()),
+        onPressed: () => authApi.signOut(
+            user.signInMethod, (success) => Navigator.of(context).pop()),
         color: MyColors.second_color,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Dimens.xxl)),
@@ -68,5 +66,28 @@ class DetailedScreen extends StatelessWidget {
         ),
       ))
     ]);
+  }
+}
+
+class ProfileImage extends StatelessWidget {
+  final String imageUrl;
+
+  const ProfileImage({Key key, this.imageUrl}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (imageUrl != null) {
+      return CircleAvatar(
+        backgroundImage: NetworkImage(imageUrl),
+        minRadius: 90,
+        maxRadius: 150,
+      );
+    } else {
+      return CircleAvatar(
+        backgroundImage: MyImages.user_placeholder,
+        minRadius: 90,
+        maxRadius: 150,
+      );
+    }
   }
 }

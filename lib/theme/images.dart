@@ -6,4 +6,5 @@ class MyImages {
   static const email = AssetImage("assets/email.png");
   static const home_background = AssetImage("assets/home_background.png");
   static const logout = AssetImage("assets/logout.png");
+  static const user_placeholder = AssetImage("assets/user_placeholder.png");
 }

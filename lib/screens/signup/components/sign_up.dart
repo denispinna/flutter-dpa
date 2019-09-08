@@ -1,7 +1,9 @@
 import 'package:dpa/app_localization.dart';
 import 'package:dpa/components/centerHorizontal.dart';
+import 'package:dpa/services/login.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/util/text_util.dart';
+import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
 
 class SignUpForm extends StatefulWidget {
@@ -12,6 +14,7 @@ class SignUpForm extends StatefulWidget {
 }
 
 class SignUpFormState extends State<SignUpForm> {
+  final authApi = AuthAPI.instance;
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -31,13 +34,14 @@ class SignUpFormState extends State<SignUpForm> {
               child: TextFormField(
                 controller: emailController,
                 decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('email_hint'),
-                    labelText: AppLocalizations.of(context).translate('email')
-                ),
+                    hintText:
+                        AppLocalizations.of(context).translate('email_hint'),
+                    labelText: AppLocalizations.of(context).translate('email')),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (!TextUtil.isEmailValid(value)) {
-                    return AppLocalizations.of(context).translate('invalid_email');
+                    return AppLocalizations.of(context)
+                        .translate('invalid_email');
                   }
                   return null;
                 },
@@ -48,13 +52,15 @@ class SignUpFormState extends State<SignUpForm> {
               child: TextFormField(
                 controller: passwordController,
                 decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('password_hint'),
-                    labelText: AppLocalizations.of(context).translate('password')
-                ),
+                    hintText:
+                        AppLocalizations.of(context).translate('password_hint'),
+                    labelText:
+                        AppLocalizations.of(context).translate('password')),
                 obscureText: true,
                 validator: (value) {
-                  if (value.isEmpty) {
-                    return AppLocalizations.of(context).translate('invalid_password');
+                  if (value.length < 6) {
+                    return AppLocalizations.of(context)
+                        .translate('invalid_password');
                   }
                   return null;
                 },
@@ -65,13 +71,15 @@ class SignUpFormState extends State<SignUpForm> {
               child: TextFormField(
                 controller: confirmPasswordController,
                 decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('confirm_password'),
-                    labelText: AppLocalizations.of(context).translate('confirm_password')
-                ),
+                    hintText: AppLocalizations.of(context)
+                        .translate('confirm_password'),
+                    labelText: AppLocalizations.of(context)
+                        .translate('confirm_password')),
                 obscureText: true,
                 validator: (value) {
                   if (value != passwordController.text) {
-                    return AppLocalizations.of(context).translate('different_passwords');
+                    return AppLocalizations.of(context)
+                        .translate('different_passwords');
                   }
                   return null;
                 },
@@ -83,14 +91,17 @@ class SignUpFormState extends State<SignUpForm> {
                 // Validate returns true if the form is valid, or false
                 // otherwise.
                 if (_formKey.currentState.validate()) {
-                  // If the form is valid, display a Snackbar.
-                  Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text(
-                      AppLocalizations.of(context).translate('sign_up_message')
-                  )));
+                  displayMessage('sign_up_message', context);
+                  authApi.signUp(
+                      emailController.text,
+                      passwordController.text,
+                      context,
+                      (user) => Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/main', ModalRoute.withName('/'),
+                          arguments: user));
                 }
               },
-              child: Text( AppLocalizations.of(context).translate('sign_up')),
+              child: Text(AppLocalizations.of(context).translate('sign_up')),
             )),
           ),
         ],

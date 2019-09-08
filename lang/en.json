@@ -6,8 +6,8 @@
   "password": "Password",
   "confirm_password": "Confirm password",
   "password_hint": "Enter your password",
-  "invalid_password": "Please enter a valid password",
-  "different_passwords": "the passwords don't match",
+  "invalid_password": "Please enter a password with at least 6 characters",
+  "different_passwords": "The passwords don't match",
   "login": "Sign in",
   "login_message": "Signing in ...",
   "sign_up_message": "Signing up ...",
@@ -20,5 +20,9 @@
   "or": "Or",
   "welcome_message": "We've been expecting you,\n please sign in to fully enjoy the app!",
   "generic_error_message": "Sorry, something went wrong.",
-  "logout": "Logout"
+  "logout": "Logout",
+  "yes": "Yes",
+  "no": "No",
+  "leave_app_message": "Do you want to leave the app?",
+  "leave_app": "Leave app"
   }

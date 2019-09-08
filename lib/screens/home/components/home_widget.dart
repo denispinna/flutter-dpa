@@ -3,13 +3,15 @@ import 'package:dpa/components/login/emailLoginButton.dart';
 import 'package:dpa/components/login/facebookLoginButton.dart';
 import 'package:dpa/components/login/googleLoginButton.dart';
 import 'package:dpa/components/title.dart';
-import 'package:dpa/models/user.dart';
 import 'package:dpa/services/login.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/material.dart';
 
-class HomeWidget extends StatelessWidget {
-  final authApi = AuthAPI();
+class HomeWidget extends StatefulWidget {
+  final authApi = AuthAPI.instance;
+
+  @override
+  State<StatefulWidget> createState() => HomeState(this);
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +30,18 @@ class HomeWidget extends StatelessWidget {
         ]));
   }
 
+  void checkLoggedInUser(BuildContext context){
+    authApi.checkLoggedInUser((user) => Navigator.pushNamed(context, '/main', arguments: user));
+  }
+
   signInWithGoogle(BuildContext context) async {
-    User user = await authApi.signInWithGoogle(context);
-    Navigator.pushNamed(context, '/main', arguments: user);
+    authApi.signInWithGoogle(context,
+        (user) => Navigator.pushNamed(context, '/main', arguments: user));
   }
 
   signInWithFacebook(BuildContext context) async {
-    User user = await authApi.signInWithFacebook(context);
-    Navigator.pushNamed(context, '/main', arguments: user);
+    authApi.signInWithFacebook(context,
+      (user) => Navigator.pushNamed(context, '/main', arguments: user));
   }
 }
 
@@ -64,4 +70,17 @@ class OrRow extends StatelessWidget {
       ),
     ]);
   }
+}
+
+class HomeState extends State<HomeWidget>{
+
+  HomeWidget widget;
+
+  HomeState(this.widget);
+
+  @override
+  Widget build(BuildContext context) => widget.build(context);
+
+  @override
+  void initState() => widget.checkLoggedInUser(context);
 }
