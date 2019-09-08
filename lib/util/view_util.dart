@@ -45,6 +45,7 @@ void askToLeaveApp(BuildContext context) async {
               if (Platform.isAndroid) {
                 SystemNavigator.pop();
               } else if (Platform.isIOS) {
+                //This case should never happen, because there is no back button on iOS
                 SystemChannels.platform.invokeMethod('SystemNavigator.pop');
               }
             },
