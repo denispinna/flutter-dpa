@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dpa/app_localization.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +42,11 @@ void askToLeaveApp(BuildContext context) async {
           FlatButton(
             child: Text(AppLocalizations.of(context).translate("yes")),
             onPressed: () {
-              SystemNavigator.pop();
-              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-              Navigator.of(context).pop();
+              if (Platform.isAndroid) {
+                SystemNavigator.pop();
+              } else if (Platform.isIOS) {
+                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+              }
             },
           ),
         ],
