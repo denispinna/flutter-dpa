@@ -1,15 +1,19 @@
-import 'package:dpa/app_localization.dart';
+import 'package:dpa/models/user.dart';
+import 'package:dpa/screens/main/components/profile_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:dpa/screens/login/components/login_form.dart';
 
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate('app_name')),
+    final User user = ModalRoute.of(context).settings.arguments;
+
+    return new WillPopScope(
+      child: Scaffold(
+        body: new DetailedScreen(user: user),
       ),
-      body: LoginForm(),
+      onWillPop: () {
+        return new Future(() => false);
+      },
     );
   }
 }

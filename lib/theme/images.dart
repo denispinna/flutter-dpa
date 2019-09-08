@@ -5,4 +5,5 @@ class MyImages {
   static const facebook_logo = AssetImage("assets/facebook_white_logo.png");
   static const email = AssetImage("assets/email.png");
   static const home_background = AssetImage("assets/home_background.png");
+  static const logout = AssetImage("assets/logout.png");
 }

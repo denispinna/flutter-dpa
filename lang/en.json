@@ -19,5 +19,6 @@
   "email_login": "Sign in with email",
   "or": "Or",
   "welcome_message": "We've been expecting you,\n please sign in to fully enjoy the app!",
-  "generic_error_message": "Sorry, something went wrong."
+  "generic_error_message": "Sorry, something went wrong.",
+  "logout": "Logout"
   }

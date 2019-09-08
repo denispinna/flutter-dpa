@@ -31,4 +31,6 @@ class Dimens {
   static const font_xl = xl;
   static const font_xxl = xxl;
   static const font_xxxl = xxxl;
+
+  static const profile_image_width = 300.0;
 }
