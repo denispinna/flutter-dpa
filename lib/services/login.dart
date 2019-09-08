@@ -41,24 +41,15 @@ class AuthAPI {
     final FirebaseUser firebaseUser =
         (await auth.signInWithCredential(credential).catchError(onError)).user;
     Logger.log(TAG, "signed in with google user : ${firebaseUser.displayName}");
-
-    var photoUrl = googleUser.photoUrl.replaceAll("96-c", "1080");
-    onLoginSuccess(new User(
-        displayName: firebaseUser.displayName,
-        imageUrl: photoUrl,
-        signInMethod: SignInMethod.Google,
-        uid: firebaseUser.uid,
-        email: googleUser.email));
+    onLoginSuccess(User.fromFirebaseUser(firebaseUser));
   }
 
-  void signOutWithGoogle(OnSuccess onSuccess) async {
+  void signOutWithGoogle() async {
     final onError = (exception, stacktrace) {
       Logger.log(TAG, "Error while signing out with google : $exception");
-      onSuccess(false);
     };
     await googleSignIn.signOut().catchError(onError);
     Logger.log(TAG, "User signed out from google");
-    onSuccess(true);
   }
 
   void signInWithFacebook(
@@ -78,28 +69,15 @@ class AuthAPI {
         (await auth.signInWithCredential(credential).catchError(onError)).user;
     Logger.log(
         TAG, "signed in with facebook user : ${firebaseUser.displayName}");
-
-    var graphResponse = await http.get(
-        'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${result.accessToken.token}');
-    var profile = json.decode(graphResponse.body);
-
-    var photoUrl = "${firebaseUser.photoUrl}?width=1080&height=1080";
-    onLoginSuccess(new User(
-        displayName: firebaseUser.displayName,
-        imageUrl: photoUrl,
-        signInMethod: SignInMethod.Facebook,
-        uid: firebaseUser.uid,
-        email: profile['email']));
+    onLoginSuccess(User.fromFirebaseUser(firebaseUser));
   }
 
-  void signOutWithFacebook(OnSuccess onSuccess) async {
+  void signOutWithFacebook() async {
     final onError = (exception, stacktrace) {
       Logger.log(TAG, "Error while signing out with facebook : $exception");
-      onSuccess(false);
     };
     await facebookSignIn.logOut().catchError(onError);
     Logger.log(TAG, "User signed out from facebook");
-    onSuccess(true);
   }
 
   void signInWithMail(String email, String password, BuildContext context,
@@ -113,22 +91,7 @@ class AuthAPI {
         .signInWithEmailAndPassword(email: email, password: password)
         .catchError(onError);
     FirebaseUser user = result.user;
-    onLoginSuccess(new User(
-        displayName: user.displayName,
-        imageUrl: user.photoUrl,
-        signInMethod: SignInMethod.Facebook,
-        uid: user.uid,
-        email: email));
-  }
-
-  void signOutWithMail(OnSuccess onSuccess) async {
-    final onError = (exception, stacktrace) {
-      Logger.log(TAG, "Error while signing out with facebook : $exception");
-      onSuccess(false);
-    };
-    await auth.signOut().catchError(onError);
-    Logger.log(TAG, "User signed out from facebook");
-    onSuccess(true);
+    onLoginSuccess(User.fromFirebaseUser(user));
   }
 
   void signUp(String email, String password, BuildContext context,
@@ -142,28 +105,24 @@ class AuthAPI {
         .createUserWithEmailAndPassword(email: email, password: password)
         .catchError(onError);
     FirebaseUser user = result.user;
-    onLoginSuccess(new User(
-        displayName: user.displayName,
-        imageUrl: user.photoUrl,
-        signInMethod: SignInMethod.Facebook,
-        uid: user.uid,
-        email: email));
+    onLoginSuccess(User.fromFirebaseUser(user));
   }
 
   void signOut(SignInMethod signInMethod, OnSuccess onSuccess) async {
     switch (signInMethod) {
       case SignInMethod.Google:
-        signOutWithGoogle(onSuccess);
+        signOutWithGoogle();
         break;
       case SignInMethod.Facebook:
-        signOutWithFacebook(onSuccess);
+        signOutWithFacebook();
         break;
       case SignInMethod.mail:
         break;
     }
     await auth.signOut();
+    onSuccess();
   }
 }
 
-typedef OnSuccess = void Function(bool);
+typedef OnSuccess = void Function();
 typedef OnLoginSuccess = void Function(User);

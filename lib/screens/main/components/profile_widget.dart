@@ -39,7 +39,7 @@ class DetailedScreen extends StatelessWidget {
           )),
       CenterHorizontal(FlatButton(
         onPressed: () => authApi.signOut(
-            user.signInMethod, (success) => Navigator.of(context).pop()),
+            user.signInMethod, () => Navigator.of(context).pop()),
         color: MyColors.second_color,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Dimens.xxl)),
