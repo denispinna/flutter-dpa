@@ -12,13 +12,16 @@ class HomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    authApi.signOutWithGoogle();
+    authApi.signOutWithFacebook();
+
     return Container(
         color: const Color(0x88ffffff),
         child: ListView(shrinkWrap: true, children: <Widget>[
           MyTitle(AppLocalizations.of(context).translate('welcome_message')),
-          FacebookSignInButton(() => authApi.signInWithGoogle()),
+          FacebookSignInButton(() => authApi.signInWithFacebook(context)),
           OrRow(),
-          GoogleSignInButton(() => authApi.signInWithGoogle()),
+          GoogleSignInButton(() => authApi.signInWithGoogle(context)),
           OrRow(),
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, Dimens.padding_l),

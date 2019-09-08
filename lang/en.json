@@ -18,5 +18,6 @@
   "facebook_login": "Continue with Facebook",
   "email_login": "Sign in with email",
   "or": "Or",
-  "welcome_message": "We've been expecting you,\n please sign in to find new game partners!"
-}
+  "welcome_message": "We've been expecting you,\n please sign in to fully enjoy the app!",
+  "generic_error_message": "Sorry, something went wrong."
+  }
