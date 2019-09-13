@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dpa/models/user.dart';
 import 'package:dpa/util/logger.dart';
 import 'package:dpa/util/view_util.dart';
@@ -7,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
 
 class AuthAPI {
   static final AuthAPI instance = AuthAPI();
@@ -18,8 +15,10 @@ class AuthAPI {
 
   void checkLoggedInUser(OnLoginSuccess onSuccess) async {
     final firebaseUser = await auth.currentUser();
-    final user = User.fromFirebaseUser(firebaseUser);
-    onSuccess(user);
+    if(firebaseUser == null) {
+      onSuccess(null);
+    }
+    onSuccess(User.fromFirebaseUser(firebaseUser));
   }
 
   void signInWithGoogle(

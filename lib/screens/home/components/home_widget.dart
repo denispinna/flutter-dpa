@@ -7,11 +7,8 @@ import 'package:dpa/services/login.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/material.dart';
 
-class HomeWidget extends StatefulWidget {
+class HomeWidget extends StatelessWidget {
   final authApi = AuthAPI.instance;
-
-  @override
-  State<StatefulWidget> createState() => HomeState(this);
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +25,6 @@ class HomeWidget extends StatefulWidget {
               child: EmailSignInButton(
                   () => Navigator.pushNamed(context, '/login'))),
         ]));
-  }
-
-  void checkLoggedInUser(BuildContext context){
-    authApi.checkLoggedInUser((user) => Navigator.pushNamed(context, '/main', arguments: user));
   }
 
   signInWithGoogle(BuildContext context) async {
@@ -70,17 +63,4 @@ class OrRow extends StatelessWidget {
       ),
     ]);
   }
-}
-
-class HomeState extends State<HomeWidget>{
-
-  HomeWidget widget;
-
-  HomeState(this.widget);
-
-  @override
-  Widget build(BuildContext context) => widget.build(context);
-
-  @override
-  void initState() => widget.checkLoggedInUser(context);
 }

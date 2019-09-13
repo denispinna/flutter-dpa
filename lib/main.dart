@@ -23,7 +23,7 @@ class DpaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'ExampleApp',
+        title: 'DPA',
         theme: appTheme(),
         initialRoute: '/',
         routes: <String, WidgetBuilder>{
