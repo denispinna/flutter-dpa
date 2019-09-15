@@ -5,11 +5,10 @@ class Logger {
     developer.log(message, name: tag);
   }
 
-  static void logError(String tag, String message, Error error) {
+  static void logError(String tag, String message, dynamic error) {
     developer.log(
         message,
         name: tag,
-        error: error,
-        stackTrace: error.stackTrace);
+        error: error);
   }
 }

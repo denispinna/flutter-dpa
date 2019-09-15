@@ -1,5 +1,6 @@
 import 'package:dpa/components/nav_component.dart';
 import 'package:dpa/provider/camera_provider.dart';
+import 'package:dpa/screens/camera/camera_screen.dart';
 import 'package:dpa/screens/main/main_screen.dart';
 import 'package:dpa/screens/signup/sign_up_screen.dart';
 import 'package:dpa/services/auth.dart';
@@ -71,10 +72,11 @@ class DpaAppState extends State<DpaApp> {
           initialRoute: state.currentPath,
           routes: <String, WidgetBuilder>{
             "/": (BuildContext context) => NavWidget(),
-            "/home": (BuildContext context) => HomeScreen(),
-            "/login": (BuildContext context) => LoginScreen(),
-            "/sign_up": (BuildContext context) => SignUpScreen(),
-            "/main": (BuildContext context) => MainScreen(),
+            HomeScreen.PATH: (BuildContext context) => HomeScreen(),
+            LoginScreen.PATH: (BuildContext context) => LoginScreen(),
+            SignUpScreen.PATH: (BuildContext context) => SignUpScreen(),
+            MainScreen.PATH: (BuildContext context) => MainScreen(),
+            CameraScreen.PATH: (BuildContext context) => CameraScreen(),
           },
           navigatorObservers: [
             FirebaseAnalyticsObserver(analytics: analytics),

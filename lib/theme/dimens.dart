@@ -11,7 +11,9 @@ class Dimens {
   static const xxxxl = 34.0;
   static const xxxxxl = 36.0;
 
+  static const picto_button_width = 45.0;
   static const large_space = 120.0;
+  static const picture_preview_button_width = 60.0;
 
   static const padding_xxs = xxs;
   static const padding_xs = xs;

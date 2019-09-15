@@ -55,3 +55,5 @@ void askToLeaveApp(BuildContext context) async {
     },
   );
 }
+
+String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();

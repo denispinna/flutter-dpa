@@ -7,4 +7,7 @@ class MyImages {
   static const home_background = AssetImage("assets/home_background.png");
   static const logout = AssetImage("assets/logout.png");
   static const user_placeholder = AssetImage("assets/user_placeholder.png");
+  static const camera = AssetImage("assets/camera.png");
+
+  static const take_picture = "assets/take_picture.svg";
 }

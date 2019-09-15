@@ -1,5 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:dpa/models/user.dart';
+import 'package:dpa/screens/home/home.dart';
+import 'package:dpa/screens/main/main_screen.dart';
 import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/util/logger.dart';
@@ -17,14 +19,14 @@ AppState reduceAppState(AppState state, dynamic action) {
       final loginAction = action as UserLoginAction;
       user = loginAction.user;
       routeAction = RouteAction(
-        destination: "/main",
+        destination: MainScreen.PATH,
         type: RouteActionType.Push
       );
       break;
     case UserLogoutAction :
       user = null;
       routeAction = RouteAction(
-          destination: "/home",
+          destination: HomeScreen.PATH,
           type: RouteActionType.Replace
       );
       break;

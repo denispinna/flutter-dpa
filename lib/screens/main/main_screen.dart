@@ -1,3 +1,4 @@
+import 'package:dpa/components/back_pop_widget.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';
@@ -5,12 +6,14 @@ import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
+  static const PATH = "/main";
+
   @override
   State<StatefulWidget> createState() => MainState(this);
 }
 
-class MainState extends State<MainScreen> {
-  MainState(this.widget);
+class MainState extends ScreenState<MainScreen> {
+  MainState(this.widget) : super(MainScreen.PATH);
 
   MainScreen widget;
   User user;

@@ -1,8 +1,11 @@
+import 'package:dpa/components/back_pop_widget.dart';
 import 'package:dpa/theme/images.dart';
 import 'package:flutter/material.dart';
 import 'package:dpa/screens/home/components/home_widget.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const PATH = "/home";
+
   @override
   State<StatefulWidget> createState() => HomeState(this);
 
@@ -26,11 +29,11 @@ class HomeScreen extends StatefulWidget {
   }
 }
 
-class HomeState extends State<HomeScreen> {
+class HomeState extends ScreenState<HomeScreen> {
   static const String TAG = "HomeState";
   HomeScreen widget;
 
-  HomeState(this.widget);
+  HomeState(this.widget) : super(HomeScreen.PATH);
 
   @override
   Widget build(BuildContext context) {
