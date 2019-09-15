@@ -1,4 +1,4 @@
-import 'package:dpa/components/back_pop_widget.dart';
+import 'package:dpa/components/lifecycle_widget.dart';
 import 'package:dpa/theme/images.dart';
 import 'package:flutter/material.dart';
 import 'package:dpa/screens/home/components/home_widget.dart';

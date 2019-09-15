@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:dpa/app_localization.dart';
-import 'package:dpa/components/back_pop_widget.dart';
+import 'package:dpa/components/lifecycle_widget.dart';
 import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';

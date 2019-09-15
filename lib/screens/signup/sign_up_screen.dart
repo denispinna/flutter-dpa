@@ -1,5 +1,5 @@
 import 'package:dpa/app_localization.dart';
-import 'package:dpa/components/back_pop_widget.dart';
+import 'package:dpa/components/lifecycle_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'components/sign_up.dart';
