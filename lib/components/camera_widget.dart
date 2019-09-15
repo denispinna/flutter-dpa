@@ -16,6 +16,75 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:path_provider/path_provider.dart';
 
+class TakePictureWidget extends StatefulWidget {
+  final CameraController controller;
+
+  const TakePictureWidget(this.controller);
+
+  @override
+  State<StatefulWidget> createState() => TakePictureState(controller);
+}
+
+class TakePictureState extends State<TakePictureWidget> {
+  final CameraController controller;
+  String imagePath;
+
+  TakePictureState(this.controller);
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, String>(
+        converter: (store) => store.state.imagePath,
+        builder: (context, imagePath) {
+          if (imagePath == null) {
+            return BlurryCameraPreview(controller, (imagePath) {
+              setState(() {
+                this.imagePath = imagePath;
+              });
+            });
+          } else {
+            this.imagePath = imagePath;
+            return StoreConnector<AppState, Function>(
+                converter: (store) =>
+                    () => store.dispatch(PictureTakenAction(null)),
+                builder: (context, clearPicture) {
+                  return Stack(
+                    children: <Widget>[
+                      AspectRatio(
+                          aspectRatio: 16 / 9,
+                          child: Image.file(
+                            File(imagePath),
+                            fit: BoxFit.cover,
+                          )),
+                      Positioned(
+                          child: new Align(
+                        alignment: FractionalOffset.topRight,
+                        child: Padding(
+                          padding: const EdgeInsets.all(Dimens.m),
+                          child: Container(
+                              decoration: new BoxDecoration(
+                                  color: MyColors.alpha_red,
+                                  borderRadius: new BorderRadius.all(
+                                      const Radius.circular(40.0))),
+                              child: GestureDetector(
+                                child: Padding(
+                                    padding: const EdgeInsets.all(Dimens.xs),
+                                    child: SvgPicture.asset(MyImages.cross,
+                                        height: Dimens.picto_button_width,
+                                        width: Dimens.picto_button_width,
+                                        color: Colors.white)),
+                                onTap: clearPicture,
+                              )),
+                        ),
+                      )),
+                    ],
+                  );
+                });
+          }
+        });
+  }
+}
+
 class CameraPreviewWidget extends CameraWidget {
   static const TAG = "CameraPreviewWidget";
   final CameraController controller;
@@ -27,6 +96,16 @@ class CameraPreviewWidget extends CameraWidget {
 
   @override
   Widget build(BuildContext context) {
+    return StoreConnector<AppState, Function(String)>(
+        converter: (store) =>
+            (imagePath) => store.dispatch(PictureTakenAction(imagePath)),
+        builder: (context, dispatchPicture) {
+          return buildWithDispatchFunction(context, dispatchPicture);
+        });
+  }
+
+  Widget buildWithDispatchFunction(
+      BuildContext context, Function(String) dispatchPicture) {
     return AspectRatio(
         aspectRatio: controller.value.aspectRatio,
         child: Stack(
@@ -36,25 +115,28 @@ class CameraPreviewWidget extends CameraWidget {
                 child: new Align(
               alignment: FractionalOffset.bottomCenter,
               child: Padding(
-                  padding: const EdgeInsets.all(Dimens.l),
-                  child: Container(
+                padding: const EdgeInsets.all(Dimens.l),
+                child: Container(
                     decoration: new BoxDecoration(
                         color: MyColors.alpha_white,
                         borderRadius:
                             new BorderRadius.all(const Radius.circular(40.0))),
-                    child: Padding(
-                        padding: const EdgeInsets.all(Dimens.xs),
-                        child: SvgPicture.asset(MyImages.take_picture,
-                            height: Dimens.picto_button_width,
-                            width: Dimens.picto_button_width,
-                            color: MyColors.second_color)),
-                  )),
+                    child: GestureDetector(
+                      child: Padding(
+                          padding: const EdgeInsets.all(Dimens.xs),
+                          child: SvgPicture.asset(MyImages.take_picture,
+                              height: Dimens.large_picto_button_width,
+                              width: Dimens.large_picto_button_width,
+                              color: MyColors.second_color)),
+                      onTap: () => takePicture(dispatchPicture),
+                    )),
+              ),
             )),
           ],
         ));
   }
 
-  Future<String> takePicture() async {
+  void takePicture(Function(String) dispatchPicture) async {
     if (!controller.value.isInitialized || controller.value.isTakingPicture) {
       return null;
     }
@@ -67,16 +149,18 @@ class CameraPreviewWidget extends CameraWidget {
       await controller.takePicture(filePath);
     } on CameraException catch (e) {
       Logger.logError(TAG, "error on taking picture", e);
-      return null;
+      dispatchPicture(null);
     }
-    return filePath;
+    return dispatchPicture(filePath);
   }
 }
 
 class BlurryCameraPreview extends CameraWidget {
   final CameraController controller;
+  final Function(String) updateImagePath;
 
-  const BlurryCameraPreview(this.controller) : super(controller);
+  const BlurryCameraPreview(this.controller, this.updateImagePath)
+      : super(controller);
 
   @override
   CameraState createState() => CameraState(this);
@@ -185,8 +269,24 @@ class CameraState extends LifecycleWidgetState<CameraWidget> {
     if (initialized)
       return widget.build(context);
     else
-      return SpinKitWave(
-          color: MyColors.second_color, type: SpinKitWaveType.start);
+      return AspectRatio(
+          aspectRatio: 16 / 9,
+          child: Stack(children: <Widget>[
+            ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey.shade600.withOpacity(0.2))),
+              ),
+            ),
+            Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(Dimens.l),
+                  child: SpinKitWave(
+                      color: MyColors.second_color, type: SpinKitWaveType.start),
+                )),
+          ]));
   }
 }
 

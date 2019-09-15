@@ -13,6 +13,7 @@ AppState reduceAppState(AppState state, dynamic action) {
   RouteAction routeAction = state.routeAction;
   String currentPath = state.currentPath;
   CameraController cameraController = state.cameraController;
+  String imagePath = state.imagePath;
 
   switch(action.runtimeType) {
     case UserLoginAction :
@@ -38,13 +39,22 @@ AppState reduceAppState(AppState state, dynamic action) {
       currentPath = updateAction.newPath;
       routeAction = null;
       break;
+    case PictureTakenAction :
+      final pictureAction = action as PictureTakenAction;
+      imagePath = pictureAction.filePath;
+      routeAction = RouteAction(
+          destination: null,
+          type: RouteActionType.Pop
+      );
+      break;
   }
 
   final newState = AppState(
     cameraController: cameraController,
     user: user,
     currentPath: currentPath,
-    routeAction: routeAction
+    routeAction: routeAction,
+    imagePath: imagePath
   );
 
   Logger.log(TAG, "action : $action");

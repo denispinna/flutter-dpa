@@ -24,7 +24,7 @@ class InputDataState extends State<InputDataWidget> {
       converter: (store) => store.state.cameraController,
       builder: (context, controller) {
         return ListView(shrinkWrap: true, children: <Widget>[
-          BlurryCameraPreview(controller),
+          TakePictureWidget(controller),
         ]);
       },
     );

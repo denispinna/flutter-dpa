@@ -10,4 +10,5 @@ class MyImages {
   static const camera = AssetImage("assets/camera.png");
 
   static const take_picture = "assets/take_picture.svg";
+  static const cross = "assets/cross.svg";
 }

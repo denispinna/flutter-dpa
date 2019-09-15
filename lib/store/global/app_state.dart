@@ -6,13 +6,15 @@ class AppState {
   final CameraController cameraController;
   final User user;
   final String currentPath;
+  final String imagePath;
   final RouteAction routeAction;
 
   AppState({
     this.cameraController,
     this.user,
     this.currentPath,
-    this.routeAction
+    this.routeAction,
+    this.imagePath
   });
 
   bool shouldUpdateNav() {

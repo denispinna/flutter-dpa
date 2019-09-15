@@ -24,6 +24,12 @@ class RouteUpdatedAction implements AppAction {
   RouteUpdatedAction(this.newPath);
 }
 
+class PictureTakenAction implements AppAction {
+  final String filePath;
+
+  PictureTakenAction(this.filePath);
+}
+
 enum RouteActionType {
   Pop,
   Push,
