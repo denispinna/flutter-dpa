@@ -1,5 +1,10 @@
+import 'package:dpa/components/nav_component.dart';
+import 'package:dpa/provider/camera_provider.dart';
 import 'package:dpa/screens/main/main_screen.dart';
 import 'package:dpa/screens/signup/sign_up_screen.dart';
+import 'package:dpa/services/auth.dart';
+import 'package:dpa/store/global/app_actions.dart';
+import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/util/logger.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -7,55 +12,99 @@ import 'package:flutter/material.dart';
 import 'package:dpa/theme/style.dart';
 import 'package:dpa/screens/login/login_screen.dart';
 import 'package:dpa/screens/home/home.dart';
+import 'package:dpa/store/global/app_reducer.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 import 'app_localization.dart';
 
-void main() {
-  runApp(DpaApp());
+Future<void> main() async {
+  final cameraController = await CameraProvider.loadCamera();
+  final currentUser = await AuthAPI.instance.loadCurrentUser();
+  String destination = "/home";
+  if (currentUser != null) destination = "/main";
+
+  final initialState = AppState(
+      cameraController: cameraController,
+      user: currentUser,
+      currentPath: "/",
+      routeAction:
+          RouteAction(destination: destination, type: RouteActionType.Push));
+
+  final appStore =
+      new Store<AppState>(reduceAppState, initialState: initialState);
+
+  runApp(DpaApp(store: appStore));
 }
 
 FirebaseAnalytics analytics = FirebaseAnalytics();
 
-class DpaApp extends StatelessWidget {
+class DpaApp extends StatefulWidget {
+  final Store store;
+
+  const DpaApp({Key key, this.store}) : super(key: key);
+
+  @override
+  DpaAppState createState() => DpaAppState(store);
+}
+
+class DpaAppState extends State<DpaApp> {
   static const String TAG = "DpaApp";
+  final Store store;
+
+  DpaAppState(this.store);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'DPA',
-        theme: appTheme(),
-        initialRoute: '/',
-        routes: <String, WidgetBuilder>{
-          "/": (BuildContext context) => HomeScreen(),
-          "/login": (BuildContext context) => LoginScreen(),
-          "/sign_up": (BuildContext context) => SignUpScreen(),
-          "/main": (BuildContext context) => MainScreen(),
-        },
-        navigatorObservers: [
-          FirebaseAnalyticsObserver(analytics: analytics),
-        ],
-        localizationsDelegates: [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: [
-          const Locale('en'),
-        ],
-        localeResolutionCallback: (locale, supportedLocales) {
-          try {
-            for (var supportedLocale in supportedLocales) {
-              if (supportedLocale.languageCode == locale.languageCode) {
-                return supportedLocale;
-              }
-            }
-          } catch (e) {
-            Logger.logError(TAG, "Error while resolving locale", e);
-          }
+    return StoreProvider<AppState>(
+        store: store,
+        child: StoreConnector<AppState, AppState>(
+          converter: (store) => store.state,
+          builder: getAppWidget,
+        ));
+  }
 
-          return supportedLocales.first;
-        });
+  Widget getAppWidget(BuildContext context, AppState state) {
+      return MaterialApp(
+          title: 'DPA',
+          theme: appTheme(),
+          initialRoute: state.currentPath,
+          routes: <String, WidgetBuilder>{
+            "/": (BuildContext context) => NavWidget(),
+            "/home": (BuildContext context) => HomeScreen(),
+            "/login": (BuildContext context) => LoginScreen(),
+            "/sign_up": (BuildContext context) => SignUpScreen(),
+            "/main": (BuildContext context) => MainScreen(),
+          },
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: analytics),
+          ],
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale('en'),
+          ],
+          localeResolutionCallback: (locale, supportedLocales) {
+            try {
+              for (var supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale.languageCode) {
+                  return supportedLocale;
+                }
+              }
+            } catch (e) {
+              Logger.logError(TAG, "Error while resolving locale", e);
+            }
+
+            return supportedLocales.first;
+          });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 }

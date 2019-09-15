@@ -3,38 +3,51 @@ import 'package:dpa/components/login/emailLoginButton.dart';
 import 'package:dpa/components/login/facebookLoginButton.dart';
 import 'package:dpa/components/login/googleLoginButton.dart';
 import 'package:dpa/components/title.dart';
-import 'package:dpa/services/login.dart';
+import 'package:dpa/models/user.dart';
+import 'package:dpa/services/auth.dart';
+import 'package:dpa/store/global/app_actions.dart';
+import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class HomeWidget extends StatelessWidget {
   final authApi = AuthAPI.instance;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: const Color(0x88ffffff),
-        child: ListView(shrinkWrap: true, children: <Widget>[
-          MyTitle(AppLocalizations.of(context).translate('welcome_message')),
-          FacebookSignInButton(() => signInWithFacebook(context)),
-          OrRow(),
-          GoogleSignInButton(() => signInWithGoogle(context)),
-          OrRow(),
-          Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, Dimens.padding_l),
-              child: EmailSignInButton(
-                  () => Navigator.pushNamed(context, '/login'))),
-        ]));
+    return StoreConnector<AppState, Function(User)>(
+      converter: (store) => (user) {
+        store.dispatch(UserLoginAction(user));
+      },
+      builder: (context, onUserLoggedIn) {
+        return Container(
+            color: const Color(0x88ffffff),
+            child: ListView(shrinkWrap: true, children: <Widget>[
+              MyTitle(
+                  AppLocalizations.of(context).translate('welcome_message')),
+              FacebookSignInButton(
+                  () => signInWithFacebook(context, onUserLoggedIn)),
+              OrRow(),
+              GoogleSignInButton(
+                  () => signInWithGoogle(context, onUserLoggedIn)),
+              OrRow(),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, Dimens.padding_l),
+                  child: EmailSignInButton(
+                      () => Navigator.pushNamed(context, '/login'))),
+            ]));
+      },
+    );
   }
 
-  signInWithGoogle(BuildContext context) async {
-    authApi.signInWithGoogle(context,
-        (user) => Navigator.pushNamed(context, '/main', arguments: user));
+  signInWithGoogle(BuildContext context, Function(User) onUserLoggedIn) async {
+    authApi.signInWithGoogle(context, onUserLoggedIn);
   }
 
-  signInWithFacebook(BuildContext context) async {
-    authApi.signInWithFacebook(context,
-      (user) => Navigator.pushNamed(context, '/main', arguments: user));
+  signInWithFacebook(
+      BuildContext context, Function(User) onUserLoggedIn) async {
+    authApi.signInWithFacebook(context, onUserLoggedIn);
   }
 }
 

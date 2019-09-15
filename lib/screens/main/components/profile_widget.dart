@@ -1,20 +1,32 @@
 import 'package:dpa/app_localization.dart';
 import 'package:dpa/components/centerHorizontal.dart';
 import 'package:dpa/models/user.dart';
-import 'package:dpa/services/login.dart';
+import 'package:dpa/services/auth.dart';
+import 'package:dpa/store/global/app_actions.dart';
+import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/images.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
-class DetailedScreen extends StatelessWidget {
+class ProfileWidget extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => ProfileWidgetState();
+}
+
+class ProfileWidgetState extends State<ProfileWidget> {
   final authApi = AuthAPI.instance;
-  final User user;
-
-  DetailedScreen({Key key, @required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return StoreConnector<AppState, User>(
+        converter: (store) => store.state.user, builder: buildWithUser);
+  }
+
+  Widget buildWithUser(BuildContext context, User user) {
+    if(user == null) return Container();
+    
     return ListView(shrinkWrap: true, children: <Widget>[
       CenterHorizontal(Padding(
         padding: const EdgeInsets.fromLTRB(
@@ -37,34 +49,40 @@ class DetailedScreen extends StatelessWidget {
             style: new TextStyle(
                 fontWeight: FontWeight.bold, fontSize: Dimens.font_xl),
           )),
-      CenterHorizontal(FlatButton(
-        onPressed: () => authApi.signOut(
-            user.signInMethod, () => Navigator.of(context).pop()),
-        color: MyColors.second_color,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Dimens.xxl)),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(
-              0, Dimens.padding_xxs, 0, Dimens.padding_xxs),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image(image: MyImages.logout, height: Dimens.xl),
-              Padding(
-                padding: const EdgeInsets.only(left: Dimens.padding_s),
-                child: Text(
-                  AppLocalizations.of(context).translate('logout'),
-                  style: TextStyle(
-                    fontSize: Dimens.font_l,
-                    color: Colors.white,
-                  ),
+      StoreConnector<AppState, Function>(
+          converter: (store) => () {
+                store.dispatch(UserLogoutAction());
+              },
+          builder: (context, dispatchLogout) {
+            return CenterHorizontal(FlatButton(
+              onPressed: () =>
+                  AuthAPI().signOut(user.signInMethod, dispatchLogout),
+              color: MyColors.second_color,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(Dimens.xxl)),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                    0, Dimens.padding_xxs, 0, Dimens.padding_xxs),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image(image: MyImages.logout, height: Dimens.xl),
+                    Padding(
+                      padding: const EdgeInsets.only(left: Dimens.padding_s),
+                      child: Text(
+                        AppLocalizations.of(context).translate('logout'),
+                        style: TextStyle(
+                          fontSize: Dimens.font_l,
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
-        ),
-      ))
+              ),
+            ));
+          }),
     ]);
   }
 }

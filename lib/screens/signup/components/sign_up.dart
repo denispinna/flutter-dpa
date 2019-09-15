@@ -1,6 +1,6 @@
 import 'package:dpa/app_localization.dart';
 import 'package:dpa/components/centerHorizontal.dart';
-import 'package:dpa/services/login.dart';
+import 'package:dpa/services/auth.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/util/text_util.dart';
 import 'package:dpa/util/view_util.dart';

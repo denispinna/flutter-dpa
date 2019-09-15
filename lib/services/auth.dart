@@ -13,12 +13,12 @@ class AuthAPI {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  void checkLoggedInUser(OnLoginSuccess onSuccess) async {
+  Future<User> loadCurrentUser() async {
     final firebaseUser = await auth.currentUser();
     if(firebaseUser == null) {
-      onSuccess(null);
+      return null;
     }
-    onSuccess(User.fromFirebaseUser(firebaseUser));
+    return User.fromFirebaseUser(firebaseUser);
   }
 
   void signInWithGoogle(

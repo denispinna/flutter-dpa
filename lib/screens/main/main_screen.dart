@@ -1,4 +1,5 @@
 import 'package:dpa/models/user.dart';
+import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
@@ -57,16 +58,16 @@ class MainState extends State<MainScreen> {
   Widget getCurrentTabView() {
     switch (currentIndex) {
       case 0:
-        return new DetailedScreen(user: user);
+        return InputDataWidget();
         break;
       case 1:
-        return new DetailedScreen(user: user);
+        return ProfileWidget();
         break;
       case 2:
-        return new DetailedScreen(user: user);
+        return ProfileWidget();
         break;
       default:
-        return new DetailedScreen(user: user);
+        return ProfileWidget();
         break;
     }
   }

@@ -24,5 +24,6 @@
   "yes": "Yes",
   "no": "No",
   "leave_app_message": "Do you want to leave the app?",
-  "leave_app": "Leave app"
+  "leave_app": "Leave app",
+  "no_camera": "No camera available"
   }
