@@ -32,20 +32,12 @@ class MainState extends ScreenState<MainScreen> {
             items: [
               BottomNavigationBarItem(
                   icon:
-                      Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
+                      Icon(Icons.camera, color: Color.fromARGB(255, 0, 0, 0)),
                   title: new Text('')),
               BottomNavigationBarItem(
                   icon:
-                      Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
+                      Icon(Icons.info_outline, color: Color.fromARGB(255, 0, 0, 0)),
                   title: new Text('')),
-              BottomNavigationBarItem(
-                  icon:
-                      Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
-                  title: new Text('')),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.access_alarm,
-                      color: Color.fromARGB(255, 0, 0, 0)),
-                  title: new Text(''))
             ],
             onTap: (index) {
               onTabTapped(index);
