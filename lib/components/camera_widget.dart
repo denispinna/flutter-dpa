@@ -217,7 +217,7 @@ class BlurryCameraPreview extends CameraWidget {
 }
 
 class CameraState extends LifecycleWidgetState<CameraWidget> {
-  var initialized = false;
+  static var initialized = false;
   final CameraWidget widget;
   CameraController controller;
 
@@ -239,14 +239,6 @@ class CameraState extends LifecycleWidgetState<CameraWidget> {
 
   @override
   void onPause() {
-//    if (initialized) {
-//      controller?.dispose();
-//      try {
-//        setState(() {
-//          initialized = false;
-//        });
-//      } catch (e) {}
-//    }
   }
 
   @override
@@ -256,10 +248,9 @@ class CameraState extends LifecycleWidgetState<CameraWidget> {
 
   void initializeCamera() async {
     if (!initialized) {
-      controller.initialize().then((_) {
-        setState(() {
-          initialized = true;
-        });
+      await controller.initialize();
+      setState(() {
+        initialized = true;
       });
     }
   }
