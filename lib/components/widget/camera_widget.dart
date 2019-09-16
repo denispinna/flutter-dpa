@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
-import 'package:dpa/app_localization.dart';
+import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';

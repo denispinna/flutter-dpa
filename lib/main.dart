@@ -14,10 +14,11 @@ import 'package:dpa/theme/style.dart';
 import 'package:dpa/screens/login/login_screen.dart';
 import 'package:dpa/screens/home/home.dart';
 import 'package:dpa/store/global/app_reducer.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'app_localization.dart';
+import 'package:dpa/components/app_localization.dart';
 
 Future<void> main() async {
   final cameraController = await CameraProvider.loadCamera();
@@ -57,6 +58,11 @@ class DpaAppState extends State<DpaApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
     return StoreProvider<AppState>(
         store: store,
         child: StoreConnector<AppState, AppState>(

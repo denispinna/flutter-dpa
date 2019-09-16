@@ -1,10 +1,14 @@
-import 'package:dpa/app_localization.dart';
+import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
+import 'package:dpa/models/user.dart';
 import 'package:dpa/services/auth.dart';
+import 'package:dpa/store/global/app_actions.dart';
+import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/util/text_util.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -22,6 +26,15 @@ class SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    return StoreConnector<AppState, Function(User)>(
+        converter: (store) => (user) {
+          store.dispatch(UserLoginAction(user));
+        },
+        builder: buildWithState
+    );
+  }
+
+  Widget buildWithState(BuildContext context, Function(User) onLogin) {
     // Build a Form widget using the _formKey created above.
     return Form(
       key: _formKey,
@@ -96,9 +109,7 @@ class SignUpFormState extends State<SignUpForm> {
                       emailController.text,
                       passwordController.text,
                       context,
-                      (user) => Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/main', ModalRoute.withName('/'),
-                          arguments: user));
+                      onLogin);
                 }
               },
               child: Text(AppLocalizations.of(context).translate('sign_up')),

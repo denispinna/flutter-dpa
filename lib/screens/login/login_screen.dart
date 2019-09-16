@@ -1,4 +1,4 @@
-import 'package:dpa/app_localization.dart';
+import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:dpa/screens/login/components/login_form.dart';

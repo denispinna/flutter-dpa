@@ -1,4 +1,4 @@
-import 'package:dpa/app_localization.dart';
+import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/widget/login/emailLoginButton.dart';
 import 'package:dpa/components/widget/login/facebookLoginButton.dart';
 import 'package:dpa/components/widget/login/googleLoginButton.dart';

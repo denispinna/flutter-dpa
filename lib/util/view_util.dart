@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dpa/app_localization.dart';
+import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
