@@ -27,12 +27,13 @@ class CameraState extends ScreenState<CameraScreen> {
 
   Widget buildWithState(BuildContext context, CameraController controller) {
     return Scaffold(
+        backgroundColor: Colors.black,
         body: Center(
             child: ListView(
-      shrinkWrap: true,
-      children: <Widget>[
-        CameraPreviewWidget(controller),
-      ],
-    )));
+          shrinkWrap: true,
+          children: <Widget>[
+            CameraPreviewWidget(controller),
+          ],
+        )));
   }
 }
