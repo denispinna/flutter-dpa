@@ -1,4 +1,4 @@
-import 'package:dpa/util/logger.dart';
+import 'package:dpa/components/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class User {

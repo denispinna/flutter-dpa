@@ -4,7 +4,7 @@ import 'package:dpa/screens/home/home.dart';
 import 'package:dpa/screens/main/main_screen.dart';
 import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
-import 'package:dpa/util/logger.dart';
+import 'package:dpa/components/logger.dart';
 
 const TAG = "reduceAppState";
 

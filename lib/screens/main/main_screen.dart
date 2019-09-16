@@ -1,4 +1,4 @@
-import 'package:dpa/components/lifecycle_widget.dart';
+import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';

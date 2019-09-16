@@ -1,4 +1,4 @@
-import 'package:dpa/components/nav_component.dart';
+import 'package:dpa/components/widget/nav_component.dart';
 import 'package:dpa/provider/camera_provider.dart';
 import 'package:dpa/screens/camera/camera_screen.dart';
 import 'package:dpa/screens/main/main_screen.dart';
@@ -6,7 +6,7 @@ import 'package:dpa/screens/signup/sign_up_screen.dart';
 import 'package:dpa/services/auth.dart';
 import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
-import 'package:dpa/util/logger.dart';
+import 'package:dpa/components/logger.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';

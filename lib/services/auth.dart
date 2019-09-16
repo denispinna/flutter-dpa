@@ -1,5 +1,5 @@
 import 'package:dpa/models/user.dart';
-import 'package:dpa/util/logger.dart';
+import 'package:dpa/components/logger.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

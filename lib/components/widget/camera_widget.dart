@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:dpa/app_localization.dart';
-import 'package:dpa/components/lifecycle_widget.dart';
+import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/images.dart';
-import 'package:dpa/util/logger.dart';
+import 'package:dpa/components/logger.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';

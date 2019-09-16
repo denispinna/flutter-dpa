@@ -1,5 +1,5 @@
 import 'package:dpa/app_localization.dart';
-import 'package:dpa/components/centerHorizontal.dart';
+import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/services/auth.dart';
 import 'package:dpa/store/global/app_actions.dart';
