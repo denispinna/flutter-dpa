@@ -16,6 +16,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:path_provider/path_provider.dart';
 
+const IMAGE_RATIO = 16 / 9;
+
 class TakePictureWidget extends StatefulWidget {
   final CameraController controller;
 
@@ -51,7 +53,7 @@ class TakePictureState extends State<TakePictureWidget> {
                   return Stack(
                     children: <Widget>[
                       AspectRatio(
-                          aspectRatio: 16 / 9,
+                          aspectRatio: IMAGE_RATIO,
                           child: Image.file(
                             File(imagePath),
                             fit: BoxFit.cover,
@@ -60,7 +62,7 @@ class TakePictureState extends State<TakePictureWidget> {
                           child: new Align(
                         alignment: FractionalOffset.topRight,
                         child: Padding(
-                          padding: const EdgeInsets.all(Dimens.m),
+                          padding: const EdgeInsets.all(Dimens.xs),
                           child: Container(
                               decoration: new BoxDecoration(
                                   color: MyColors.alpha_red,
@@ -176,7 +178,7 @@ class BlurryCameraPreview extends CameraWidget {
   Widget buildWithState(BuildContext context, Function openCamera) {
     return GestureDetector(
       child: AspectRatio(
-          aspectRatio: 16 / 9,
+          aspectRatio: IMAGE_RATIO,
           child: Stack(
             children: <Widget>[
               ListView(children: <Widget>[
@@ -184,14 +186,16 @@ class BlurryCameraPreview extends CameraWidget {
                     aspectRatio: controller.value.aspectRatio,
                     child: CameraPreview(controller))
               ], physics: const NeverScrollableScrollPhysics()),
-              ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade600.withOpacity(0.2))),
-                ),
-              ),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(0, Dimens.padding_xl, 0, 0),
+                  child: ClipRect(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                      child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade600.withOpacity(0.2))),
+                    ),
+                  )),
               Center(
                   child: ListView(
                       shrinkWrap: true,
@@ -238,8 +242,7 @@ class CameraState extends LifecycleWidgetState<CameraWidget> {
   }
 
   @override
-  void onPause() {
-  }
+  void onPause() {}
 
   @override
   void onResume() {
@@ -261,7 +264,7 @@ class CameraState extends LifecycleWidgetState<CameraWidget> {
       return widget.build(context);
     else
       return AspectRatio(
-          aspectRatio: 16 / 9,
+          aspectRatio: IMAGE_RATIO,
           child: Stack(children: <Widget>[
             ClipRect(
               child: BackdropFilter(
@@ -273,10 +276,10 @@ class CameraState extends LifecycleWidgetState<CameraWidget> {
             ),
             Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(Dimens.l),
-                  child: SpinKitWave(
-                      color: MyColors.second_color, type: SpinKitWaveType.start),
-                )),
+              padding: const EdgeInsets.all(Dimens.l),
+              child: SpinKitWave(
+                  color: MyColors.second_color, type: SpinKitWaveType.start),
+            )),
           ]));
   }
 }
