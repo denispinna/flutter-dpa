@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class NavWidget extends StatefulWidget {
+  static const PATH = "/";
+
   @override
   State<StatefulWidget> createState() => NavState();
 }

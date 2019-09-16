@@ -29,7 +29,7 @@ Future<void> main() async {
   final initialState = AppState(
       cameraController: cameraController,
       user: currentUser,
-      currentPath: "/",
+      currentPath: NavWidget.PATH,
       routeAction:
           RouteAction(destination: destination, type: RouteActionType.Push));
 
@@ -77,7 +77,7 @@ class DpaAppState extends State<DpaApp> {
           theme: appTheme(),
           initialRoute: state.currentPath,
           routes: <String, WidgetBuilder>{
-            "/": (BuildContext context) => NavWidget(),
+            NavWidget.PATH: (BuildContext context) => NavWidget(),
             HomeScreen.PATH: (BuildContext context) => HomeScreen(),
             LoginScreen.PATH: (BuildContext context) => LoginScreen(),
             SignUpScreen.PATH: (BuildContext context) => SignUpScreen(),
