@@ -7,5 +7,5 @@ class MyColors {
   static const second_color = Color(0xff547d9e);
   static const error_color = Colors.redAccent;
   static const alpha_white = Color(0xccffffff);
-  static const alpha_red = Color(0xccD50000);
+  static const alpha_red = Color(0x66D50000);
 }

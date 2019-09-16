@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:dpa/models/stat_form_data.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/home/home.dart';
 import 'package:dpa/screens/main/main_screen.dart';
@@ -14,48 +15,45 @@ AppState reduceAppState(AppState state, dynamic action) {
   String currentPath = state.currentPath;
   CameraController cameraController = state.cameraController;
   String imagePath = state.imagePath;
+  StatFormData toSubmit = state.toSubmit;
 
-  switch(action.runtimeType) {
-    case UserLoginAction :
+  switch (action.runtimeType) {
+    case UserLoginAction:
       final loginAction = action as UserLoginAction;
       user = loginAction.user;
-      routeAction = RouteAction(
-        destination: MainScreen.PATH,
-        type: RouteActionType.Push
-      );
+      routeAction =
+          RouteAction(destination: MainScreen.PATH, type: RouteActionType.Push);
       break;
-    case UserLogoutAction :
+    case UserLogoutAction:
       user = null;
       routeAction = RouteAction(
-          destination: HomeScreen.PATH,
-          type: RouteActionType.Replace
-      );
+          destination: HomeScreen.PATH, type: RouteActionType.Replace);
       break;
-    case RouteAction :
+    case RouteAction:
       routeAction = action as RouteAction;
       break;
-    case RouteUpdatedAction :
+    case RouteUpdatedAction:
       final updateAction = action as RouteUpdatedAction;
       currentPath = updateAction.newPath;
       routeAction = null;
       break;
-    case PictureTakenAction :
+    case PictureTakenAction:
       final pictureAction = action as PictureTakenAction;
       imagePath = pictureAction.filePath;
-      routeAction = RouteAction(
-          destination: null,
-          type: RouteActionType.Pop
-      );
+      routeAction = RouteAction(destination: null, type: RouteActionType.Pop);
+      break;
+    case SubmitStatAction:
+      final pictureAction = action as SubmitStatAction;
       break;
   }
 
   final newState = AppState(
-    cameraController: cameraController,
-    user: user,
-    currentPath: currentPath,
-    routeAction: routeAction,
-    imagePath: imagePath
-  );
+      cameraController: cameraController,
+      user: user,
+      currentPath: currentPath,
+      routeAction: routeAction,
+      imagePath: imagePath,
+      toSubmit: toSubmit);
 
   Logger.log(TAG, "action : $action");
   Logger.log(TAG, "newState : $newState");

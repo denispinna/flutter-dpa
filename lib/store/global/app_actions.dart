@@ -1,4 +1,5 @@
 
+import 'package:dpa/models/stat_form_data.dart';
 import 'package:dpa/models/user.dart';
 
 abstract class AppAction {}
@@ -28,6 +29,12 @@ class PictureTakenAction implements AppAction {
   final String filePath;
 
   PictureTakenAction(this.filePath);
+}
+
+class SubmitStatAction implements AppAction {
+  final StatFormData content;
+
+  SubmitStatAction(this.content);
 }
 
 enum RouteActionType {
