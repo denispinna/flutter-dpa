@@ -138,7 +138,7 @@ class CameraPreviewWidget extends CameraWidget {
         ));
   }
 
-  void takePicture(Function(String) dispatchPicture) async {
+  Future takePicture(Function(String) dispatchPicture) async {
     if (!controller.value.isInitialized || controller.value.isTakingPicture) {
       return null;
     }
@@ -249,7 +249,7 @@ class CameraState extends LifecycleWidgetState<CameraWidget> {
     initializeCamera();
   }
 
-  void initializeCamera() async {
+  Future initializeCamera() async {
     if (!initialized) {
       await controller.initialize();
       setState(() {

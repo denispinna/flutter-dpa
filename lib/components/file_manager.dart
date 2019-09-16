@@ -24,7 +24,7 @@ class UploadImageTask {
     return "$id.jpg";
   }
 
-  void execute(Function(String) onSuccess) async {
+  Future execute(Function(String) onSuccess) async {
     final StorageTaskSnapshot downloadUrl = await uploadTask.onComplete;
     final String url = await downloadUrl.ref.getDownloadURL();
     return onSuccess(url);

@@ -18,7 +18,7 @@ void displayMessage(String messageKey, BuildContext context,
   ));
 }
 
-void askToLeaveApp(BuildContext context) async {
+Future askToLeaveApp(BuildContext context) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false,

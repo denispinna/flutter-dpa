@@ -23,8 +23,8 @@ import 'package:dpa/components/app_localization.dart';
 Future<void> main() async {
   final cameraController = await CameraProvider.loadCamera();
   final currentUser = await AuthAPI.instance.loadCurrentUser();
-  String destination = "/home";
-  if (currentUser != null) destination = "/main";
+  String destination = HomeScreen.PATH;
+  if (currentUser != null) destination = MainScreen.PATH;
 
   final initialState = AppState(
       cameraController: cameraController,

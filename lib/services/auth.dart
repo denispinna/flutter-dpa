@@ -21,7 +21,7 @@ class AuthAPI {
     return User.fromFirebaseUser(firebaseUser);
   }
 
-  void signInWithGoogle(
+  Future signInWithGoogle(
       BuildContext context, OnLoginSuccess onLoginSuccess) async {
     final onError = (exception, stacktrace) {
       Logger.log(TAG, "Error while signing in with facebook : $exception");
@@ -43,7 +43,7 @@ class AuthAPI {
     onLoginSuccess(User.fromFirebaseUser(firebaseUser));
   }
 
-  void signOutWithGoogle() async {
+  Future signOutWithGoogle() async {
     final onError = (exception, stacktrace) {
       Logger.log(TAG, "Error while signing out with google : $exception");
     };
@@ -51,7 +51,7 @@ class AuthAPI {
     Logger.log(TAG, "User signed out from google");
   }
 
-  void signInWithFacebook(
+  Future signInWithFacebook(
       BuildContext context, OnLoginSuccess onLoginSuccess) async {
     final onError = (exception, stacktrace) {
       Logger.log(TAG, "Error while signing in with facebook : $exception");
@@ -71,7 +71,7 @@ class AuthAPI {
     onLoginSuccess(User.fromFirebaseUser(firebaseUser));
   }
 
-  void signOutWithFacebook() async {
+  Future signOutWithFacebook() async {
     final onError = (exception, stacktrace) {
       Logger.log(TAG, "Error while signing out with facebook : $exception");
     };
@@ -79,7 +79,7 @@ class AuthAPI {
     Logger.log(TAG, "User signed out from facebook");
   }
 
-  void signInWithMail(String email, String password, BuildContext context,
+  Future signInWithMail(String email, String password, BuildContext context,
       OnLoginSuccess onLoginSuccess) async {
     final onError = (exception, stacktrace) {
       Logger.log(TAG, "Error while signing up with facebook : $exception");
@@ -93,7 +93,7 @@ class AuthAPI {
     onLoginSuccess(User.fromFirebaseUser(user));
   }
 
-  void signUp(String email, String password, BuildContext context,
+  Future signUp(String email, String password, BuildContext context,
       OnLoginSuccess onLoginSuccess) async {
     final onError = (exception, stacktrace) {
       Logger.log(TAG, "Error while signing up with facebook : $exception");
@@ -107,7 +107,7 @@ class AuthAPI {
     onLoginSuccess(User.fromFirebaseUser(user));
   }
 
-  void signOut(SignInMethod signInMethod, OnSuccess onSuccess) async {
+  Future signOut(SignInMethod signInMethod, OnSuccess onSuccess) async {
     switch (signInMethod) {
       case SignInMethod.Google:
         signOutWithGoogle();
