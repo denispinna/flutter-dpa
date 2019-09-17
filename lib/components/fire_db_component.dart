@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
 
 class FireDbComponent {
@@ -22,5 +23,9 @@ class FireDbComponent {
     if(existingUser != null)
       return;
     await users.add(user.toFirestoreData());
+  }
+
+  Future postStat(StatItem stat) async {
+    await stats.add(stat.toFirestoreData());
   }
 }

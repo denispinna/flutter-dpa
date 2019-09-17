@@ -1,5 +1,4 @@
 import 'package:camera/camera.dart';
-import 'package:dpa/models/stat_form_data.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/home/home.dart';
 import 'package:dpa/screens/main/main_screen.dart';
@@ -15,7 +14,6 @@ AppState reduceAppState(AppState state, dynamic action) {
   String currentPath = state.currentPath;
   CameraController cameraController = state.cameraController;
   String imagePath = state.imagePath;
-  StatFormData toSubmit = state.toSubmit;
 
   switch (action.runtimeType) {
     case UserLoginAction:
@@ -42,9 +40,6 @@ AppState reduceAppState(AppState state, dynamic action) {
       imagePath = pictureAction.filePath;
       routeAction = RouteAction(destination: null, type: RouteActionType.Pop);
       break;
-    case SubmitStatAction:
-      final submitAction = action as SubmitStatAction;
-      break;
   }
 
   final newState = AppState(
@@ -52,8 +47,7 @@ AppState reduceAppState(AppState state, dynamic action) {
       user: user,
       currentPath: currentPath,
       routeAction: routeAction,
-      imagePath: imagePath,
-      toSubmit: toSubmit);
+      imagePath: imagePath);
 
   Logger.log(TAG, "action : $action");
   Logger.log(TAG, "newState : $newState");

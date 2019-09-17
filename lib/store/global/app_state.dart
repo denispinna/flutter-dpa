@@ -1,6 +1,4 @@
 import 'package:camera/camera.dart';
-import 'package:dpa/components/fire_db_component.dart';
-import 'package:dpa/models/stat_form_data.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/store/global/app_actions.dart';
 
@@ -10,7 +8,6 @@ class AppState {
   final String currentPath;
   final String imagePath;
   final RouteAction routeAction;
-  final StatFormData toSubmit;
 
   AppState({
     this.cameraController,
@@ -18,7 +15,6 @@ class AppState {
     this.currentPath,
     this.routeAction,
     this.imagePath,
-    this.toSubmit
   });
 
   bool shouldUpdateNav() {

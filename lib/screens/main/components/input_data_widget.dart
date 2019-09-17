@@ -1,8 +1,10 @@
 import 'package:camera/camera.dart';
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/file_manager.dart';
+import 'package:dpa/components/fire_db_component.dart';
 import 'package:dpa/components/widget/camera_widget.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
+import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/services/auth.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
@@ -23,10 +25,9 @@ class InputDataState extends State<InputDataWidget> {
   static const String TAG = "InputDataState";
   InputDataWidget widget;
   final _formKey = GlobalKey<FormState>();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
   String imageUrl;
   String imagePath;
+  String userEmail;
   bool loading = false;
   UploadImageTask task;
 
@@ -40,14 +41,15 @@ class InputDataState extends State<InputDataWidget> {
         padding: const EdgeInsets.all(Dimens.l),
         child: SpinKitCubeGrid(color: MyColors.second_color),
       ));
+    } else {
+      Scaffold.of(context).hideCurrentSnackBar();
     }
     return StoreConnector<AppState, CameraController>(
       converter: (store) {
         final state = store.state;
-        if (imagePath != state.imagePath)
-          setState(() {
-            imagePath = state.imagePath;
-          });
+        if (imagePath != state.imagePath) imagePath = state.imagePath;
+        if (userEmail == null) userEmail = state.user.email;
+
         return state.cameraController;
       },
       builder: (context, controller) {
@@ -85,6 +87,7 @@ class InputDataState extends State<InputDataWidget> {
   }
 
   void onFormValid(BuildContext context) {
+    displayMessage("processing", context);
     if (imagePath != null && imageUrl == null) {
       uploadImage(context);
     } else {
@@ -94,7 +97,6 @@ class InputDataState extends State<InputDataWidget> {
 
   void uploadImage(BuildContext context) {
     if (task != null) return;
-    displayMessage("upload_image", context);
     setState(() {
       loading = true;
     });
@@ -106,7 +108,8 @@ class InputDataState extends State<InputDataWidget> {
   }
 
   void postStat(BuildContext context) {
-    displayMessage("processing", context);
+    final item = StatItem(userEmail: userEmail, imageUrl: imageUrl);
+    FireDbComponent.instance.postStat(item);
     setState(() {
       loading = false;
     });

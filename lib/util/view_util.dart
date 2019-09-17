@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dpa/components/app_localization.dart';
+import 'package:dpa/components/logger.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,10 +13,14 @@ void displayMessage(String messageKey, BuildContext context,
   if (isError) {
     backgroundColor = MyColors.error_color;
   }
-  Scaffold.of(context).showSnackBar(SnackBar(
-    content: Text(message),
-    backgroundColor: backgroundColor,
-  ));
+  try {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: backgroundColor,
+    ));
+  } catch (e) {
+    Logger.logError("displayMessage", "Error while trying to display a message ", e);
+  }
 }
 
 Future askToLeaveApp(BuildContext context) async {
