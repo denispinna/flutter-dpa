@@ -1,3 +1,4 @@
+import 'package:dpa/components/fire_db_component.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/util/view_util.dart';
@@ -40,7 +41,7 @@ class AuthAPI {
     final FirebaseUser firebaseUser =
         (await auth.signInWithCredential(credential).catchError(onError)).user;
     Logger.log(TAG, "signed in with google user : ${firebaseUser.displayName}");
-    onLoginSuccess(User.fromFirebaseUser(firebaseUser));
+    saveUserInFirestore(firebaseUser, onLoginSuccess);
   }
 
   Future signOutWithGoogle() async {
@@ -68,7 +69,7 @@ class AuthAPI {
         (await auth.signInWithCredential(credential).catchError(onError)).user;
     Logger.log(
         TAG, "signed in with facebook user : ${firebaseUser.displayName}");
-    onLoginSuccess(User.fromFirebaseUser(firebaseUser));
+    saveUserInFirestore(firebaseUser, onLoginSuccess);
   }
 
   Future signOutWithFacebook() async {
@@ -89,8 +90,8 @@ class AuthAPI {
     AuthResult result = await auth
         .signInWithEmailAndPassword(email: email, password: password)
         .catchError(onError);
-    FirebaseUser user = result.user;
-    onLoginSuccess(User.fromFirebaseUser(user));
+    FirebaseUser firebaseUser = result.user;
+    saveUserInFirestore(firebaseUser, onLoginSuccess);
   }
 
   Future signUp(String email, String password, BuildContext context,
@@ -103,8 +104,14 @@ class AuthAPI {
     AuthResult result = await auth
         .createUserWithEmailAndPassword(email: email, password: password)
         .catchError(onError);
-    FirebaseUser user = result.user;
-    onLoginSuccess(User.fromFirebaseUser(user));
+    FirebaseUser firebaseUser = result.user;
+    saveUserInFirestore(firebaseUser, onLoginSuccess);
+  }
+
+  Future saveUserInFirestore(FirebaseUser firebaseUser, OnLoginSuccess onLoginSuccess) async {
+    final user = User.fromFirebaseUser(firebaseUser);
+    await FireDbComponent.instance.saveNewUser(user);
+    onLoginSuccess(user);
   }
 
   Future signOut(SignInMethod signInMethod, OnSuccess onSuccess) async {

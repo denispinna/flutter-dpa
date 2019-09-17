@@ -11,7 +11,6 @@ class AppState {
   final String imagePath;
   final RouteAction routeAction;
   final StatFormData toSubmit;
-  final FireDbComponent db;
 
   AppState({
     this.cameraController,
@@ -19,8 +18,7 @@ class AppState {
     this.currentPath,
     this.routeAction,
     this.imagePath,
-    this.toSubmit,
-    this.db
+    this.toSubmit
   });
 
   bool shouldUpdateNav() {

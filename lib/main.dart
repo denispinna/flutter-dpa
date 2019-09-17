@@ -20,6 +20,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:dpa/components/app_localization.dart';
 
+import 'components/fire_db_component.dart';
+
 Future<void> main() async {
   final cameraController = await CameraProvider.loadCamera();
   final currentUser = await AuthAPI.instance.loadCurrentUser();

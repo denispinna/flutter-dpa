@@ -16,7 +16,6 @@ AppState reduceAppState(AppState state, dynamic action) {
   CameraController cameraController = state.cameraController;
   String imagePath = state.imagePath;
   StatFormData toSubmit = state.toSubmit;
-  final db = state.db;
 
   switch (action.runtimeType) {
     case UserLoginAction:
@@ -54,8 +53,7 @@ AppState reduceAppState(AppState state, dynamic action) {
       currentPath: currentPath,
       routeAction: routeAction,
       imagePath: imagePath,
-      toSubmit: toSubmit,
-      db: db);
+      toSubmit: toSubmit);
 
   Logger.log(TAG, "action : $action");
   Logger.log(TAG, "newState : $newState");
