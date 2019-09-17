@@ -3,35 +3,34 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class User {
   static const TAG = "User";
-  User(
-      {this.uid,
-      this.displayName,
-      this.imageUrl,
-      this.email,
-      this.signInMethod});
+  final String displayName;
+  final String imageUrl;
+  final String email;
+  final SignInMethod signInMethod;
+
+  User({this.displayName, this.imageUrl, this.email, this.signInMethod});
 
   static User fromFirebaseUser(FirebaseUser user) {
     try {
-      var uid = user.uid;
       var displayName = user.displayName;
       var imageUrl = user.photoUrl;
       var email = user.email;
       var signInMethod = SignInMethod.mail;
 
       for (var profile in user.providerData) {
-        if(profile.providerId.contains("google")) {
+        if (profile.providerId.contains("google")) {
           signInMethod = SignInMethod.Google;
         } else if (profile.providerId.contains("facebook")) {
           signInMethod = SignInMethod.Facebook;
         }
-        if(displayName == null) {
-          displayName =profile.displayName;
+        if (displayName == null) {
+          displayName = profile.displayName;
         }
-        if(email == null) {
-          email =profile.email;
+        if (email == null) {
+          email = profile.email;
         }
-        if(imageUrl == null) {
-          imageUrl =profile.photoUrl;
+        if (imageUrl == null) {
+          imageUrl = profile.photoUrl;
         }
       }
       switch (signInMethod) {
@@ -45,23 +44,29 @@ class User {
           break;
       }
       return User(
-          uid: uid,
           displayName: displayName,
           imageUrl: imageUrl,
           email: email,
-          signInMethod: signInMethod
-      );
+          signInMethod: signInMethod);
     } catch (exc) {
       Logger.logError(TAG, "Error while parsing firebase user", exc);
       return null;
     }
   }
 
-  final String uid;
-  final String displayName;
-  final String imageUrl;
-  final String email;
-  final SignInMethod signInMethod;
+  static User fromFirestoreData(Map<String, dynamic> data) {
+    final email = data['email'];
+    final imageUrl = data['imageUrl'];
+
+    return User(email: email, imageUrl: imageUrl);
+  }
+
+  Map<String, dynamic> toFirestoreData() {
+    return <String, dynamic>{
+      'email': email,
+      'imageUrl': imageUrl
+    };
+  }
 }
 
 enum SignInMethod { Google, Facebook, mail }
