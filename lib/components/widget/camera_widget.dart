@@ -186,16 +186,14 @@ class BlurryCameraPreview extends CameraWidget {
                     aspectRatio: controller.value.aspectRatio,
                     child: CameraPreview(controller))
               ], physics: const NeverScrollableScrollPhysics()),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(0, Dimens.padding_xl, 0, 0),
-                  child: ClipRect(
+              ClipRect(
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                       child: Container(
                           decoration: BoxDecoration(
                               color: Colors.grey.shade600.withOpacity(0.2))),
                     ),
-                  )),
+                  ),
               Center(
                   child: ListView(
                       shrinkWrap: true,
