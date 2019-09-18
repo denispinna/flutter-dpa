@@ -29,5 +29,9 @@
   "take_photo": "Take a photo",
   "save": "Save",
   "processing": "Processing...",
-  "upload_image": "Upload image..."
+  "upload_image": "Upload image...",
+  "mood_label": "Do you feel good?",
+  "productivity_label": "Are you productive?",
+  "comment_hint": "Add a comment...",
+  "comment": "Comment"
   }

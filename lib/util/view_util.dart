@@ -9,11 +9,12 @@ import 'package:flutter/services.dart';
 void displayMessage(String messageKey, BuildContext context,
     {bool isError = false}) {
   String message = AppLocalizations.of(context).translate(messageKey);
-  var backgroundColor = MyColors.second_color;
+  var backgroundColor = MyColors.second;
   if (isError) {
-    backgroundColor = MyColors.error_color;
+    backgroundColor = MyColors.error;
   }
   try {
+    Scaffold.of(context).hideCurrentSnackBar();
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(message),
       backgroundColor: backgroundColor,

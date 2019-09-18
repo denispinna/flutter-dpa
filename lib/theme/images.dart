@@ -8,6 +8,9 @@ class MyImages {
   static const logout = AssetImage("assets/logout.png");
   static const user_placeholder = AssetImage("assets/user_placeholder.png");
   static const camera = AssetImage("assets/camera.png");
+  static const clock_full = AssetImage("assets/clock_full.png");
+  static const clock_half = AssetImage("assets/clock_half.png");
+  static const clock_empty = AssetImage("assets/clock_empty.png");
 
   static const take_picture = "assets/take_picture.svg";
   static const cross = "assets/cross.svg";

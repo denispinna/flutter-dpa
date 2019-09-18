@@ -39,6 +39,8 @@ dependencies:
   firebase_storage: ^3.0.6
   uuid: ^2.0.2
   cloud_firestore: ^0.12.9+4
+  flutter_rating_bar: ^3.0.0
+
 
 dev_dependencies:
   flutter_test:

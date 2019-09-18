@@ -57,7 +57,7 @@ class ProfileWidgetState extends State<ProfileWidget> {
             return CenterHorizontal(FlatButton(
               onPressed: () =>
                   AuthAPI().signOut(user.signInMethod, dispatchLogout),
-              color: MyColors.second_color,
+              color: MyColors.second,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(Dimens.xxl)),
               child: Padding(

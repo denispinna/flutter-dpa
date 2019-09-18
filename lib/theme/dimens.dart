@@ -1,5 +1,7 @@
 
 class Dimens {
+  static const xxxxs = 2.0;
+  static const xxxs = 4.0;
   static const xxs = 6.0;
   static const xs = 8.0;
   static const s = 12.0;
@@ -10,11 +12,6 @@ class Dimens {
   static const xxxl = 32.0;
   static const xxxxl = 34.0;
   static const xxxxxl = 36.0;
-
-  static const large_picto_button_width = 45.0;
-  static const picto_button_width = 15.0;
-  static const large_space = 120.0;
-  static const picture_preview_button_width = 40.0;
 
   static const padding_xxs = xxs;
   static const padding_xs = xs;
@@ -36,4 +33,11 @@ class Dimens {
   static const font_xxxl = xxxl;
 
   static const profile_image_width = 200.0;
+  static const large_picto_button_width = 45.0;
+  static const picto_button_width = 15.0;
+  static const large_space = 120.0;
+  static const picture_preview_button_width = 40.0;
+  static const rating_icon_width = 40.0;
+
+  static const title_font = font_l;
 }

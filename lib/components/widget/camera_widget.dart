@@ -129,7 +129,7 @@ class CameraPreviewWidget extends CameraWidget {
                           child: SvgPicture.asset(MyImages.take_picture,
                               height: Dimens.large_picto_button_width,
                               width: Dimens.large_picto_button_width,
-                              color: MyColors.second_color)),
+                              color: MyColors.second)),
                       onTap: () => takePicture(dispatchPicture),
                     )),
               ),
@@ -278,7 +278,7 @@ class CameraState extends LifecycleWidgetState<CameraWidget> {
                 child: Padding(
               padding: const EdgeInsets.all(Dimens.l),
               child: SpinKitWave(
-                  color: MyColors.second_color, type: SpinKitWaveType.start),
+                  color: MyColors.second, type: SpinKitWaveType.start),
             )),
           ]));
   }

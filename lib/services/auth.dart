@@ -110,7 +110,7 @@ class AuthAPI {
 
   Future saveUserInFirestore(FirebaseUser firebaseUser, OnLoginSuccess onLoginSuccess) async {
     final user = User.fromFirebaseUser(firebaseUser);
-    await FireDbComponent.instance.saveNewUser(user);
+    await FireDb.instance.saveNewUser(user);
     onLoginSuccess(user);
   }
 

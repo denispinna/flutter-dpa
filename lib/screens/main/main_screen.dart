@@ -2,6 +2,7 @@ import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';
+import 'package:dpa/screens/main/components/stats_history_widget.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
 
@@ -32,11 +33,15 @@ class MainState extends ScreenState<MainScreen> {
             items: [
               BottomNavigationBarItem(
                   icon:
-                      Icon(Icons.camera, color: Color.fromARGB(255, 0, 0, 0)),
+                      Icon(Icons.mood, color: Color.fromARGB(255, 0, 0, 0)),
                   title: new Text('')),
               BottomNavigationBarItem(
                   icon:
-                      Icon(Icons.info_outline, color: Color.fromARGB(255, 0, 0, 0)),
+                      Icon(Icons.accessibility_new, color: Color.fromARGB(255, 0, 0, 0)),
+                  title: new Text('')),
+              BottomNavigationBarItem(
+                  icon:
+                      Icon(Icons.person, color: Color.fromARGB(255, 0, 0, 0)),
                   title: new Text('')),
             ],
             onTap: (index) {
@@ -56,7 +61,7 @@ class MainState extends ScreenState<MainScreen> {
         return InputDataWidget();
         break;
       case 1:
-        return ProfileWidget();
+        return StatsHistoryWidget();
         break;
       case 2:
         return ProfileWidget();
