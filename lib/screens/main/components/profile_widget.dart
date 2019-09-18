@@ -10,13 +10,9 @@ import 'package:dpa/theme/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-class ProfileWidget extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => ProfileWidgetState();
-}
-
-class ProfileWidgetState extends State<ProfileWidget> {
+class ProfileWidget extends StatelessWidget {
   final authApi = AuthAPI.instance;
+  ProfileWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

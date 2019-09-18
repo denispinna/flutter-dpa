@@ -33,5 +33,7 @@
   "mood_label": "Do you feel good?",
   "productivity_label": "Are you productive?",
   "comment_hint": "Add a comment...",
-  "comment": "Comment"
+  "comment": "Comment",
+  "stats_empty_title": "No entries yet.",
+  "stats_empty_comment": "Tell us how you feel !"
   }

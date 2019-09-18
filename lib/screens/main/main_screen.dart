@@ -10,15 +10,29 @@ class MainScreen extends StatefulWidget {
   static const PATH = "/main";
 
   @override
-  State<StatefulWidget> createState() => MainState(this);
+  State<StatefulWidget> createState() => MainState();
 }
 
 class MainState extends ScreenState<MainScreen> {
-  MainState(this.widget) : super(MainScreen.PATH);
+  MainState() : super(MainScreen.PATH);
 
-  MainScreen widget;
+  final PageStorageBucket bucket = PageStorageBucket();
+  InputStat inputWidget;
+  StatsHistoryWidget statsWidget;
+  ProfileWidget profileWidget;
+  List<Widget> pages;
   User user;
   var currentIndex = 0;
+
+
+  @override
+  void initState() {
+    super.initState();
+     inputWidget = InputStat(key: PageStorageKey('inputWidget'));
+     statsWidget = StatsHistoryWidget(key: PageStorageKey('statsWidget'));
+     profileWidget = ProfileWidget(key: PageStorageKey('profileWidget'));
+     pages = [inputWidget, statsWidget, profileWidget];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,22 +68,11 @@ class MainState extends ScreenState<MainScreen> {
       },
     );
   }
-
   Widget getCurrentTabView() {
-    switch (currentIndex) {
-      case 0:
-        return InputDataWidget();
-        break;
-      case 1:
-        return StatsHistoryWidget();
-        break;
-      case 2:
-        return ProfileWidget();
-        break;
-      default:
-        return ProfileWidget();
-        break;
-    }
+    return PageStorage(
+      child: pages[currentIndex],
+      bucket: bucket,
+    );
   }
 
   void onTabTapped(int index) {
