@@ -6,6 +6,7 @@ import 'package:dpa/components/widget/camera_widget.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
+import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
@@ -26,7 +27,10 @@ class InputItemState extends State<InputStat> {
   static const String TAG = "InputItemState";
   static final contentKey = ValueKey(TAG);
   final _formKey = GlobalKey<FormState>();
+  Function clearPicture;
+  TakePictureWidget pictureWidget;
   StateData content;
+  bool formPosted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +41,20 @@ class InputItemState extends State<InputStat> {
         padding: const EdgeInsets.all(Dimens.l),
         child: SpinKitCubeGrid(color: MyColors.second),
       ));
-    } else {
-      Scaffold.of(context).hideCurrentSnackBar();
+    } else if (formPosted) {
+      clearPicture();
+      displayMessage('post_stat_success', context, isSuccess: true);
+      formPosted = false;
     }
     return StoreConnector<AppState, User>(
       converter: (store) {
         final state = store.state;
         if (content.imagePath != state.imagePath)
           content.imagePath = state.imagePath;
-        if (content.cameraController == null)
-          content.cameraController = state.cameraController;
+        if (pictureWidget == null)
+          pictureWidget = TakePictureWidget(state.cameraController);
+        if (clearPicture == null)
+          clearPicture = () => store.dispatch(PictureTakenAction(null));
 
         return state.user;
       },
@@ -59,7 +67,7 @@ class InputItemState extends State<InputStat> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  TakePictureWidget(content.cameraController),
+                  pictureWidget,
                   Padding(
                       padding: const EdgeInsets.only(top: Dimens.padding_xs)),
                   CenterHorizontal(Text(
@@ -134,7 +142,7 @@ class InputItemState extends State<InputStat> {
                           horizontal: Dimens.padding_xxxl),
                       child: TextFormField(
                         initialValue: content.comment,
-                        onChanged: (text) => content.comment =  text,
+                        onChanged: (text) => content.comment = text,
                         decoration: InputDecoration(
                             hintText: AppLocalizations.of(context)
                                 .translate('comment_hint'),
@@ -164,6 +172,9 @@ class InputItemState extends State<InputStat> {
 
   void onFormValid(BuildContext context) {
     displayMessage("processing", context);
+    setState(() {
+      content.loading = true;
+    });
     if (content.imagePath != null && content.imageUrl == null) {
       uploadImage(context);
     } else {
@@ -173,14 +184,11 @@ class InputItemState extends State<InputStat> {
 
   void uploadImage(BuildContext context) {
     if (content.task != null) return;
-    setState(() {
-      content.loading = true;
-    });
     this.content.task = UploadImageTask(content.imagePath);
-    content.task.execute((imageUrl) {
+    content.task.execute().then((imageUrl) {
       this.content.imageUrl = imageUrl;
       postStat(context);
-    });
+    }, onError: onError);
   }
 
   void postStat(BuildContext context) {
@@ -191,16 +199,23 @@ class InputItemState extends State<InputStat> {
       mood: content.mood,
       comment: content.comment,
     );
-    FireDb.instance.postStat(item);
-    setState(() {
-      content.loading = false;
-    });
+    FireDb.instance.postStat(item).then((result) {
+      formPosted = true;
+      setState(() {
+        content = StateData();
+      });
+    }, onError: onError);
+  }
+
+  void onError(error) {
+    displayMessage('generic_error_message', context, isError: true);
   }
 
   void persisAndRecoverContent(BuildContext context) {
-    if(content == null) {
-      final content = PageStorage.of(context).readState(context, identifier: contentKey);
-      this.content = content == null? StateData(): content;
+    if (content == null) {
+      final content =
+          PageStorage.of(context).readState(context, identifier: contentKey);
+      this.content = content == null ? StateData() : content;
     } else {
       PageStorage.of(context)
           .writeState(context, content, identifier: contentKey);
@@ -209,7 +224,6 @@ class InputItemState extends State<InputStat> {
 }
 
 class StateData {
-  CameraController cameraController;
   String imageUrl;
   String imagePath;
   String userEmail;

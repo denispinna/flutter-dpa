@@ -35,5 +35,6 @@
   "comment_hint": "Add a comment...",
   "comment": "Comment",
   "stats_empty_title": "No entries yet.",
-  "stats_empty_comment": "Tell us how you feel !"
+  "stats_empty_comment": "Tell us how you feel!",
+  "post_stat_success": "Save completed!"
   }

@@ -13,13 +13,15 @@ class AuthAPI {
   final FacebookLogin facebookSignIn = new FacebookLogin();
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth auth = FirebaseAuth.instance;
+  User user;
 
   Future<User> loadCurrentUser() async {
     final firebaseUser = await auth.currentUser();
     if(firebaseUser == null) {
       return null;
     }
-    return User.fromFirebaseUser(firebaseUser);
+    user = User.fromFirebaseUser(firebaseUser);
+    return user;
   }
 
   Future signInWithGoogle(
@@ -109,7 +111,7 @@ class AuthAPI {
   }
 
   Future saveUserInFirestore(FirebaseUser firebaseUser, OnLoginSuccess onLoginSuccess) async {
-    final user = User.fromFirebaseUser(firebaseUser);
+    user = User.fromFirebaseUser(firebaseUser);
     await FireDb.instance.saveNewUser(user);
     onLoginSuccess(user);
   }

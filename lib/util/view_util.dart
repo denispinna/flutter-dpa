@@ -7,12 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void displayMessage(String messageKey, BuildContext context,
-    {bool isError = false}) {
+    {bool isError = false, bool isSuccess = false}) {
   String message = AppLocalizations.of(context).translate(messageKey);
   var backgroundColor = MyColors.second;
-  if (isError) {
+  if (isError)
     backgroundColor = MyColors.error;
-  }
+  else if (isSuccess)
+    backgroundColor = MyColors.success;
+
   try {
     Scaffold.of(context).hideCurrentSnackBar();
     Scaffold.of(context).showSnackBar(SnackBar(
@@ -20,7 +22,8 @@ void displayMessage(String messageKey, BuildContext context,
       backgroundColor: backgroundColor,
     ));
   } catch (e) {
-    Logger.logError("displayMessage", "Error while trying to display a message ", e);
+    Logger.logError(
+        "displayMessage", "Error while trying to display a message ", e);
   }
 }
 
