@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/widget/lifecycle_widget.dart';
+import 'package:dpa/provider/camera_provider.dart';
 import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
@@ -39,11 +40,7 @@ class TakePictureState extends State<TakePictureWidget> {
         converter: (store) => store.state.imagePath,
         builder: (context, imagePath) {
           if (imagePath == null) {
-            return BlurryCameraPreview(controller, (imagePath) {
-              setState(() {
-                this.imagePath = imagePath;
-              });
-            });
+            return BlurryCameraPreview();
           } else {
             this.imagePath = imagePath;
             return StoreConnector<AppState, Function>(
@@ -87,17 +84,16 @@ class TakePictureState extends State<TakePictureWidget> {
   }
 }
 
-class CameraPreviewWidget extends CameraWidget {
+class CameraPreviewWidget extends StatefulWidget {
+
+  @override
+  CameraState createState() => CameraPreviewWidgetState();
+}
+
+class CameraPreviewWidgetState extends CameraState {
   static const TAG = "CameraPreviewWidget";
-  final CameraController controller;
 
-  const CameraPreviewWidget(this.controller) : super(controller);
-
-  @override
-  CameraState createState() => CameraState(this);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget buildCameraWidget(BuildContext context) {
     return StoreConnector<AppState, Function(String)>(
         converter: (store) =>
             (imagePath) => store.dispatch(PictureTakenAction(imagePath)),
@@ -157,18 +153,16 @@ class CameraPreviewWidget extends CameraWidget {
   }
 }
 
-class BlurryCameraPreview extends CameraWidget {
-  final CameraController controller;
-  final Function(String) updateImagePath;
-
-  const BlurryCameraPreview(this.controller, this.updateImagePath)
-      : super(controller);
+class BlurryCameraPreview extends StatefulWidget {
 
   @override
-  CameraState createState() => CameraState(this);
+  CameraState createState() => BlurryCameraPreviewState();
+}
 
-  @override
-  Widget build(BuildContext context) {
+class BlurryCameraPreviewState extends CameraState {
+  CameraController controller;
+
+  Widget buildCameraWidget(BuildContext context) {
     return StoreConnector<AppState, Function>(
         converter: (store) => () => store.dispatch(
             RouteAction(destination: "/camera", type: RouteActionType.Push)),
@@ -218,14 +212,8 @@ class BlurryCameraPreview extends CameraWidget {
   }
 }
 
-class CameraState extends LifecycleWidgetState<CameraWidget> {
-  static var initialized = false;
-  final CameraWidget widget;
+abstract class CameraState extends LifecycleWidgetState<StatefulWidget> {
   CameraController controller;
-
-  CameraState(this.widget) {
-    this.controller = widget.controller;
-  }
 
   @override
   void dispose() {
@@ -248,44 +236,46 @@ class CameraState extends LifecycleWidgetState<CameraWidget> {
   }
 
   Future initializeCamera() async {
-    if (!initialized) {
+    if (controller == null) {
+
+      controller = await CameraProvider.loadCamera();
       await controller.initialize();
       setState(() {
-        initialized = true;
+        controller = controller;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (initialized)
-      return widget.build(context);
+    if (controller != null)
+      return buildCameraWidget(context);
     else
-      return AspectRatio(
-          aspectRatio: IMAGE_RATIO,
-          child: Stack(children: <Widget>[
-            ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade600.withOpacity(0.2))),
-              ),
-            ),
-            Center(
-                child: Padding(
-              padding: const EdgeInsets.all(Dimens.l),
-              child: SpinKitWave(
-                  color: MyColors.second, type: SpinKitWaveType.start),
-            )),
-          ]));
+      return buildLoadingWidget();
   }
-}
 
-abstract class CameraWidget extends StatefulWidget {
-  final CameraController controller;
 
-  const CameraWidget(this.controller);
+  Widget buildLoadingWidget() {
+    return AspectRatio(
+        aspectRatio: IMAGE_RATIO,
+        child: Stack(children: <Widget>[
+          ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade600.withOpacity(0.2))),
+            ),
+          ),
+          Center(
+              child: Padding(
+                padding: const EdgeInsets.all(Dimens.l),
+                child: SpinKitWave(
+                    color: MyColors.second, type: SpinKitWaveType.start),
+              )),
+        ]));
+  }
 
-  Widget build(BuildContext context);
+  Widget buildCameraWidget(BuildContext context);
+
 }

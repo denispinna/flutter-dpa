@@ -1,9 +1,6 @@
-import 'package:camera/camera.dart';
 import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/components/widget/camera_widget.dart';
-import 'package:dpa/store/global/app_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 class CameraScreen extends StatefulWidget {
   static const PATH = "/camera";
@@ -19,21 +16,14 @@ class CameraState extends ScreenState<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final widget = StoreConnector<AppState, CameraController>(
-        converter: (store) => store.state.cameraController,
-        builder: buildWithState);
-    return buildWithChild(widget);
-  }
-
-  Widget buildWithState(BuildContext context, CameraController controller) {
     return Scaffold(
         backgroundColor: Colors.black,
         body: Center(
             child: ListView(
-          shrinkWrap: true,
-          children: <Widget>[
-            CameraPreviewWidget(controller),
-          ],
-        )));
+              shrinkWrap: true,
+              children: <Widget>[
+                CameraPreviewWidget(),
+              ],
+            )));
   }
 }

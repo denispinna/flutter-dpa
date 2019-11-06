@@ -23,13 +23,11 @@ import 'package:dpa/components/app_localization.dart';
 import 'components/fire_db_component.dart';
 
 Future<void> main() async {
-  final cameraController = await CameraProvider.loadCamera();
   final currentUser = await AuthAPI.instance.loadCurrentUser();
   String destination = HomeScreen.PATH;
   if (currentUser != null) destination = MainScreen.PATH;
 
   final initialState = AppState(
-      cameraController: cameraController,
       user: currentUser,
       currentPath: NavWidget.PATH,
       routeAction:
