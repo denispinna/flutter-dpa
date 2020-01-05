@@ -10,7 +10,7 @@ class FireDb {
   CollectionReference get users => firestore.collection('user');
   CollectionReference get stats => firestore.collection('stat');
   Query get orderedStats => stats
-      .where('email', isEqualTo: AuthAPI.instance.user.email)
+      .where('userEmail', isEqualTo: AuthAPI.instance.user.email)
       .orderBy('date', descending: true);
 
   Future<User> findUser(String email) async {

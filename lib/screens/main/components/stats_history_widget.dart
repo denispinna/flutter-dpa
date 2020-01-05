@@ -122,7 +122,7 @@ class StatListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return new ListTile(
       title: new Text(stat.date.toIso8601String()),
-      subtitle: new Text(stat.comment),
+      subtitle: new Text(stat.comment ?? ""),
     );
   }
 }

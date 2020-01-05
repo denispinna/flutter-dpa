@@ -11,6 +11,10 @@ class User {
   User({this.displayName, this.imageUrl, this.email, this.signInMethod});
 
   static User fromFirebaseUser(FirebaseUser user) {
+    Logger.log(TAG, "---------------------");
+    Logger.log(TAG, user.toString());
+    Logger.log(TAG, user.email);
+    Logger.log(TAG, "---------------------");
     try {
       var displayName = user.displayName;
       var imageUrl = user.photoUrl;
@@ -18,6 +22,10 @@ class User {
       var signInMethod = SignInMethod.mail;
 
       for (var profile in user.providerData) {
+        Logger.log(TAG, "---------------------");
+        Logger.log(TAG, profile.toString());
+        Logger.log(TAG, profile.email);
+        Logger.log(TAG, "---------------------");
         if (profile.providerId.contains("google")) {
           signInMethod = SignInMethod.Google;
         } else if (profile.providerId.contains("facebook")) {
@@ -26,7 +34,7 @@ class User {
         if (displayName == null) {
           displayName = profile.displayName;
         }
-        if (email == null) {
+        if (email == null || email.isEmpty) {
           email = profile.email;
         }
         if (imageUrl == null) {

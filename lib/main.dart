@@ -1,5 +1,4 @@
 import 'package:dpa/components/widget/nav_component.dart';
-import 'package:dpa/provider/camera_provider.dart';
 import 'package:dpa/screens/camera/camera_screen.dart';
 import 'package:dpa/screens/main/main_screen.dart';
 import 'package:dpa/screens/signup/sign_up_screen.dart';
@@ -19,8 +18,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:dpa/components/app_localization.dart';
-
-import 'components/fire_db_component.dart';
 
 Future<void> main() async {
   final currentUser = await AuthAPI.instance.loadCurrentUser();
