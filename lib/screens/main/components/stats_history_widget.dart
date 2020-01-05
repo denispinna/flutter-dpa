@@ -120,9 +120,22 @@ class StatListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (stat.expanded)
+      return buildExpandedTile(context);
+    else
+      return buildCollapsedTile(context);
+  }
+
+  Widget buildExpandedTile(BuildContext context) {
     return new ListTile(
       title: new Text(stat.date.toIso8601String()),
       subtitle: new Text(stat.comment ?? ""),
+    );
+  }
+
+  Widget buildCollapsedTile(BuildContext context) {
+    return new ListTile(
+      title: new Text(stat.date.toIso8601String())
     );
   }
 }
