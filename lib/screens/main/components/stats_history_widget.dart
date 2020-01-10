@@ -3,6 +3,7 @@ import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/fire_db_component.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
+import 'package:dpa/components/widget/date_tile_widget.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/services/auth.dart';
@@ -135,7 +136,8 @@ class StatListItem extends StatelessWidget {
 
   Widget buildCollapsedTile(BuildContext context) {
     return new ListTile(
-      title: new Text(stat.date.toIso8601String())
+      title: new Text(stat.date.toIso8601String()),
+      leading: DateTile(stat.date),
     );
   }
 }

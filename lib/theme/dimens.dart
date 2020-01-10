@@ -38,6 +38,7 @@ class Dimens {
   static const large_space = 120.0;
   static const picture_preview_button_width = 40.0;
   static const rating_icon_width = 40.0;
+  static const date_tile_width = 50.0;
 
   static const title_font = font_l;
 }

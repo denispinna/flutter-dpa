@@ -12,4 +12,5 @@ class MyColors {
   static const title = Colors.black54;
   static const yellow = Color(0xFFFFDD00);
   static const light_green = Color(0xFFADFF02);
+  static const light_gray = Color(0xff5d5d5d);
 }
