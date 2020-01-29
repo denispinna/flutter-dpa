@@ -6,6 +6,7 @@ class Dimens {
   static const xs = 8.0;
   static const s = 12.0;
   static const m = 16.0;
+  static const ml = 19.0;
   static const l = 20.0;
   static const xl = 24.0;
   static const xxl = 28.0;
@@ -27,6 +28,7 @@ class Dimens {
   static const font_xs = xs;
   static const font_s = s;
   static const font_m = m;
+  static const font_ml = ml;
   static const font_l = l;
   static const font_xl = xl;
   static const font_xxl = xxl;
@@ -39,6 +41,7 @@ class Dimens {
   static const picture_preview_button_width = 40.0;
   static const rating_icon_width = 40.0;
   static const date_tile_width = 50.0;
+  static const date_title_height = 30.0;
 
   static const title_font = font_l;
 }

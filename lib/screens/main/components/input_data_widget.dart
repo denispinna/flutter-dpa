@@ -10,6 +10,7 @@ import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
+import 'package:dpa/theme/images.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -81,35 +82,7 @@ class InputItemState extends State<InputStat> {
                     itemCount: 5,
                     itemSize: Dimens.rating_icon_width,
                     itemBuilder: (context, index) {
-                      switch (index) {
-                        case 0:
-                          return Icon(
-                            Icons.sentiment_very_dissatisfied,
-                            color: Colors.red,
-                          );
-                        case 1:
-                          return Icon(
-                            Icons.sentiment_dissatisfied,
-                            color: Colors.redAccent,
-                          );
-                        case 2:
-                          return Icon(
-                            Icons.sentiment_neutral,
-                            color: Colors.amber,
-                          );
-                        case 3:
-                          return Icon(
-                            Icons.sentiment_satisfied,
-                            color: Colors.lightGreen,
-                          );
-                        case 4:
-                          return Icon(
-                            Icons.sentiment_very_satisfied,
-                            color: Colors.green,
-                          );
-                        default:
-                          return null;
-                      }
+                      return getMoodIcon(index + 1);
                     },
                     onRatingUpdate: (rating) {
                       content.mood = rating;

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StatItem {
   DateTime date;
-  bool expanded;
   final String imageUrl;
   final String userEmail;
   final String comment;
@@ -17,7 +16,6 @@ class StatItem {
       this.mood,
       this.productivity}) {
     this.date = date != null ? date : DateTime.now();
-    expanded= false;
   }
 
   Map<String, dynamic> toFirestoreData() {

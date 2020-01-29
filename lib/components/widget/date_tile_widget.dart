@@ -17,13 +17,13 @@ class DateTile extends StatelessWidget {
     var month = DateFormat("MMMM").format(date).substring(0, 3).toUpperCase();
 
     return Padding(
-        padding: const EdgeInsets.all(Dimens.xxxxs),
+        padding: const EdgeInsets.symmetric(vertical: Dimens.xxxxs),
         child: Container(
           width: Dimens.date_tile_width,
           child: Padding(
             padding: const EdgeInsets.all(1.0),
             child: AspectRatio(
-              aspectRatio: 2/3,
+              aspectRatio: 1,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -33,7 +33,7 @@ class DateTile extends StatelessWidget {
                     style: TextStyle(
                         fontSize: Dimens.font_s,
                         fontWeight: FontWeight.bold,
-                        color: MyColors.second),
+                        color: Colors.white),
                     maxLines: 1,
                   ),
                   Text(
@@ -42,7 +42,7 @@ class DateTile extends StatelessWidget {
                     style: TextStyle(
                         fontSize: Dimens.font_s,
                         fontWeight: FontWeight.bold,
-                        color: MyColors.second),
+                        color: Colors.white),
                     maxLines: 1,
                   ),
                   Text(
@@ -51,7 +51,7 @@ class DateTile extends StatelessWidget {
                     style: TextStyle(
                         fontSize: Dimens.font_s,
                         fontWeight: FontWeight.bold,
-                        color: MyColors.second),
+                        color: Colors.white),
                     maxLines: 1,
                   )
                 ],
@@ -59,13 +59,55 @@ class DateTile extends StatelessWidget {
             ),
           ),
           decoration: BoxDecoration(
-              color: Colors.transparent,
+              color: MyColors.blue_google.withOpacity(0.5),
               border: Border.all(
-                color: MyColors.second,
+                color: Colors.transparent,
                 width: Dimens.xxxxs,
               ),
               borderRadius:
                   new BorderRadius.all(const Radius.circular(Dimens.s))),
+        ));
+  }
+}
+
+class DateTileWide extends StatelessWidget {
+  final DateTime date;
+
+  const DateTileWide(this.date) : super();
+
+  @override
+  Widget build(BuildContext context) {
+    if (date == null) return null;
+
+    var weekDay =
+        new DateFormat("EEEE d - MMMM y").format(date).toUpperCase();
+
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: Dimens.s),
+        child: Container(
+          height: Dimens.date_title_height,
+          width: Dimens.date_tile_width,
+          child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Center(
+                child: Text(
+                  weekDay,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: Dimens.font_m,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  maxLines: 1,
+                ),
+              )),
+          decoration: BoxDecoration(
+              color: MyColors.blue_google.withOpacity(0.5),
+              border: Border.all(
+                color: Colors.transparent,
+                width: Dimens.xxxxs,
+              ),
+              borderRadius:
+                  new BorderRadius.all(const Radius.circular(Dimens.xxs))),
         ));
   }
 }

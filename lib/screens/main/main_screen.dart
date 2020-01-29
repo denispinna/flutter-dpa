@@ -3,6 +3,7 @@ import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';
 import 'package:dpa/screens/main/components/stats_history_widget.dart';
+import 'package:dpa/theme/colors.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
 
@@ -40,6 +41,7 @@ class MainState extends ScreenState<MainScreen> {
 
     return new WillPopScope(
       child: Scaffold(
+          backgroundColor: MyColors.light_background,
           body: getCurrentTabView(),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: currentIndex,

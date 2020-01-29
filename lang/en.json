@@ -36,5 +36,7 @@
   "comment": "Comment",
   "stats_empty_title": "No entries yet.",
   "stats_empty_comment": "Tell us how you feel!",
-  "post_stat_success": "Save completed!"
+  "post_stat_success": "Save completed!",
+  "mood" : "Mood",
+  "productivity" : "Productivity"
   }

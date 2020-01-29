@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class MyColors {
   static const blue_facebook = Color(0xff4267B2);
   static const blue_google = Color(0xff4285f4);
+  static const light_background = Color(0xffe9f5f9);
   static const main = Color(0xffece1db);
   static const second = Color(0xff547d9e);
   static const error = Colors.redAccent;
