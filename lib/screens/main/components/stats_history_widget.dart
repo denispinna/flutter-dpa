@@ -204,10 +204,11 @@ class _StatListItemState extends State<StatListItem> {
                 ],
               ),
             ),
+            if(widget.stat.comment != null && widget.stat.comment.length > 0)
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: Dimens.s,
-                vertical: Dimens.m),
+                    vertical: Dimens.m),
                 child: Text(
                   widget.stat.comment,
                   style: TextStyle(

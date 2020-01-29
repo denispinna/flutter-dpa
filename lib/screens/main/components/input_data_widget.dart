@@ -1,8 +1,6 @@
-import 'package:camera/camera.dart';
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/file_manager.dart';
 import 'package:dpa/components/fire_db_component.dart';
-import 'package:dpa/components/widget/camera_widget.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
@@ -29,7 +27,7 @@ class InputItemState extends State<InputStat> {
   static final contentKey = ValueKey(TAG);
   final _formKey = GlobalKey<FormState>();
   Function clearPicture;
-  TakePictureWidget pictureWidget;
+//  TakePictureWidget pictureWidget;
   StateData content;
   bool formPosted = false;
 
@@ -52,8 +50,8 @@ class InputItemState extends State<InputStat> {
         final state = store.state;
         if (content.imagePath != state.imagePath)
           content.imagePath = state.imagePath;
-        if (pictureWidget == null)
-          pictureWidget = TakePictureWidget(state.cameraController);
+//        if (pictureWidget == null)
+//          pictureWidget = TakePictureWidget(state.cameraController);
         if (clearPicture == null)
           clearPicture = () => store.dispatch(PictureTakenAction(null));
 
@@ -68,7 +66,7 @@ class InputItemState extends State<InputStat> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  pictureWidget,
+//                  pictureWidget,
                   Padding(
                       padding: const EdgeInsets.only(top: Dimens.padding_xs)),
                   CenterHorizontal(Text(
