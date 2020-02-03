@@ -1,4 +1,3 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
@@ -26,13 +25,14 @@ class MainState extends ScreenState<MainScreen> {
   User user;
   var currentIndex = 0;
 
+
   @override
   void initState() {
     super.initState();
-    inputWidget = InputStat(key: PageStorageKey('inputWidget'));
-    statsWidget = StatsHistoryWidget(key: PageStorageKey('statsWidget'));
-    profileWidget = ProfileWidget(key: PageStorageKey('profileWidget'));
-    pages = [inputWidget, statsWidget, profileWidget];
+     inputWidget = InputStat(key: PageStorageKey('inputWidget'));
+     statsWidget = StatsHistoryWidget(key: PageStorageKey('statsWidget'));
+     profileWidget = ProfileWidget(key: PageStorageKey('profileWidget'));
+     pages = [inputWidget, statsWidget, profileWidget];
   }
 
   @override
@@ -43,22 +43,22 @@ class MainState extends ScreenState<MainScreen> {
       child: Scaffold(
           backgroundColor: MyColors.light_background,
           body: getCurrentTabView(),
-          bottomNavigationBar: CurvedNavigationBar(
-            index: currentIndex,
-            backgroundColor: MyColors.light_background,
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: currentIndex,
+            type: BottomNavigationBarType.shifting,
             items: [
-              Icon(
-                Icons.mood,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-              Icon(
-                Icons.accessibility_new,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-              Icon(
-                Icons.person,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
+              BottomNavigationBarItem(
+                  icon:
+                      Icon(Icons.mood, color: Color.fromARGB(255, 0, 0, 0)),
+                  title: new Text('')),
+              BottomNavigationBarItem(
+                  icon:
+                      Icon(Icons.accessibility_new, color: Color.fromARGB(255, 0, 0, 0)),
+                  title: new Text('')),
+              BottomNavigationBarItem(
+                  icon:
+                      Icon(Icons.person, color: Color.fromARGB(255, 0, 0, 0)),
+                  title: new Text('')),
             ],
             onTap: (index) {
               onTabTapped(index);
@@ -70,7 +70,6 @@ class MainState extends ScreenState<MainScreen> {
       },
     );
   }
-
   Widget getCurrentTabView() {
     return PageStorage(
       child: pages[currentIndex],
