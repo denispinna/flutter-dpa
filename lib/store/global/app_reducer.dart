@@ -38,7 +38,12 @@ AppState reduceAppState(AppState state, dynamic action) {
     case PictureTakenAction:
       final pictureAction = action as PictureTakenAction;
       imagePath = pictureAction.filePath;
-      routeAction = RouteAction(destination: null, type: RouteActionType.Pop);
+      /* We only want to pop the current screen if a picture was taken (path != null) */
+      if(imagePath != null)
+        routeAction = RouteAction(destination: null, type: RouteActionType.Pop);
+      else
+        routeAction = null;
+
       break;
   }
 
