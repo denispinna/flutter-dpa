@@ -66,8 +66,8 @@ abstract class LifecycleWidgetState<T extends StatefulWidget> extends State<T>
     } else if (state == AppLifecycleState.paused) {
       // user is about quit our app temporally
       onPause();
-    } else if (state == AppLifecycleState.suspending) {
-      // app suspended (not used in iOS)
+    } else if (state == AppLifecycleState.detached) {
+      // app detached
     }
   }
 

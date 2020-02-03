@@ -20,6 +20,7 @@ import 'package:redux/redux.dart';
 import 'package:dpa/components/app_localization.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   final currentUser = await AuthAPI.instance.loadCurrentUser();
   String destination = HomeScreen.PATH;
   if (currentUser != null) destination = MainScreen.PATH;
