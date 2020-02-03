@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/models/user.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 class ProfileWidget extends StatelessWidget {
   final authApi = AuthAPI.instance;
+
   ProfileWidget({Key key}) : super(key: key);
 
   @override
@@ -21,8 +23,8 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildWithUser(BuildContext context, User user) {
-    if(user == null) return Container();
-    
+    if (user == null) return Container();
+
     return ListView(shrinkWrap: true, children: <Widget>[
       CenterHorizontal(Padding(
         padding: const EdgeInsets.fromLTRB(
@@ -91,10 +93,13 @@ class ProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (imageUrl != null) {
-      return CircleAvatar(
-        backgroundImage: NetworkImage(imageUrl),
-        minRadius: 90,
-        maxRadius: 150,
+      return ClipOval(
+        child: CachedNetworkImage(
+          placeholder: (context, url) => CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
+          ),
+          imageUrl: imageUrl,
+        ),
       );
     } else {
       return CircleAvatar(
