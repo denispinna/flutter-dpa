@@ -25,7 +25,7 @@ class ProfileWidget extends StatelessWidget {
   Widget buildWithUser(BuildContext context, User user) {
     if (user == null) return Container();
 
-    return ListView(shrinkWrap: true, children: <Widget>[
+    return ListView(children: <Widget>[
       CenterHorizontal(Padding(
         padding: const EdgeInsets.fromLTRB(
             0, Dimens.padding_xxxxl, 0, Dimens.padding_m),
