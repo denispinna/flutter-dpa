@@ -42,6 +42,7 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
     return StreamBuilder<QuerySnapshot>(
       stream: FireDb.instance.orderedStats.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        persisAndRecoverContent(context);
         if (snapshot.hasError) {
           Logger.logError(TAG, "Error on fetching stats", snapshot.error);
           return Center(
@@ -52,12 +53,13 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
           case ConnectionState.waiting:
             if (stats != null) {
               content = renderStats();
+            } else {
+              content = Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(Dimens.l),
+                    child: SpinKitCubeGrid(color: MyColors.second),
+                  ));
             }
-            content = Center(
-                child: Padding(
-              padding: const EdgeInsets.all(Dimens.l),
-              child: SpinKitCubeGrid(color: MyColors.second),
-            ));
             break;
           default:
             stats = snapshot.data.documents.map((DocumentSnapshot document) {
