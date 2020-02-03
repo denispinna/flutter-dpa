@@ -96,7 +96,7 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
             child: Text(
               AppLocalizations.of(context).translate('stats_empty_title'),
               style:
-                  TextStyle(color: MyColors.title, fontSize: Dimens.font_xxl),
+                  TextStyle(color: MyColors.text, fontSize: Dimens.font_xxl),
             ),
           )),
           Padding(padding: const EdgeInsets.all(Dimens.s)),
@@ -104,7 +104,7 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
             padding: const EdgeInsets.symmetric(horizontal: Dimens.xxxxxl),
             child: Text(
               AppLocalizations.of(context).translate('stats_empty_comment'),
-              style: TextStyle(color: MyColors.title, fontSize: Dimens.font_l),
+              style: TextStyle(color: MyColors.text, fontSize: Dimens.font_l),
             ),
           )),
         ]));

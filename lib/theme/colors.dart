@@ -10,7 +10,7 @@ class MyColors {
   static const success = Colors.green;
   static const alpha_white = Color(0xccffffff);
   static const alpha_red = Color(0x66D50000);
-  static const title = Colors.black54;
+  static const text = Colors.black54;
   static const yellow = Color(0xFFFFDD00);
   static const light_green = Color(0xFFADFF02);
   static const light_gray = Color(0xff5d5d5d);

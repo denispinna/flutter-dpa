@@ -73,7 +73,7 @@ class InputItemState extends State<InputStat> {
                   CenterHorizontal(Text(
                     AppLocalizations.of(context).translate('mood_label'),
                     style: TextStyle(
-                        color: MyColors.title, fontSize: Dimens.title_font),
+                        color: MyColors.text, fontSize: Dimens.title_font),
                   )),
                   Padding(padding: const EdgeInsets.only(top: Dimens.xxxxs)),
                   CenterHorizontal(RatingBar(
@@ -92,7 +92,7 @@ class InputItemState extends State<InputStat> {
                     AppLocalizations.of(context)
                         .translate('productivity_label'),
                     style: TextStyle(
-                        color: MyColors.title, fontSize: Dimens.title_font),
+                        color: MyColors.text, fontSize: Dimens.title_font),
                   )),
                   Padding(padding: const EdgeInsets.only(top: Dimens.xxxs)),
                   CenterHorizontal(RatingBar(
