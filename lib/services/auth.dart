@@ -32,6 +32,10 @@ class AuthAPI {
     };
     final GoogleSignInAccount googleUser =
         await googleSignIn.signIn().catchError(onError);
+
+    if(googleUser == null)
+      return;
+
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication.catchError(onError);
 
