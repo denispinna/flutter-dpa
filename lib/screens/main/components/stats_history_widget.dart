@@ -11,9 +11,16 @@ import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/images.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+
+List<StatItem> parseStats(List<DocumentSnapshot> documents) {
+  return documents.map((DocumentSnapshot document) {
+    return StatItem.fromFirestoreData(document);
+  }).toList();
+}
 
 class StatsHistoryWidget extends StatefulWidget {
   const StatsHistoryWidget({Key key}) : super(key: key);
@@ -48,31 +55,45 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
               child: Text(AppLocalizations.of(context).translate('or')));
         }
         Widget content;
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            if (stats != null) {
-              content = renderStats();
-            } else {
-              content = Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(Dimens.l),
-                    child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
-                    ),
-                  ));
-            }
-            break;
-          default:
-            stats = snapshot.data.documents.map((DocumentSnapshot document) {
-              return StatItem.fromFirestoreData(document.data);
-            }).toList();
-            content = renderStats();
+
+        if (snapshot.hasData) {
+          content = FutureBuilder<List<StatItem>>(
+            future: processStats(snapshot.data.documents),
+            builder: (context, result) {
+              if (result.hasError) print(result.error);
+              if (result.hasData) {
+                addAll(result.data);
+                return renderStats();
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(
+                    valueColor:
+                        new AlwaysStoppedAnimation<Color>(MyColors.second),
+                  ),
+                );
+              }
+            },
+          );
+        } else if (stats != null) {
+          content = renderStats();
+        } else {
+          content = Center(
+              child: Padding(
+            padding: const EdgeInsets.all(Dimens.l),
+            child: CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
+            ),
+          ));
         }
 
         return Padding(
             padding: const EdgeInsets.all(Dimens.xs), child: content);
       },
     );
+  }
+
+  Future<List<StatItem>> processStats(List<DocumentSnapshot> documents) async {
+    return compute(parseStats, documents);
   }
 
   Widget renderStats() {
@@ -98,8 +119,7 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
             padding: const EdgeInsets.symmetric(horizontal: Dimens.xxxl),
             child: Text(
               AppLocalizations.of(context).translate('stats_empty_title'),
-              style:
-                  TextStyle(color: MyColors.dark, fontSize: Dimens.font_xxl),
+              style: TextStyle(color: MyColors.dark, fontSize: Dimens.font_xxl),
             ),
           )),
           Padding(padding: const EdgeInsets.all(Dimens.s)),
@@ -121,6 +141,13 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
       PageStorage.of(context)
           .writeState(context, stats, identifier: contentKey);
     }
+  }
+
+  void addAll(List<StatItem> data) {
+    if(stats == null)
+      stats = List<StatItem>();
+
+    stats.addAll(data);
   }
 }
 
@@ -159,7 +186,6 @@ class _StatListItemState extends State<StatListItem> {
         subtitle: Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-
             Center(
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -207,19 +233,18 @@ class _StatListItemState extends State<StatListItem> {
                 ],
               ),
             ),
-            if(widget.stat.comment != null && widget.stat.comment.length > 0)
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Dimens.s,
-                    vertical: Dimens.m),
-                child: Text(
-                  widget.stat.comment,
-                  style: TextStyle(
-                      fontSize: Dimens.font_ml,
-                      color: Colors.black),
+            if (widget.stat.comment != null && widget.stat.comment.length > 0)
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Dimens.s, vertical: Dimens.m),
+                  child: Text(
+                    widget.stat.comment,
+                    style: TextStyle(
+                        fontSize: Dimens.font_ml, color: Colors.black),
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),
