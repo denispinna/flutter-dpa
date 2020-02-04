@@ -14,7 +14,6 @@ import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class InputStat extends StatefulWidget {
   InputStat({Key key}) : super(key: key);
@@ -39,7 +38,9 @@ class InputItemState extends State<InputStat> {
       return Center(
           child: Padding(
         padding: const EdgeInsets.all(Dimens.l),
-        child: SpinKitCubeGrid(color: MyColors.second),
+        child: CircularProgressIndicator(
+          valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
+        ),
       ));
     } else if (formPosted) {
       clearPicture();

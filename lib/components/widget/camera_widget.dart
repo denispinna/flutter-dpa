@@ -13,7 +13,6 @@ import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -270,8 +269,9 @@ abstract class CameraState extends LifecycleWidgetState<StatefulWidget> {
           Center(
               child: Padding(
                 padding: const EdgeInsets.all(Dimens.l),
-                child: SpinKitWave(
-                    color: MyColors.second, type: SpinKitWaveType.start),
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
+                ),
               )),
         ]));
   }
