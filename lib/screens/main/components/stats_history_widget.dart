@@ -31,9 +31,31 @@ class StatsHistoryWidget extends StatefulWidget {
 
 class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
   static const TAG = "StatsHistoryWidget";
+  static const ITEM_PER_PAGE = 10;
   static final contentKey = ValueKey(TAG);
   final authApi = AuthAPI.instance;
+  var error;
   List<StatItem> stats;
+  bool isLoading = false;
+  bool lastPageReached = false;
+  DocumentSnapshot lastDocument;
+  ScrollController scrollController = ScrollController();
+
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNextPage(true);
+
+    scrollController.addListener(() {
+      double maxScroll = scrollController.position.maxScrollExtent;
+      double currentScroll = scrollController.position.pixels;
+      double delta = MediaQuery.of(context).size.height * 0.25;
+      if (maxScroll - currentScroll <= delta) {
+        _loadNextPage(false);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,73 +65,80 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
 
   Widget buildWithUser(BuildContext context, User user) {
     if (user == null) return Container();
-    persisAndRecoverContent(context);
+    _persisAndRecoverContent(context);
 
-    return StreamBuilder<QuerySnapshot>(
-      stream: FireDb.instance.orderedStats.snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        persisAndRecoverContent(context);
-        if (snapshot.hasError) {
-          Logger.logError(TAG, "Error on fetching stats", snapshot.error);
-          return Center(
-              child: Text(AppLocalizations.of(context).translate('or')));
-        }
-        Widget content;
+    if (error != null) {
+      Logger.logError(TAG, "Error on fetching stats", error);
+      return Center(
+          child: Text(
+              AppLocalizations.of(context).translate('generic_error_message')));
+    }
 
-        if (snapshot.hasData) {
-          content = FutureBuilder<List<StatItem>>(
-            future: processStats(snapshot.data.documents),
-            builder: (context, result) {
-              if (result.hasError) print(result.error);
-              if (result.hasData) {
-                addAll(result.data);
-                return renderStats();
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(
-                    valueColor:
-                        new AlwaysStoppedAnimation<Color>(MyColors.second),
-                  ),
-                );
-              }
-            },
-          );
-        } else if (stats != null) {
-          content = renderStats();
-        } else {
-          content = Center(
-              child: Padding(
-            padding: const EdgeInsets.all(Dimens.l),
-            child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
-            ),
-          ));
-        }
-
-        return Padding(
-            padding: const EdgeInsets.all(Dimens.xs), child: content);
-      },
-    );
-  }
-
-  Future<List<StatItem>> processStats(List<DocumentSnapshot> documents) async {
-    return compute(parseStats, documents);
-  }
-
-  Widget renderStats() {
-    persisAndRecoverContent(context);
-    if (stats.isNotEmpty) {
-      return new ListView(
-        children: stats.map((stat) {
-          return new StatListItem(stat);
-        }).toList(),
+    if (stats == null) {
+      return Center(
+        child: Container(
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
+          ),
+        ),
       );
     } else {
-      return emptyState();
+      return _renderStats();
     }
   }
 
-  Widget emptyState() {
+  Future _loadNextPage(bool firstPage) async {
+    if(isLoading || lastPageReached)
+      return;
+
+    isLoading = true;
+    setState(() {});
+    this.error = null;
+    final query = await FireDb.instance
+        .getOrderedStats(lastVisible: lastDocument, limit: ITEM_PER_PAGE)
+        .getDocuments()
+        .catchError((error) => {this.error = error});
+
+    if (this.error != null) {
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
+
+    final documents = query.documents;
+    final items = await compute(parseStats, documents);
+    if (stats == null) stats = List<StatItem>();
+    /* We do not want to add the items from the first page if some other items were recovered from an earlier state */
+    if (!(firstPage && stats.length > 0)) {
+      stats.addAll(items);
+    }
+    if (documents.length > 0) lastDocument = documents.last;
+    print(lastDocument.documentID);
+    lastPageReached = items.length < ITEM_PER_PAGE;
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Widget _renderStats() {
+    _persisAndRecoverContent(context);
+    if (stats.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(Dimens.xs),
+        child: ListView(
+          controller: scrollController,
+          children: stats.map((stat) {
+            return StatListItem(stat);
+          }).toList(),
+        ),
+      );
+    } else {
+      return _emptyState();
+    }
+  }
+
+  Widget _emptyState() {
     return Center(
         child: ListView(
             physics: const NeverScrollableScrollPhysics(),
@@ -133,21 +162,17 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
         ]));
   }
 
-  void persisAndRecoverContent(BuildContext context) {
+  void _persisAndRecoverContent(BuildContext context) {
     if (stats == null) {
       stats =
           PageStorage.of(context).readState(context, identifier: contentKey);
     } else {
-      PageStorage.of(context)
-          .writeState(context, stats, identifier: contentKey);
+      persistContent(context);
     }
   }
 
-  void addAll(List<StatItem> data) {
-    if(stats == null)
-      stats = List<StatItem>();
-
-    stats.addAll(data);
+  Future persistContent(BuildContext context) async {
+    PageStorage.of(context).writeState(context, stats, identifier: contentKey);
   }
 }
 

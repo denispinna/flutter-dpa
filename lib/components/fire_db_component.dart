@@ -8,10 +8,16 @@ class FireDb {
   final firestore = Firestore.instance;
 
   CollectionReference get users => firestore.collection('user');
+
   CollectionReference get stats => firestore.collection('stat');
-  Query get orderedStats => stats
-      .where('userEmail', isEqualTo: AuthAPI.instance.user.email)
-      .orderBy('date', descending: true);
+
+  Query getOrderedStats({DocumentSnapshot lastVisible, int limit = 10}) {
+    final query = stats
+        .where('userEmail', isEqualTo: AuthAPI.instance.user.email)
+        .orderBy('date', descending: true)
+        .limit(limit);
+    return (lastVisible != null) ? query.startAfterDocument(lastVisible) : query;
+  }
 
   Future<User> findUser(String email) async {
     final query =

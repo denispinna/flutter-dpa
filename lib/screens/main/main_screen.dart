@@ -47,7 +47,7 @@ class MainState extends ScreenState<MainScreen> {
       child: Scaffold(
         backgroundColor: MyColors.light_background,
         body: AnimatedContainer(
-          color: barItems[currentIndex].color,
+          color: barItems[currentIndex].color.withOpacity(0.4),
           child: pages[currentIndex],
           duration: const Duration(milliseconds: 300),
         ),
