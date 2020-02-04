@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StatItem {
+  final String id;
   DateTime date;
   final String imageUrl;
   final String userEmail;
@@ -10,6 +11,7 @@ class StatItem {
 
   StatItem(
       {DateTime date,
+      this.id = "",
       this.userEmail,
       this.imageUrl,
       this.comment,
@@ -29,7 +31,8 @@ class StatItem {
     };
   }
 
-  static StatItem fromFirestoreData(Map<String, dynamic> data) {
+  static StatItem fromFirestoreData(DocumentSnapshot document) {
+    Map<String, dynamic> data = document.data;
     final date = data['date'] as Timestamp;
     final userEmail = data['userEmail'];
     final imageUrl = data['imageUrl'];
@@ -38,6 +41,7 @@ class StatItem {
     final comment = data['comment'];
 
     return StatItem(
+        id: document.documentID,
         date: date.toDate(),
         userEmail: userEmail,
         imageUrl: imageUrl,
