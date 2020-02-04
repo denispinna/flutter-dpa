@@ -30,7 +30,7 @@
   "save": "Save",
   "processing": "Processing...",
   "upload_image": "Upload image...",
-  "mood_label": "Do you feel good?",
+  "mood_label": "How are you?",
   "productivity_label": "Are you productive?",
   "comment_hint": "Add a comment...",
   "comment": "Comment",
@@ -42,5 +42,10 @@
   "today" : "Today",
   "history" : "History",
   "profile" : "Profile",
-  "stats" : "Statistics"
-  }
+  "stats" : "Statistics",
+  "mood_first" : "gloomy",
+  "mood_second" : "bad",
+  "mood_third" : "calm",
+  "mood_fourth" : "jolly",
+  "mood_fifth" : "gleeful"
+}

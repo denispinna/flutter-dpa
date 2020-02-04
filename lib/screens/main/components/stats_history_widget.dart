@@ -4,13 +4,13 @@ import 'package:dpa/components/fire_db_component.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/components/widget/date_tile_widget.dart';
+import 'package:dpa/models/mood.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/services/auth.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
-import 'package:dpa/theme/images.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -40,7 +40,6 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
   bool lastPageReached = false;
   DocumentSnapshot lastDocument;
   ScrollController scrollController = ScrollController();
-
 
   @override
   void initState() {
@@ -88,8 +87,7 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
   }
 
   Future _loadNextPage(bool firstPage) async {
-    if(isLoading || lastPageReached)
-      return;
+    if (isLoading || lastPageReached) return;
 
     isLoading = true;
     setState(() {});
@@ -225,7 +223,7 @@ class _StatListItemState extends State<StatListItem> {
                           color: Colors.black54),
                     ),
                   ),
-                  getMoodIcon(widget.stat.mood.toInt()),
+                  Mood.values[widget.stat.mood.toInt()].icon,
                 ],
               ),
             ),
@@ -292,7 +290,7 @@ class _StatListItemState extends State<StatListItem> {
             ignoreGestures: true,
           )),
           leading: DateTile(widget.stat.date),
-          trailing: getMoodIcon(widget.stat.mood.toInt()),
+          trailing: Mood.values[widget.stat.mood.toInt() - 1].icon,
           contentPadding: EdgeInsets.all(Dimens.s)),
     );
   }

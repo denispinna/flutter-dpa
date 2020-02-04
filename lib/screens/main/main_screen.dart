@@ -46,11 +46,7 @@ class MainState extends ScreenState<MainScreen> {
     return new WillPopScope(
       child: Scaffold(
         backgroundColor: MyColors.light_background,
-        body: AnimatedContainer(
-          color: barItems[currentIndex].color.withOpacity(0.4),
-          child: pages[currentIndex],
-          duration: const Duration(milliseconds: 300),
-        ),
+        body: pages[currentIndex],
         bottomNavigationBar: AnimatedBottomBar(
             barItems: barItems,
             animationDuration: const Duration(milliseconds: 150),
