@@ -8,6 +8,7 @@ ThemeData appTheme() {
     dividerColor: Colors.grey,
     buttonColor: Colors.white,
     scaffoldBackgroundColor: Colors.white,
-    canvasColor: Colors.white
+    canvasColor: Colors.white,
+    fontFamily:'Aaargh',
   );
 }

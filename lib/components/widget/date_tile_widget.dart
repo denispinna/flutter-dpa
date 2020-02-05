@@ -79,8 +79,7 @@ class DateTileWide extends StatelessWidget {
   Widget build(BuildContext context) {
     if (date == null) return null;
 
-    var weekDay =
-        new DateFormat("EEEE d - MMMM y").format(date).toUpperCase();
+    var weekDay = new DateFormat("EEEE d - MMMM y").format(date).toUpperCase();
 
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: Dimens.s),
@@ -109,5 +108,28 @@ class DateTileWide extends StatelessWidget {
               borderRadius:
                   new BorderRadius.all(const Radius.circular(Dimens.xxs))),
         ));
+  }
+}
+
+class DateTitle extends StatelessWidget {
+  final DateTime date;
+
+  const DateTitle(this.date) : super();
+
+  @override
+  Widget build(BuildContext context) {
+    if (date == null) return null;
+
+    var weekDay = new DateFormat("EEEE, d MMMM").format(date).toUpperCase();
+
+    return Text(
+        weekDay,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontSize: Dimens.font_sm,
+            fontWeight: FontWeight.bold,
+            color: MyColors.light_gray),
+        maxLines: 1,
+      );
   }
 }

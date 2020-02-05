@@ -57,26 +57,17 @@ class ProfileWidget extends StatelessWidget {
                   AuthAPI().signOut(user.signInMethod, dispatchLogout),
               color: MyColors.second,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Dimens.xxl)),
+                  borderRadius: BorderRadius.circular(Dimens.xl)),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(
                     0, Dimens.padding_xxs, 0, Dimens.padding_xxs),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image(image: MyImages.logout, height: Dimens.xl),
-                    Padding(
-                      padding: const EdgeInsets.only(left: Dimens.padding_s),
-                      child: Text(
-                        AppLocalizations.of(context).translate('logout'),
-                        style: TextStyle(
-                          fontSize: Dimens.font_l,
-                          color: Colors.white,
-                        ),
-                      ),
-                    )
-                  ],
+                child: Text(
+                  AppLocalizations.of(context).translate('logout'),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: Dimens.font_l,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ));

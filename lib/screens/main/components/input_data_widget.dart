@@ -10,6 +10,7 @@ import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
+import 'package:dpa/theme/icons.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -61,83 +62,95 @@ class InputItemState extends State<InputStat> {
       },
       builder: (context, user) {
         this.content.userEmail = user.email;
-        return ListView(
-          children: <Widget>[
-            Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  pictureWidget,
-                  Padding(
-                      padding: const EdgeInsets.only(top: Dimens.padding_xs)),
-                  CenterHorizontal(Text(
-                    AppLocalizations.of(context).translate('mood_label'),
-                    style: TextStyle(
-                        color: MyColors.dark, fontSize: Dimens.title_font),
-                  )),
-                  Padding(padding: const EdgeInsets.only(top: Dimens.xxxxs)),
-                  CenterHorizontal(RatingBar(
-                    initialRating: content.mood,
-                    itemCount: 5,
-                    itemSize: Dimens.rating_icon_width,
-                    itemBuilder: (context, index) {
-                      return Mood.values[index].icon;
-                    },
-                    onRatingUpdate: (rating) {
-                      content.mood = rating;
-                    },
-                  )),
-                  Padding(padding: const EdgeInsets.only(top: Dimens.xxxxs)),
-                  CenterHorizontal(Text(
-                    AppLocalizations.of(context)
-                        .translate('productivity_label'),
-                    style: TextStyle(
-                        color: MyColors.dark, fontSize: Dimens.title_font),
-                  )),
-                  Padding(padding: const EdgeInsets.only(top: Dimens.xxxs)),
-                  CenterHorizontal(RatingBar(
-                    initialRating: content.productivity,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemSize: Dimens.rating_icon_width,
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: MyColors.yellow,
-                    ),
-                    onRatingUpdate: (rating) {
-                      content.productivity = rating;
-                    },
-                  )),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimens.padding_xxxl),
-                      child: TextFormField(
-                        initialValue: content.comment,
-                        onChanged: (text) => content.comment = text,
-                        decoration: InputDecoration(
-                            hintText: AppLocalizations.of(context)
-                                .translate('comment_hint'),
-                            labelText: AppLocalizations.of(context)
-                                .translate('comment')),
-                      )),
-                  Padding(padding: const EdgeInsets.only(top: Dimens.s)),
-                  CenterHorizontal(
-                    RaisedButton(
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          onFormValid(context);
-                        }
+        return Scaffold(
+          body: ListView(
+            children: <Widget>[
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    pictureWidget,
+                    Padding(
+                        padding: const EdgeInsets.only(top: Dimens.padding_m)),
+                    CenterHorizontal(Text(
+                      AppLocalizations.of(context).translate('mood_label'),
+                      style: TextStyle(
+                          color: MyColors.dark, fontSize: Dimens.title_font),
+                    )),
+                    Padding(
+                        padding: const EdgeInsets.only(top: Dimens.padding_s)),
+                    CenterHorizontal(RatingBar(
+                      initialRating: content.mood,
+                      itemCount: 5,
+                      itemSize: Dimens.input_rating_icon_width,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: Dimens.xxxs),
+                          child: Mood.values[index].icon,
+                        );
                       },
-                      child:
-                          Text(AppLocalizations.of(context).translate('save')),
+                      onRatingUpdate: (rating) {
+                        content.mood = rating;
+                      },
+                    )),
+                    Padding(
+                        padding: const EdgeInsets.only(top: Dimens.padding_m)),
+                    CenterHorizontal(Text(
+                      AppLocalizations.of(context)
+                          .translate('productivity_label'),
+                      style: TextStyle(
+                          color: MyColors.dark, fontSize: Dimens.title_font),
+                    )),
+                    Padding(
+                        padding: const EdgeInsets.only(top: Dimens.padding_s)),
+                    CenterHorizontal(RatingBar(
+                      initialRating: content.productivity,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemSize: Dimens.input_rating_icon_width,
+                      itemBuilder: (context, _) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                        child: Icon(
+                          MyIcons.star,
+                          color: MyColors.yellow,
+                        ),
+                      ),
+                      onRatingUpdate: (rating) {
+                        content.productivity = rating;
+                      },
+                    )),
+                    Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Dimens.padding_xxxl),
+                        child: TextFormField(
+                          initialValue: content.comment,
+                          onChanged: (text) => content.comment = text,
+                          decoration: InputDecoration(
+                              hintText: AppLocalizations.of(context)
+                                  .translate('comment_hint'),
+                              labelText: AppLocalizations.of(context)
+                                  .translate('comment')),
+                        )),
+                    Padding(padding: const EdgeInsets.only(top: Dimens.s)),
+                    CenterHorizontal(
+                      RaisedButton(
+                        color: MyColors.white,
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            onFormValid(context);
+                          }
+                        },
+                        child: Text(
+                            AppLocalizations.of(context).translate('save')),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         );
       },
     );

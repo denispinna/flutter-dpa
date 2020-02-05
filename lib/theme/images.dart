@@ -13,4 +13,9 @@ class MyImages {
   static const clock_empty = AssetImage("assets/clock_empty.png");
   static const take_picture = "assets/take_picture.svg";
   static const cross = "assets/cross.svg";
+  static const mood_first = "assets/mood_first.svg";
+  static const mood_second = "assets/mood_second.svg";
+  static const mood_third = "assets/mood_third.svg";
+  static const mood_fourth = "assets/mood_fourth.svg";
+  static const mood_fifth = "assets/mood_fifth.svg";
 }

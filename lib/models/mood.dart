@@ -1,5 +1,6 @@
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/theme/dimens.dart';
+import 'package:dpa/theme/icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,32 +11,32 @@ extension MoodExt on Mood {
     switch (this) {
       case Mood.first:
         return Icon(
-          Icons.sentiment_very_dissatisfied,
-          color: Colors.red,
+          MyIcons.mood26,
+          color: this.color,
           size: Dimens.mood_icon_width,
         );
       case Mood.second:
         return Icon(
-          Icons.sentiment_dissatisfied,
-          color: Colors.redAccent,
+          MyIcons.mood15,
+          color: this.color,
           size: Dimens.mood_icon_width,
         );
       case Mood.third:
         return Icon(
-          Icons.sentiment_neutral,
-          color: Colors.amber,
+          MyIcons.mood25,
+          color: this.color,
           size: Dimens.mood_icon_width,
         );
       case Mood.fourth:
         return Icon(
-          Icons.sentiment_satisfied,
-          color: Colors.lightGreen,
+          MyIcons.mood13,
+          color: this.color,
           size: Dimens.mood_icon_width,
         );
       default:
         return Icon(
-          Icons.sentiment_very_satisfied,
-          color: Colors.green,
+          MyIcons.mood20,
+          color: this.color,
           size: Dimens.mood_icon_width,
         );
     }
@@ -53,6 +54,21 @@ extension MoodExt on Mood {
         return AppLocalizations.of(context).translate('mood_fourth');
       default:
         return AppLocalizations.of(context).translate('mood_fifth');
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case Mood.first:
+        return Colors.red;
+      case Mood.second:
+        return Colors.redAccent;
+      case Mood.third:
+        return Colors.amber;
+      case Mood.fourth:
+        return Colors.lightGreen;
+      default:
+        return Colors.green;
     }
   }
 }

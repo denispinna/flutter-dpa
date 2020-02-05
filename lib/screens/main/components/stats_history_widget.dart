@@ -3,8 +3,7 @@ import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/fire_db_component.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
-import 'package:dpa/components/widget/date_tile_widget.dart';
-import 'package:dpa/models/mood.dart';
+import 'package:dpa/components/widget/stat_list_item.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/services/auth.dart';
@@ -13,7 +12,6 @@ import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 List<StatItem> parseStats(List<DocumentSnapshot> documents) {
@@ -123,7 +121,12 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
     _persisAndRecoverContent(context);
     if (stats.isNotEmpty) {
       return Padding(
-        padding: const EdgeInsets.all(Dimens.xs),
+        padding: const EdgeInsets.fromLTRB(
+            Dimens.xs,
+            Dimens.xs,
+            Dimens.xs,
+            0,
+        ),
         child: ListView(
           controller: scrollController,
           children: stats.map((stat) {
@@ -171,133 +174,5 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
 
   Future persistContent(BuildContext context) async {
     PageStorage.of(context).writeState(context, stats, identifier: contentKey);
-  }
-}
-
-class StatListItem extends StatefulWidget {
-  final StatItem stat;
-
-  const StatListItem(this.stat);
-
-  @override
-  _StatListItemState createState() => _StatListItemState();
-}
-
-class _StatListItemState extends State<StatListItem> {
-  bool expanded = false;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget content;
-    if (expanded)
-      content = buildExpandedTile(context);
-    else
-      content = buildCollapsedTile(context);
-
-    return GestureDetector(
-      onTap: () {
-        toggleExpand();
-      },
-      child: content,
-    );
-  }
-
-  Widget buildExpandedTile(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: DateTileWide(widget.stat.date),
-        subtitle: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: Dimens.s),
-                    child: Text(
-                      AppLocalizations.of(context).translate('mood'),
-                      style: TextStyle(
-                          fontSize: Dimens.font_m,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54),
-                    ),
-                  ),
-                  Mood.values[widget.stat.mood.toInt()].icon,
-                ],
-              ),
-            ),
-            Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: Dimens.s),
-                    child: Text(
-                      AppLocalizations.of(context).translate('productivity'),
-                      style: TextStyle(
-                          fontSize: Dimens.font_m,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54),
-                    ),
-                  ),
-                  RatingBar(
-                    initialRating: widget.stat.productivity,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemSize: Dimens.rating_icon_width,
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: MyColors.yellow,
-                    ),
-                    ignoreGestures: true,
-                  )
-                ],
-              ),
-            ),
-            if (widget.stat.comment != null && widget.stat.comment.length > 0)
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Dimens.s, vertical: Dimens.m),
-                  child: Text(
-                    widget.stat.comment,
-                    style: TextStyle(
-                        fontSize: Dimens.font_ml, color: Colors.black),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildCollapsedTile(BuildContext context) {
-    return Card(
-      child: ListTile(
-          title: CenterHorizontal(RatingBar(
-            initialRating: widget.stat.productivity,
-            direction: Axis.horizontal,
-            allowHalfRating: true,
-            itemCount: 5,
-            itemSize: Dimens.rating_icon_width,
-            itemBuilder: (context, _) => Icon(
-              Icons.star,
-              color: MyColors.yellow,
-            ),
-            ignoreGestures: true,
-          )),
-          leading: DateTile(widget.stat.date),
-          trailing: Mood.values[widget.stat.mood.toInt() - 1].icon,
-          contentPadding: EdgeInsets.all(Dimens.s)),
-    );
-  }
-
-  void toggleExpand() {
-    setState(() {
-      expanded = !expanded;
-    });
   }
 }
