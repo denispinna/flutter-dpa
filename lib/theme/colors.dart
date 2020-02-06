@@ -21,4 +21,10 @@ class MyColors {
   static final accent_color_3 = Colors.yellow.shade900;
   static const accent_color_4 = Colors.teal;
   static const white = Colors.white;
+  static const productivity_0 = light_gray;
+  static const productivity_1 = Color(0xff006eba);
+  static const productivity_2 = Color(0xff00aae3);
+  static const productivity_3 = Color(0xff9ca9f8);
+  static const productivity_4 = Color(0xffd75ed2);
+  static const productivity_5 = Color(0xfff4258e);
 }

@@ -110,7 +110,6 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
       stats.addAll(items);
     }
     if (documents.length > 0) lastDocument = documents.last;
-    print(lastDocument.documentID);
     lastPageReached = items.length < ITEM_PER_PAGE;
     setState(() {
       isLoading = false;

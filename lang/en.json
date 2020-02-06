@@ -47,5 +47,11 @@
   "mood_second" : "bad",
   "mood_third" : "calm",
   "mood_fourth" : "jolly",
-  "mood_fifth" : "gleeful"
+  "mood_fifth" : "gleeful",
+  "productivity_first" : "unproductive",
+  "productivity_second" : "hardly productive",
+  "productivity_third" : "rather productive",
+  "productivity_fourth" : "quite productive",
+  "productivity_fifth" : "pretty productive",
+  "productivity_sixth" : "extremely productive"
 }

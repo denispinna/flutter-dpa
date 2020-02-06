@@ -47,6 +47,7 @@ flutter:
     - family:  MyIcons
       fonts:
         - asset: fonts/MyIcons.ttf
+          weight: 900
 
     - family: PrimerPrint
       fonts:

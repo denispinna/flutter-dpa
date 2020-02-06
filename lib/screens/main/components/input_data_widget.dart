@@ -4,13 +4,13 @@ import 'package:dpa/components/fire_db_component.dart';
 import 'package:dpa/components/widget/camera_widget.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/models/mood.dart';
+import 'package:dpa/models/productivity.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
-import 'package:dpa/theme/icons.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -86,10 +86,12 @@ class InputItemState extends State<InputStat> {
                       itemSize: Dimens.input_rating_icon_width,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: Dimens.xxxs),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimens.xxxs),
                           child: Mood.values[index].icon,
                         );
                       },
+                      minRating: 1,
                       onRatingUpdate: (rating) {
                         content.mood = rating;
                       },
@@ -110,13 +112,12 @@ class InputItemState extends State<InputStat> {
                       allowHalfRating: true,
                       itemCount: 5,
                       itemSize: Dimens.input_rating_icon_width,
-                      itemBuilder: (context, _) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                        child: Icon(
-                          MyIcons.star,
-                          color: MyColors.yellow,
-                        ),
-                      ),
+                      itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                          child: (index + 1).getProductivityIcon(
+                            filled: false,
+                            color: content.productivity.productivityColor,
+                          )),
                       onRatingUpdate: (rating) {
                         content.productivity = rating;
                       },

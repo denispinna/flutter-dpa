@@ -13,31 +13,31 @@ extension MoodExt on Mood {
         return Icon(
           MyIcons.mood26,
           color: this.color,
-          size: Dimens.mood_icon_width,
+          size: Dimens.rating_icon_width,
         );
       case Mood.second:
         return Icon(
           MyIcons.mood15,
           color: this.color,
-          size: Dimens.mood_icon_width,
+          size: Dimens.rating_icon_width,
         );
       case Mood.third:
         return Icon(
           MyIcons.mood25,
           color: this.color,
-          size: Dimens.mood_icon_width,
+          size: Dimens.rating_icon_width,
         );
       case Mood.fourth:
         return Icon(
           MyIcons.mood13,
           color: this.color,
-          size: Dimens.mood_icon_width,
+          size: Dimens.rating_icon_width,
         );
       default:
         return Icon(
           MyIcons.mood20,
           color: this.color,
-          size: Dimens.mood_icon_width,
+          size: Dimens.rating_icon_width,
         );
     }
   }

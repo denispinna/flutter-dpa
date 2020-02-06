@@ -3,10 +3,10 @@ import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DateTile extends StatelessWidget {
+class DateIcon extends StatelessWidget {
   final DateTime date;
 
-  const DateTile(this.date) : super();
+  const DateIcon(this.date) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +70,10 @@ class DateTile extends StatelessWidget {
   }
 }
 
-class DateTileWide extends StatelessWidget {
+class DateTitleWide extends StatelessWidget {
   final DateTime date;
 
-  const DateTileWide(this.date) : super();
+  const DateTitleWide(this.date) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +113,14 @@ class DateTileWide extends StatelessWidget {
 
 class DateTitle extends StatelessWidget {
   final DateTime date;
+  final Color color;
+  final double fontSize;
 
-  const DateTitle(this.date) : super();
+  const DateTitle({
+    @required this.date,
+    this.color = MyColors.light_gray,
+    this.fontSize = Dimens.font_sm,
+  }) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -123,13 +129,11 @@ class DateTitle extends StatelessWidget {
     var weekDay = new DateFormat("EEEE, d MMMM").format(date).toUpperCase();
 
     return Text(
-        weekDay,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            fontSize: Dimens.font_sm,
-            fontWeight: FontWeight.bold,
-            color: MyColors.light_gray),
-        maxLines: 1,
-      );
+      weekDay,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+          fontSize: fontSize, fontWeight: FontWeight.bold, color: this.color),
+      maxLines: 1,
+    );
   }
 }

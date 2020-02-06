@@ -46,5 +46,5 @@ class Dimens {
   static const date_title_height = 30.0;
   static const history_tile_icon_width = 23.0;
   static const title_font = font_l;
-  static const mood_icon_width = 50.0;
+  static const rating_icon_width = 50.0;
 }

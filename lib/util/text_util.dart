@@ -8,3 +8,13 @@ class TextUtil {
     return regex.hasMatch(value);
   }
 }
+
+extension StringExt on String {
+  String upperCaseFirstCharacter() {
+    try {
+      return this.substring(0, 1).toUpperCase() + this.substring(1, this.length);
+    } catch (e){
+      return this;
+    }
+  }
+}

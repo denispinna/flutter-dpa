@@ -34,6 +34,10 @@ class MyIcons {
   static const IconData mood29 = const IconData(0xe81c, fontFamily: _kFontFam);
   static const IconData mood30 = const IconData(0xe81d, fontFamily: _kFontFam);
   static const IconData star = const IconData(0xe81e, fontFamily: _kFontFam);
+  static const IconData star_filled = const IconData(0xe81f, fontFamily: _kFontFam);
+  static const IconData cross = const IconData(0xe820, fontFamily: _kFontFam);
+  static const IconData sleep = const IconData(0xe821, fontFamily: _kFontFam);
+  static const IconData star_in_circle = const IconData(0xe822, fontFamily: _kFontFam);
 }
 
 
