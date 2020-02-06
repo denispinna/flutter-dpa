@@ -1,10 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dpa/components/widget/date_widget.dart';
+import 'package:dpa/components/widget/image_preview.dart';
 import 'package:dpa/components/widget/mood_widget.dart';
 import 'package:dpa/components/widget/pructivity_widget.dart';
 import 'package:dpa/models/mood.dart';
 import 'package:dpa/models/stat_item.dart';
-import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -65,12 +64,7 @@ class _StatListItemState extends State<StatListItem> {
             if(widget.stat.imageUrl != null) Center(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, Dimens.s, 0, 0),
-                child: CachedNetworkImage(
-                  placeholder: (context, url) => CircularProgressIndicator(
-                    valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
-                  ),
-                  imageUrl: widget.stat.imageUrl,
-                ),
+                child: ImagePreview(url: widget.stat.imageUrl)
               ),
             ),
             Center(
