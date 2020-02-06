@@ -1,9 +1,8 @@
-import 'package:dpa/components/app_localization.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dpa/components/widget/date_widget.dart';
 import 'package:dpa/components/widget/mood_widget.dart';
 import 'package:dpa/components/widget/pructivity_widget.dart';
 import 'package:dpa/models/mood.dart';
-import 'package:dpa/models/productivity.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
@@ -60,6 +59,17 @@ class _StatListItemState extends State<StatListItem> {
                     SizedBox(width: Dimens.s),
                     MoodLabel(mood)
                   ],
+                ),
+              ),
+            ),
+            if(widget.stat.imageUrl != null) Center(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, Dimens.s, 0, 0),
+                child: CachedNetworkImage(
+                  placeholder: (context, url) => CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
+                  ),
+                  imageUrl: widget.stat.imageUrl,
                 ),
               ),
             ),
