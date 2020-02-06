@@ -129,7 +129,8 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
 
     /* We delay the setState to let the user see the loading icon instead of blinking on a fast network */
     await Future.delayed(Duration(milliseconds: 500));
-    setState(() => isLoading = false);
+    if(mounted)
+      setState(() => isLoading = false);
   }
 
   Widget _renderStats() {
