@@ -10,6 +10,7 @@ import 'package:dpa/services/auth.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
+import 'package:dpa/util/view_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -42,14 +43,14 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
   @override
   void initState() {
     super.initState();
-    _loadNextPage(true);
+    _loadNextPage(isFirstPage: true);
 
     scrollController.addListener(() {
       double maxScroll = scrollController.position.maxScrollExtent;
       double currentScroll = scrollController.position.pixels;
       double delta = MediaQuery.of(context).size.height * 0.25;
       if (maxScroll - currentScroll <= delta) {
-        _loadNextPage(false);
+        _loadNextPage();
       }
     });
   }
@@ -80,15 +81,28 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
         ),
       );
     } else {
-      return _renderStats();
+      return new RefreshIndicator(
+        child: _renderStats(),
+        onRefresh: _refreshData,
+      );
     }
   }
 
-  Future _loadNextPage(bool firstPage) async {
-    if (isLoading || lastPageReached) return;
+  Future<void> _refreshData() async {
+    stats = null;
+    lastDocument = null;
+    lastPageReached = false;
+    isLoading = false;
+    await Future.delayed(Duration(milliseconds: 500));
+    await _loadNextPage(showLoading: false);
+  }
 
+  Future _loadNextPage({bool isFirstPage = false, showLoading = true}) async {
+    if (isLoading || lastPageReached) return;
     isLoading = true;
-    setState(() {});
+    if(showLoading)
+      setState(() {});
+
     this.error = null;
     final query = await FireDb.instance
         .getOrderedStats(lastVisible: lastDocument, limit: ITEM_PER_PAGE)
@@ -99,6 +113,7 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
       setState(() {
         isLoading = false;
       });
+      displayMessage("generic_error_message", context, isError: true);
       return;
     }
 
@@ -106,31 +121,48 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
     final items = await compute(parseStats, documents);
     if (stats == null) stats = List<StatItem>();
     /* We do not want to add the items from the first page if some other items were recovered from an earlier state */
-    if (!(firstPage && stats.length > 0)) {
+    if (!(isFirstPage && stats.length > 0)) {
       stats.addAll(items);
     }
     if (documents.length > 0) lastDocument = documents.last;
     lastPageReached = items.length < ITEM_PER_PAGE;
-    setState(() {
-      isLoading = false;
-    });
+
+    /* We delay the setState to let the user see the loading icon instead of blinking on a fast network */
+    await Future.delayed(Duration(milliseconds: 500));
+    setState(() => isLoading = false);
   }
 
   Widget _renderStats() {
     _persisAndRecoverContent(context);
+
     if (stats.isNotEmpty) {
+      List<Widget> items = List();
+      items.addAll(stats.map((stat) {
+        return StatListItem(stat);
+      }).toList());
+
+      if (isLoading) {
+        items.add(Center(
+          child: Container(
+            margin: const EdgeInsets.all(Dimens.xxs),
+            child: CircularProgressIndicator(
+              valueColor:
+                  new AlwaysStoppedAnimation<Color>(MyColors.accent_color_2),
+            ),
+          ),
+        ));
+      }
+
       return Padding(
         padding: const EdgeInsets.fromLTRB(
-            Dimens.xs,
-            Dimens.xs,
-            Dimens.xs,
-            0,
+          Dimens.xs,
+          Dimens.xs,
+          Dimens.xs,
+          0,
         ),
         child: ListView(
           controller: scrollController,
-          children: stats.map((stat) {
-            return StatListItem(stat);
-          }).toList(),
+          children: items,
         ),
       );
     } else {
