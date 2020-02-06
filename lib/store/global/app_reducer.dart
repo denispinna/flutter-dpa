@@ -12,7 +12,6 @@ AppState reduceAppState(AppState state, dynamic action) {
   User user = state.user;
   RouteAction routeAction = state.routeAction;
   String currentPath = state.currentPath;
-  CameraController cameraController = state.cameraController;
   String imagePath = state.imagePath;
 
   switch (action.runtimeType) {
@@ -48,7 +47,6 @@ AppState reduceAppState(AppState state, dynamic action) {
   }
 
   final newState = AppState(
-      cameraController: cameraController,
       user: user,
       currentPath: currentPath,
       routeAction: routeAction,

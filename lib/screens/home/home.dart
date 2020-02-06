@@ -1,4 +1,4 @@
-import 'package:dpa/components/widget/lifecycle_widget.dart';
+import 'package:dpa/components/widget/connected_widget.dart';
 import 'package:dpa/theme/images.dart';
 import 'package:flutter/material.dart';
 import 'package:dpa/screens/home/components/home_widget.dart';
@@ -36,7 +36,7 @@ class HomeState extends ScreenState<HomeScreen> {
   HomeState(this.widget) : super(HomeScreen.PATH);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildScreenWidget(BuildContext context) {
     return this.widget.build(context);
   }
 }

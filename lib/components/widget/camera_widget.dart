@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'dart:ui';
+
+import 'package:camera/camera.dart';
 import 'package:dpa/components/app_localization.dart';
+import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/provider/camera_provider.dart';
 import 'package:dpa/store/global/app_actions.dart';
@@ -8,10 +11,8 @@ import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/images.dart';
-import 'package:dpa/components/logger.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,22 +20,17 @@ import 'package:path_provider/path_provider.dart';
 const IMAGE_RATIO = 16 / 9;
 
 class TakePictureWidget extends StatefulWidget {
-  final CameraController controller;
-
-  const TakePictureWidget(this.controller);
+  const TakePictureWidget();
 
   @override
-  State<StatefulWidget> createState() => TakePictureState(controller);
+  State<StatefulWidget> createState() => TakePictureState();
 }
 
-class TakePictureState extends State<TakePictureWidget> {
-  final CameraController controller;
+class TakePictureState extends CameraState {
   String imagePath;
 
-  TakePictureState(this.controller);
-
   @override
-  Widget build(BuildContext context) {
+  Widget buildCameraWidget(BuildContext context) {
     return StoreConnector<AppState, String>(
         converter: (store) => store.state.imagePath,
         builder: (context, imagePath) {
@@ -84,7 +80,6 @@ class TakePictureState extends State<TakePictureWidget> {
 }
 
 class CameraPreviewWidget extends StatefulWidget {
-
   @override
   CameraState createState() => CameraPreviewWidgetState();
 }
@@ -153,13 +148,51 @@ class CameraPreviewWidgetState extends CameraState {
 }
 
 class BlurryCameraPreview extends StatefulWidget {
-
   @override
   CameraState createState() => BlurryCameraPreviewState();
 }
 
 class BlurryCameraPreviewState extends CameraState {
   CameraController controller;
+
+  @override
+  Widget buildLoadingWidget() {
+    return AspectRatio(
+      aspectRatio: IMAGE_RATIO,
+      child: Stack(
+        children: <Widget>[
+          Container(
+            color: Colors.black,
+          ),
+          ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade600.withOpacity(0.2))),
+            ),
+          ),
+          Center(
+              child: ListView(
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    Image(
+                        image: MyImages.camera,
+                        height: Dimens.picture_preview_button_width),
+                    Center(
+                        child: Text(
+                            AppLocalizations.of(context)
+                                .translate('take_photo'),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: Dimens.font_m,
+                            )))
+                  ],
+                  physics: const NeverScrollableScrollPhysics()))
+        ],
+      ),
+    );
+  }
 
   Widget buildCameraWidget(BuildContext context) {
     return StoreConnector<AppState, Function>(
@@ -171,41 +204,42 @@ class BlurryCameraPreviewState extends CameraState {
   Widget buildWithState(BuildContext context, Function openCamera) {
     return GestureDetector(
       child: AspectRatio(
-          aspectRatio: IMAGE_RATIO,
-          child: Stack(
-            children: <Widget>[
-              ListView(children: <Widget>[
-                AspectRatio(
-                    aspectRatio: controller.value.aspectRatio,
-                    child: CameraPreview(controller))
-              ], physics: const NeverScrollableScrollPhysics()),
-              ClipRect(
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.grey.shade600.withOpacity(0.2))),
-                    ),
-                  ),
-              Center(
-                  child: ListView(
-                      shrinkWrap: true,
-                      children: <Widget>[
-                        Image(
-                            image: MyImages.camera,
-                            height: Dimens.picture_preview_button_width),
-                        Center(
-                            child: Text(
-                                AppLocalizations.of(context)
-                                    .translate('take_photo'),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: Dimens.font_m,
-                                )))
-                      ],
-                      physics: const NeverScrollableScrollPhysics()))
-            ],
-          )),
+        aspectRatio: IMAGE_RATIO,
+        child: Stack(
+          children: <Widget>[
+            ListView(children: <Widget>[
+              AspectRatio(
+                  aspectRatio: controller.value.aspectRatio,
+                  child: CameraPreview(controller))
+            ], physics: const NeverScrollableScrollPhysics()),
+            ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey.shade600.withOpacity(0.2))),
+              ),
+            ),
+            Center(
+                child: ListView(
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      Image(
+                          image: MyImages.camera,
+                          height: Dimens.picture_preview_button_width),
+                      Center(
+                          child: Text(
+                              AppLocalizations.of(context)
+                                  .translate('take_photo'),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: Dimens.font_m,
+                              )))
+                    ],
+                    physics: const NeverScrollableScrollPhysics()))
+          ],
+        ),
+      ),
       onTap: openCamera,
     );
   }
@@ -227,7 +261,9 @@ abstract class CameraState extends LifecycleWidgetState<StatefulWidget> {
   }
 
   @override
-  void onPause() {}
+  void onPause() {
+    disposeController();
+  }
 
   @override
   void onResume() {
@@ -236,7 +272,6 @@ abstract class CameraState extends LifecycleWidgetState<StatefulWidget> {
 
   Future initializeCamera() async {
     if (controller == null) {
-
       controller = await CameraProvider.loadCamera();
       await controller.initialize();
       setState(() {
@@ -246,36 +281,28 @@ abstract class CameraState extends LifecycleWidgetState<StatefulWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildWithLifecycle(BuildContext context) {
     if (controller != null)
       return buildCameraWidget(context);
     else
       return buildLoadingWidget();
   }
 
-
   Widget buildLoadingWidget() {
-    return AspectRatio(
-        aspectRatio: IMAGE_RATIO,
-        child: Stack(children: <Widget>[
-          ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade600.withOpacity(0.2))),
-            ),
-          ),
-          Center(
-              child: Padding(
-                padding: const EdgeInsets.all(Dimens.l),
-                child: CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
-                ),
-              )),
-        ]));
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(Dimens.l),
+        child: CircularProgressIndicator(
+          valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
+        ),
+      ),
+    );
   }
 
   Widget buildCameraWidget(BuildContext context);
 
+  Future disposeController() async {
+    await CameraProvider.disposeController();
+    controller = null;
+  }
 }

@@ -1,4 +1,4 @@
-import 'package:dpa/components/widget/lifecycle_widget.dart';
+import 'package:dpa/components/widget/connected_widget.dart';
 import 'package:dpa/components/widget/camera_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +15,7 @@ class CameraState extends ScreenState<CameraScreen> {
   CameraState() : super(CameraScreen.PATH);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildScreenWidget(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.black,
         body: Center(

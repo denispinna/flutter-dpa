@@ -4,45 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-abstract class ScreenState<T extends StatefulWidget>
-    extends LifecycleWidgetState<T> {
-  final String path;
-  Function updateCurrentPath;
-
-  ScreenState(this.path);
-
-  Widget buildWithChild(Widget child) {
-    return StoreConnector<AppState, Function>(
-        converter: (store) => () {
-              if (store.state.currentPath != path)
-                store.dispatch(RouteUpdatedAction(path));
-            },
-        builder: (context, updateFunction) {
-          updateCurrentPath = updateFunction;
-          return super.buildWithChild(child);
-        });
-  }
-
-  void onResume() {
-    if (updateCurrentPath != null) updateCurrentPath();
-  }
-}
-
 abstract class LifecycleWidgetState<T extends StatefulWidget> extends State<T>
     with WidgetsBindingObserver {
-  Widget buildWithChild(Widget child) {
-    return StoreConnector<AppState, Function>(
-        converter: (store) => () => store.dispatch(
-            RouteAction(destination: null, type: RouteActionType.Pop)),
-        builder: (context, popFunction) {
-          return WillPopScope(
-              child: child,
-              onWillPop: () {
-                popFunction();
-                return new Future(() => false);
-              });
-        });
+  @override
+  Widget build(BuildContext context) {
+    return buildWithLifecycle(context);
   }
+
+  Widget buildWithLifecycle(BuildContext context);
 
   @override
   void initState() {

@@ -28,7 +28,6 @@ class InputItemState extends State<InputStat> {
   static final contentKey = ValueKey(TAG);
   final _formKey = GlobalKey<FormState>();
   Function clearPicture;
-  TakePictureWidget pictureWidget;
   StateData content;
   bool formPosted = false;
 
@@ -53,8 +52,6 @@ class InputItemState extends State<InputStat> {
         final state = store.state;
         if (content.imagePath != state.imagePath)
           content.imagePath = state.imagePath;
-        if (pictureWidget == null)
-          pictureWidget = TakePictureWidget(state.cameraController);
         if (clearPicture == null)
           clearPicture = () => store.dispatch(PictureTakenAction(null));
 
@@ -70,7 +67,7 @@ class InputItemState extends State<InputStat> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    pictureWidget,
+                    TakePictureWidget(),
                     Padding(
                         padding: const EdgeInsets.only(top: Dimens.padding_m)),
                     CenterHorizontal(Text(
