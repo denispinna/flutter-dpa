@@ -20,7 +20,7 @@ import 'package:redux/redux.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final currentUser = await AuthAPI.instance.loadCurrentUser();
-  String destination =
+  String initialRoute =
       (currentUser != null) ? MainScreen.PATH : LoginScreen.PATH;
 
   final initialState = AppState(
@@ -30,7 +30,10 @@ Future<void> main() async {
   final appStore =
       new Store<AppState>(reduceAppState, initialState: initialState);
 
-  runApp(DpaApp(store: appStore));
+  runApp(DpaApp(
+    store: appStore,
+    initialRoute: initialRoute,
+  ));
 }
 
 FirebaseAnalytics analytics = FirebaseAnalytics();
@@ -70,8 +73,7 @@ class DpaAppState extends State<DpaApp> {
     return MaterialApp(
         title: 'DPA',
         theme: appTheme(),
-        //TODO: Fix initial PATH
-        initialRoute: "/",
+        initialRoute: widget.initialRoute,
         routes: <String, WidgetBuilder>{
           LoginScreen.PATH: (BuildContext context) => LoginScreen(),
           MailLoginScreen.PATH: (BuildContext context) => MailLoginScreen(),
