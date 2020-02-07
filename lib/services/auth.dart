@@ -66,7 +66,7 @@ class AuthAPI {
     };
 
     final FacebookLoginResult result = await facebookSignIn
-        .logInWithReadPermissions(['email']).catchError(onError);
+        .logIn(['email', 'public_profile']).catchError(onError);
 
     final AuthCredential credential = FacebookAuthProvider.getCredential(
         accessToken: result.accessToken.token);
