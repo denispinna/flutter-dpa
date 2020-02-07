@@ -36,7 +36,7 @@ class TakePictureState extends CameraState {
         converter: (store) => store.state.imagePath,
         builder: (context, imagePath) {
           if (imagePath == null) {
-            return BlurryCameraPreview();
+            return BlurryCameraPreview(_controller);
           } else {
             this.imagePath = imagePath;
             return StoreConnector<AppState, Function>(
@@ -100,10 +100,10 @@ class CameraPreviewWidgetState extends CameraState {
   Widget buildWithDispatchFunction(
       BuildContext context, Function(String) dispatchPicture) {
     return AspectRatio(
-        aspectRatio: controller.value.aspectRatio,
+        aspectRatio: _controller.value.aspectRatio,
         child: Stack(
           children: <Widget>[
-            CameraPreview(controller),
+            CameraPreview(_controller),
             Positioned(
                 child: new Align(
               alignment: FractionalOffset.bottomCenter,
@@ -130,7 +130,7 @@ class CameraPreviewWidgetState extends CameraState {
   }
 
   Future takePicture(Function(String) dispatchPicture) async {
-    if (!controller.value.isInitialized || controller.value.isTakingPicture) {
+    if (!_controller.value.isInitialized || _controller.value.isTakingPicture) {
       return null;
     }
     final Directory extDir = await getApplicationDocumentsDirectory();
@@ -139,7 +139,7 @@ class CameraPreviewWidgetState extends CameraState {
     final String filePath = '$dirPath/${timestamp()}.jpg';
 
     try {
-      await controller.takePicture(filePath);
+      await _controller.takePicture(filePath);
     } on CameraException catch (e) {
       Logger.logError(TAG, "error on taking picture", e);
       dispatchPicture(null);
@@ -148,64 +148,22 @@ class CameraPreviewWidgetState extends CameraState {
   }
 }
 
-class BlurryCameraPreview extends StatefulWidget {
-  @override
-  CameraState createState() => BlurryCameraPreviewState();
-}
+class BlurryCameraPreview extends StatelessWidget {
+  final CameraController _controller;
 
-class BlurryCameraPreviewState extends CameraState {
-  CameraController controller;
+  const BlurryCameraPreview(this._controller);
 
   @override
-  Widget buildLoadingWidget() {
-    return AspectRatio(
-      aspectRatio: IMAGE_RATIO,
-      child: Stack(
-        children: <Widget>[
-          Container(
-            color: Colors.black,
-          ),
-          ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade600.withOpacity(0.2))),
-            ),
-          ),
-          Center(
-              child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    Image(
-                        image: MyImages.camera,
-                        height: Dimens.picture_preview_button_width),
-                    Center(
-                        child: Text(
-                            AppLocalizations.of(context)
-                                .translate('take_photo'),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: Dimens.font_m,
-                            )))
-                  ],
-                  physics: const NeverScrollableScrollPhysics()))
-        ],
-      ),
-    );
-  }
-
-  Widget buildCameraWidget(BuildContext context) {
+  Widget build(BuildContext context) {
     return GestureDetector(
       child: AspectRatio(
         aspectRatio: IMAGE_RATIO,
         child: Stack(
           children: <Widget>[
-            ListView(children: <Widget>[
-              AspectRatio(
-                  aspectRatio: controller.value.aspectRatio,
-                  child: CameraPreview(controller))
-            ], physics: const NeverScrollableScrollPhysics()),
+            if (_controller != null && _controller.value.isInitialized)
+              buildCameraPreview()
+            else
+              buildCameraPlaceholder(),
             ClipRect(
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
@@ -237,52 +195,72 @@ class BlurryCameraPreviewState extends CameraState {
       onTap: () => Navigator.pushNamed(context, CameraScreen.PATH),
     );
   }
+
+  Widget buildCameraPreview() {
+    return ListView(
+      children: <Widget>[
+        AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: CameraPreview(_controller)),
+      ],
+      physics: const NeverScrollableScrollPhysics(),
+    );
+  }
+
+  Widget buildCameraPlaceholder() {
+    return Container(
+      color: Colors.black,
+    );
+  }
 }
 
 abstract class CameraState extends LifecycleWidgetState<StatefulWidget> {
-  CameraController controller;
+  bool isInitializing = false;
+  CameraController _controller;
 
   @override
   void dispose() {
-    onPause();
+    print("$runtimeType - onPause");
+    disposeController();
     super.dispose();
   }
 
   @override
-  void initState() {
-    super.initState();
-    onResume();
-  }
-
-  @override
-  void onPause() {
-    disposeController();
-  }
-
-  @override
   void onResume() {
-    initializeCamera();
+    print("$runtimeType - onResume");
+    _initializeCamera();
   }
 
-  Future initializeCamera() async {
-    if (controller == null) {
-      controller = await CameraProvider.loadCamera();
-      await controller.initialize();
-      setState(() {
-        controller = controller;
-      });
+  Future<CameraController> _initializeCamera() async {
+    print("$runtimeType - _initializeCamera - Start");
+    if(_controller == null) {
+      _controller = await CameraProvider.instance.loadCamera();
     }
+
+    print("isInitializing: $isInitializing - isInitialized: ${_controller.value.isInitialized}");
+    if (!_controller.value.isInitialized) {
+      print("$runtimeType - _controller.initialize()");
+      await _controller.initialize();
+    }
+    print("$runtimeType - _initializeCamera - End");
+    return _controller;
   }
 
   @override
   Widget buildWithLifecycle(BuildContext context) {
-    if (controller != null)
-      return buildCameraWidget(context);
-    else
-      return buildLoadingWidget();
+    print("$runtimeType - buildWithLifecycle");
+    return FutureBuilder<CameraController>(
+      future: _initializeCamera(),
+      builder: (context, snapshot) {
+        return (snapshot.data != null)
+            ? buildCameraWidget(context)
+            : buildLoadingWidget();
+      },
+    );
   }
 
   Widget buildLoadingWidget() {
+    print("$runtimeType - buildLoadingWidget");
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(Dimens.l),
@@ -296,7 +274,7 @@ abstract class CameraState extends LifecycleWidgetState<StatefulWidget> {
   Widget buildCameraWidget(BuildContext context);
 
   Future disposeController() async {
-    await CameraProvider.disposeController();
-    controller = null;
+    _controller?.dispose();
+    _controller = null;
   }
 }

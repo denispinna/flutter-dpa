@@ -1,16 +1,13 @@
 import 'package:camera/camera.dart';
 
 class CameraProvider {
-  static CameraController controller;
+  static CameraProvider instance = CameraProvider();
+  CameraDescription _cameraDescription;
 
-  static Future<CameraController> loadCamera() async {
-    await disposeController();
-    final cameras = await availableCameras();
-    return CameraController(cameras[0], ResolutionPreset.veryHigh);
-  }
+  Future<CameraController> loadCamera() async {
+    if (_cameraDescription == null)
+      _cameraDescription = (await availableCameras()).first;
 
-  static Future disposeController() async {
-    await controller?.dispose()?.catchError((e){/* Ignore */});
-    controller = null;
+    return CameraController(_cameraDescription, ResolutionPreset.veryHigh);
   }
 }
