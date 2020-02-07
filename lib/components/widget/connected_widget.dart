@@ -1,5 +1,4 @@
 import 'package:dpa/components/widget/lifecycle_widget.dart';
-import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';

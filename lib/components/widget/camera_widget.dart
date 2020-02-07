@@ -40,8 +40,9 @@ class TakePictureState extends CameraState {
           } else {
             this.imagePath = imagePath;
             return StoreConnector<AppState, Function>(
-                converter: (store) =>
-                    () => store.dispatch(PictureTakenAction(null)),
+                converter: (store) => () {
+                      store.dispatch(PictureTakenAction());
+                    },
                 builder: (context, clearPicture) {
                   return Stack(
                     children: <Widget>[
@@ -90,8 +91,8 @@ class CameraPreviewWidgetState extends CameraState {
 
   Widget buildCameraWidget(BuildContext context) {
     return StoreConnector<AppState, Function(String)>(
-        converter: (store) =>
-            (imagePath) => store.dispatch(PictureTakenAction(imagePath)),
+        converter: (store) => (imagePath) =>
+            store.dispatch(PictureTakenAction(filePath: imagePath)),
         builder: (context, dispatchPicture) {
           return buildWithDispatchFunction(context, dispatchPicture);
         });
@@ -233,11 +234,12 @@ abstract class CameraState extends LifecycleWidgetState<StatefulWidget> {
 
   Future<CameraController> _initializeCamera() async {
     print("$runtimeType - _initializeCamera - Start");
-    if(_controller == null) {
+    if (_controller == null) {
       _controller = await CameraProvider.instance.loadCamera();
     }
 
-    print("isInitializing: $isInitializing - isInitialized: ${_controller.value.isInitialized}");
+    print(
+        "isInitializing: $isInitializing - isInitialized: ${_controller.value.isInitialized}");
     if (!_controller.value.isInitialized) {
       print("$runtimeType - _controller.initialize()");
       await _controller.initialize();

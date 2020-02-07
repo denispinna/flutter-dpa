@@ -12,5 +12,5 @@ class UserLogoutAction implements AppAction {}
 class PictureTakenAction implements AppAction {
   final String filePath;
 
-  PictureTakenAction(this.filePath);
+  PictureTakenAction({this.filePath});
 }

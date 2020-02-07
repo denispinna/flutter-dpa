@@ -53,7 +53,7 @@ class InputItemState extends State<InputStat> {
         if (content.imagePath != state.imagePath)
           content.imagePath = state.imagePath;
         if (clearPicture == null)
-          clearPicture = () => store.dispatch(PictureTakenAction(null));
+          clearPicture = () => store.dispatch(PictureTakenAction());
 
         return state.user;
       },
