@@ -221,36 +221,27 @@ abstract class CameraState extends LifecycleWidgetState<StatefulWidget> {
 
   @override
   void dispose() {
-    print("$runtimeType - onPause");
     disposeController();
     super.dispose();
   }
 
   @override
   void onResume() {
-    print("$runtimeType - onResume");
     _initializeCamera();
   }
 
   Future<CameraController> _initializeCamera() async {
-    print("$runtimeType - _initializeCamera - Start");
     if (_controller == null) {
       _controller = await CameraProvider.instance.loadCamera();
     }
-
-    print(
-        "isInitializing: $isInitializing - isInitialized: ${_controller.value.isInitialized}");
     if (!_controller.value.isInitialized) {
-      print("$runtimeType - _controller.initialize()");
       await _controller.initialize();
     }
-    print("$runtimeType - _initializeCamera - End");
     return _controller;
   }
 
   @override
   Widget buildWithLifecycle(BuildContext context) {
-    print("$runtimeType - buildWithLifecycle");
     return FutureBuilder<CameraController>(
       future: _initializeCamera(),
       builder: (context, snapshot) {
@@ -262,7 +253,6 @@ abstract class CameraState extends LifecycleWidgetState<StatefulWidget> {
   }
 
   Widget buildLoadingWidget() {
-    print("$runtimeType - buildLoadingWidget");
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(Dimens.l),
