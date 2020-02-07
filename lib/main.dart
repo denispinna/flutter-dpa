@@ -1,13 +1,11 @@
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
-import 'package:dpa/components/widget/nav_component.dart';
 import 'package:dpa/screens/camera/camera_screen.dart';
-import 'package:dpa/screens/home/home.dart';
-import 'package:dpa/screens/login/login_screen.dart';
+import 'package:dpa/screens/login/login.dart';
+import 'package:dpa/screens/mail_login/mail_login_screen.dart';
 import 'package:dpa/screens/main/main_screen.dart';
 import 'package:dpa/screens/signup/sign_up_screen.dart';
 import 'package:dpa/services/auth.dart';
-import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_reducer.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/style.dart';
@@ -22,14 +20,11 @@ import 'package:redux/redux.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final currentUser = await AuthAPI.instance.loadCurrentUser();
-  String destination = HomeScreen.PATH;
-  if (currentUser != null) destination = MainScreen.PATH;
+  String destination =
+      (currentUser != null) ? MainScreen.PATH : LoginScreen.PATH;
 
   final initialState = AppState(
     user: currentUser,
-    currentPath: NavWidget.PATH,
-    routeAction:
-        RouteAction(destination: destination, type: RouteActionType.Push),
   );
 
   final appStore =
@@ -42,8 +37,9 @@ FirebaseAnalytics analytics = FirebaseAnalytics();
 
 class DpaApp extends StatefulWidget {
   final Store store;
+  final String initialRoute;
 
-  const DpaApp({Key key, this.store}) : super(key: key);
+  const DpaApp({@required this.store, @required this.initialRoute});
 
   @override
   DpaAppState createState() => DpaAppState(store);
@@ -74,11 +70,11 @@ class DpaAppState extends State<DpaApp> {
     return MaterialApp(
         title: 'DPA',
         theme: appTheme(),
-        initialRoute: state.currentPath,
+        //TODO: Fix initial PATH
+        initialRoute: "/",
         routes: <String, WidgetBuilder>{
-          NavWidget.PATH: (BuildContext context) => NavWidget(),
-          HomeScreen.PATH: (BuildContext context) => HomeScreen(),
           LoginScreen.PATH: (BuildContext context) => LoginScreen(),
+          MailLoginScreen.PATH: (BuildContext context) => MailLoginScreen(),
           SignUpScreen.PATH: (BuildContext context) => SignUpScreen(),
           MainScreen.PATH: (BuildContext context) => MainScreen(),
           CameraScreen.PATH: (BuildContext context) => CameraScreen(),

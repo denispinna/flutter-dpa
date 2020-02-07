@@ -1,8 +1,6 @@
-import 'package:dpa/store/global/app_actions.dart';
-import 'package:dpa/store/global/app_state.dart';
+import 'package:dpa/util/view_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 abstract class LifecycleWidgetState<T extends StatefulWidget> extends State<T>
     with WidgetsBindingObserver {
@@ -43,4 +41,27 @@ abstract class LifecycleWidgetState<T extends StatefulWidget> extends State<T>
   void onPause() {}
 
   void onResume() {}
+}
+
+abstract class ScreenState<W extends StatefulWidget>
+    extends LifecycleWidgetState<W> {
+  @override
+  Widget buildWithLifecycle(BuildContext context) {
+    return new WillPopScope(
+      onWillPop: () async {
+        if (leaveAppOnPop) {
+          askToLeaveApp(context);
+          return false;
+        } else if (Navigator.canPop(context))
+          return true;
+        else
+          return false;
+      },
+      child: buildScreenWidget(context),
+    );
+  }
+
+  Widget buildScreenWidget(BuildContext context);
+
+  bool get leaveAppOnPop => false;
 }

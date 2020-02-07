@@ -25,57 +25,22 @@ abstract class CustomStoreConnectedState<W extends StatefulWidget, O>
   Widget buildWithStore(BuildContext context, O output);
 }
 
-abstract class CustomStoreConnectedStateWithLifecycle<W extends StatefulWidget, O>
-    extends LifecycleWidgetState<W> {
-  final String path;
-  Function updateCurrentPath;
+abstract class CustomStoreConnectedStateWithLifecycle<W extends StatefulWidget,
+    O> extends LifecycleWidgetState<W> {
 
-  CustomStoreConnectedStateWithLifecycle(this.path);
+  CustomStoreConnectedStateWithLifecycle();
 
   @override
   Widget buildWithLifecycle(BuildContext context) {
     return StoreConnector<AppState, Store>(
         converter: (store) => store,
         builder: (context, store) {
-          updateCurrentPath = () {
-            if (store.state.currentPath != path)
-              store.dispatch(RouteUpdatedAction(path));
-          };
           O output = converter(store);
           return buildWithStore(context, output);
         });
   }
 
-  void onResume() {
-    if (updateCurrentPath != null) updateCurrentPath();
-  }
-
   O converter(Store store);
 
   Widget buildWithStore(BuildContext context, O output);
-}
-
-abstract class ScreenState<W extends StatefulWidget> extends CustomStoreConnectedStateWithLifecycle<W, Function> {
-  ScreenState(String path): super(path);
-  Function popAction;
-
-  @override
-  Function converter(Store store) {
-    popAction = () => store.dispatch(RouteAction(type: RouteActionType.Pop));
-    return _pop;
-  }
-
-  Future<bool> _pop() async {
-    return true;
-  }
-
-  @override
-  Widget buildWithStore(BuildContext context, Function popFunction) {
-    return new WillPopScope(
-      onWillPop: popFunction,
-      child: buildScreenWidget(context),
-    );
-  }
-
-  Widget buildScreenWidget(BuildContext context);
 }

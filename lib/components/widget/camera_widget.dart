@@ -6,6 +6,7 @@ import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/provider/camera_provider.dart';
+import 'package:dpa/screens/camera/camera_screen.dart';
 import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
@@ -195,13 +196,6 @@ class BlurryCameraPreviewState extends CameraState {
   }
 
   Widget buildCameraWidget(BuildContext context) {
-    return StoreConnector<AppState, Function>(
-        converter: (store) => () => store.dispatch(
-            RouteAction(destination: "/camera", type: RouteActionType.Push)),
-        builder: buildWithState);
-  }
-
-  Widget buildWithState(BuildContext context, Function openCamera) {
     return GestureDetector(
       child: AspectRatio(
         aspectRatio: IMAGE_RATIO,
@@ -240,7 +234,7 @@ class BlurryCameraPreviewState extends CameraState {
           ],
         ),
       ),
-      onTap: openCamera,
+      onTap: () => Navigator.pushNamed(context, CameraScreen.PATH),
     );
   }
 }

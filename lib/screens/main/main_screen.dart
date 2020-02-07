@@ -1,6 +1,7 @@
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/widget/bottom_navigation/animated_bottom_bar.dart';
 import 'package:dpa/components/widget/connected_widget.dart';
+import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';
@@ -17,7 +18,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainState extends ScreenState<MainScreen> {
-  MainState() : super(MainScreen.PATH);
 
   final PageStorageBucket bucket = PageStorageBucket();
   InputStat inputWidget;
@@ -69,6 +69,9 @@ class MainState extends ScreenState<MainScreen> {
       currentIndex = index;
     });
   }
+
+  @override
+  bool get leaveAppOnPop => true;
 
   void setupBarItems() {
     barItems = [

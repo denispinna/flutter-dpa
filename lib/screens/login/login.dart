@@ -1,13 +1,13 @@
-import 'package:dpa/components/widget/connected_widget.dart';
+import 'package:dpa/components/widget/lifecycle_widget.dart';
+import 'package:dpa/screens/login/components/home_widget.dart';
 import 'package:dpa/theme/images.dart';
 import 'package:flutter/material.dart';
-import 'package:dpa/screens/home/components/home_widget.dart';
 
-class HomeScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   static const PATH = "/home";
 
   @override
-  State<StatefulWidget> createState() => HomeState(this);
+  State<StatefulWidget> createState() => _LoginState();
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,11 +29,9 @@ class HomeScreen extends StatefulWidget {
   }
 }
 
-class HomeState extends ScreenState<HomeScreen> {
-  static const String TAG = "HomeState";
-  HomeScreen widget;
-
-  HomeState(this.widget) : super(HomeScreen.PATH);
+class _LoginState extends ScreenState<LoginScreen> {
+  static const String TAG = "LoginState";
+  LoginScreen widget;
 
   @override
   Widget buildScreenWidget(BuildContext context) {

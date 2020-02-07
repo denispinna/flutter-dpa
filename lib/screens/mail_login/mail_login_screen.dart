@@ -1,17 +1,15 @@
 import 'package:dpa/components/app_localization.dart';
-import 'package:dpa/components/widget/connected_widget.dart';
+import 'package:dpa/components/widget/lifecycle_widget.dart';
+import 'package:dpa/screens/mail_login/components/login_form.dart';
 import 'package:flutter/material.dart';
-import 'package:dpa/screens/login/components/login_form.dart';
 
-class LoginScreen extends StatefulWidget {
+class MailLoginScreen extends StatefulWidget {
   static const PATH = "/login";
 
   @override
-  State<StatefulWidget> createState() => LoginScreenState();
+  State<StatefulWidget> createState() => _MailLoginScreenState();
 }
-class LoginScreenState extends ScreenState<LoginScreen> {
-
-  LoginScreenState() : super(LoginScreen.PATH);
+class _MailLoginScreenState extends ScreenState<MailLoginScreen> {
 
   @override
   Widget buildScreenWidget(BuildContext context) {

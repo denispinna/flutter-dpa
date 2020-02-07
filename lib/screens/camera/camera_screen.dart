@@ -1,5 +1,5 @@
-import 'package:dpa/components/widget/connected_widget.dart';
 import 'package:dpa/components/widget/camera_widget.dart';
+import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:flutter/material.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -11,8 +11,6 @@ class CameraScreen extends StatefulWidget {
 
 class CameraState extends ScreenState<CameraScreen> {
   static const String TAG = "CameraState";
-
-  CameraState() : super(CameraScreen.PATH);
 
   @override
   Widget buildScreenWidget(BuildContext context) {
