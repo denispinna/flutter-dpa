@@ -8,25 +8,6 @@ class LoginScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => _LoginState();
-
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: MyImages.home_background,
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: MyImages.home_background, fit: BoxFit.cover),
-        ),
-        child: Center(child: HomeWidget()),
-      ),
-    ));
-  }
 }
 
 class _LoginState extends ScreenState<LoginScreen> {
@@ -35,6 +16,21 @@ class _LoginState extends ScreenState<LoginScreen> {
 
   @override
   Widget buildScreenWidget(BuildContext context) {
-    return this.widget.build(context);
+    return Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: MyImages.home_background,
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: MyImages.home_background, fit: BoxFit.cover),
+            ),
+            child: Center(child: HomeWidget()),
+          ),
+        ));
   }
 }
