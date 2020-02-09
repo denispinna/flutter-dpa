@@ -1,6 +1,7 @@
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/file_manager.dart';
 import 'package:dpa/components/fire_db_component.dart';
+import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/camera_widget.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/models/mood.dart';
@@ -32,6 +33,8 @@ class InputItemState extends State<InputStat> {
 
   @override
   Widget build(BuildContext context) {
+    Logger.log(runtimeType.toString(), "build");
+
     persistAndRecoverContent(context);
     if (content.loading) {
       return Center(

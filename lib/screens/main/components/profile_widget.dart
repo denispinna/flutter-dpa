@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dpa/components/app_localization.dart';
+import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/services/auth.dart';
@@ -18,6 +19,7 @@ class ProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Logger.log(runtimeType.toString(), "build");
     return StoreConnector<AppState, User>(
         converter: (store) => store.state.user, builder: buildWithUser);
   }

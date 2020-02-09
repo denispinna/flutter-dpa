@@ -57,6 +57,8 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Logger.log(runtimeType.toString(), "build");
+
     return StoreConnector<AppState, User>(
         converter: (store) => store.state.user, builder: buildWithUser);
   }
