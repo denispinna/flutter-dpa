@@ -64,7 +64,7 @@ class _StatListItemState extends State<StatListItem> {
             if(widget.stat.imageUrl != null) Center(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, Dimens.s, 0, 0),
-                child: ImagePreview(url: widget.stat.imageUrl)
+                child: ImagePreview(pathOrUrl: widget.stat.imageUrl)
               ),
             ),
             Center(

@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
+import 'package:dpa/components/widget/image_preview.dart';
 import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/provider/camera_provider.dart';
 import 'package:dpa/screens/camera/camera_screen.dart';
@@ -21,13 +22,15 @@ import 'package:path_provider/path_provider.dart';
 const IMAGE_RATIO = 16 / 9;
 
 class TakePictureWidget extends StatefulWidget {
-  const TakePictureWidget();
+  final bool liveButton;
+
+  const TakePictureWidget({this.liveButton = false});
 
   @override
   State<StatefulWidget> createState() => TakePictureState();
 }
 
-class TakePictureState extends CameraState {
+class TakePictureState extends CameraState<TakePictureWidget> {
   String imagePath;
 
   @override
@@ -35,49 +38,101 @@ class TakePictureState extends CameraState {
     return StoreConnector<AppState, String>(
         converter: (store) => store.state.imagePath,
         builder: (context, imagePath) {
+          this.imagePath = imagePath;
           if (imagePath == null) {
-            return BlurryCameraPreview(_controller);
+            if (widget.liveButton)
+              return BlurryCameraPreview(_controller);
+            else {
+              return CameraButton();
+            }
           } else {
-            this.imagePath = imagePath;
             return StoreConnector<AppState, Function>(
                 converter: (store) => () {
-                      store.dispatch(PictureTakenAction());
+                      store.dispatch(RemovePictureAction());
                     },
                 builder: (context, clearPicture) {
-                  return Stack(
-                    children: <Widget>[
-                      AspectRatio(
+                  return GestureDetector(
+                    child: Stack(
+                      children: <Widget>[
+                        AspectRatio(
                           aspectRatio: IMAGE_RATIO,
-                          child: Image.file(
-                            File(imagePath),
-                            fit: BoxFit.cover,
-                          )),
-                      Positioned(
-                          child: new Align(
-                        alignment: FractionalOffset.topRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(Dimens.xs),
-                          child: Container(
-                              decoration: new BoxDecoration(
-                                  color: MyColors.alpha_red,
-                                  borderRadius: new BorderRadius.all(
-                                      const Radius.circular(40.0))),
-                              child: GestureDetector(
-                                child: Padding(
-                                    padding: const EdgeInsets.all(Dimens.xs),
-                                    child: SvgPicture.asset(MyImages.cross,
-                                        height: Dimens.picto_button_width,
-                                        width: Dimens.picto_button_width,
-                                        color: Colors.white)),
-                                onTap: clearPicture,
-                              )),
+                          child: ImagePreview(
+                            fromFile: true,
+                            pathOrUrl: imagePath,
+                            ratio: IMAGE_RATIO,
+                          ),
                         ),
-                      )),
-                    ],
+                        Positioned(
+                            child: new Align(
+                          alignment: FractionalOffset.topRight,
+                          child: Padding(
+                            padding: const EdgeInsets.all(Dimens.xs),
+                            child: Container(
+                                decoration: new BoxDecoration(
+                                    color: MyColors.alpha_red,
+                                    borderRadius: new BorderRadius.all(
+                                        const Radius.circular(40.0))),
+                                child: GestureDetector(
+                                  child: Padding(
+                                      padding: const EdgeInsets.all(Dimens.xs),
+                                      child: SvgPicture.asset(MyImages.cross,
+                                          height: Dimens.picto_button_width,
+                                          width: Dimens.picto_button_width,
+                                          color: Colors.white)),
+                                  onTap: clearPicture,
+                                )),
+                          ),
+                        )),
+                      ],
+                    ),
                   );
                 });
           }
         });
+  }
+}
+
+class CameraButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: AspectRatio(
+        aspectRatio: IMAGE_RATIO,
+        child: Stack(
+          children: <Widget>[
+            Scaffold(
+              backgroundColor: Colors.grey,
+            ),
+            ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey.shade600.withOpacity(0.2))),
+              ),
+            ),
+            Center(
+                child: ListView(
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      Image(
+                          image: MyImages.camera,
+                          height: Dimens.picture_preview_button_width),
+                      Center(
+                          child: Text(
+                              AppLocalizations.of(context)
+                                  .translate('take_photo'),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: Dimens.font_m,
+                              )))
+                    ],
+                    physics: const NeverScrollableScrollPhysics()))
+          ],
+        ),
+      ),
+      onTap: () => Navigator.pushNamed(context, CameraScreen.PATH),
+    );
   }
 }
 
@@ -210,12 +265,13 @@ class BlurryCameraPreview extends StatelessWidget {
 
   Widget buildCameraPlaceholder() {
     return Container(
-      color: Colors.black,
+      color: Colors.grey,
     );
   }
 }
 
-abstract class CameraState extends LifecycleWidgetState<StatefulWidget> {
+abstract class CameraState<W extends StatefulWidget>
+    extends LifecycleWidgetState<W> {
   bool isInitializing = false;
   CameraController _controller;
 
