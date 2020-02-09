@@ -10,7 +10,6 @@ const TAG = "reduceAppState";
 
 AppState reduceAppState(AppState state, dynamic action) {
   User user = state.user;
-  String imagePath = state.imagePath;
   Function(BuildContext) function;
 
   switch (action.runtimeType) {
@@ -23,20 +22,15 @@ AppState reduceAppState(AppState state, dynamic action) {
       user = null;
       function = (BuildContext context) => Navigator.pushReplacementNamed(context, LoginScreen.PATH);
       break;
-    case PictureTakenAction:
-      final pictureAction = action as PictureTakenAction;
-      imagePath = pictureAction.filePath;
-      function = (BuildContext context) => Navigator.pop(context);
-      break;
-    case RemovePictureAction:
-      imagePath = null;
+    case PushFunctionAction:
+      final functionAction = action as PushFunctionAction;
+      function = functionAction.function;
       break;
   }
 
   final newState = AppState(
       function: function,
-      user: user,
-      imagePath: imagePath);
+      user: user,);
 
   Logger.log(TAG, "newState : $newState");
 

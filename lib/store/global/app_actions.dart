@@ -10,10 +10,8 @@ class UserLoginAction implements AppAction {
 
 class UserLogoutAction implements AppAction {}
 
-class PictureTakenAction implements AppAction {
-  final String filePath;
-
-  PictureTakenAction({@required this.filePath});
+/// Used to push an action that will be executed at the root of the navigation tree */
+class PushFunctionAction implements AppAction {
+  final Function(BuildContext) function;
+  PushFunctionAction(this.function);
 }
-
-class RemovePictureAction implements AppAction {}

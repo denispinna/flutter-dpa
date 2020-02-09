@@ -7,7 +7,6 @@ import 'package:dpa/models/mood.dart';
 import 'package:dpa/models/productivity.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
-import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
@@ -50,11 +49,6 @@ class InputItemState extends State<InputStat> {
     return StoreConnector<AppState, User>(
       converter: (store) {
         final state = store.state;
-        if (content.imagePath != state.imagePath)
-          content.imagePath = state.imagePath;
-        if (clearPicture == null)
-          clearPicture = () => store.dispatch(PictureTakenAction());
-
         return state.user;
       },
       builder: (context, user) {

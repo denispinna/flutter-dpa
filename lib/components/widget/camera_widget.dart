@@ -8,14 +8,11 @@ import 'package:dpa/components/widget/image_preview.dart';
 import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/provider/camera_provider.dart';
 import 'package:dpa/screens/camera/camera_screen.dart';
-import 'package:dpa/store/global/app_actions.dart';
-import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/images.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -30,69 +27,77 @@ class TakePictureWidget extends StatefulWidget {
   State<StatefulWidget> createState() => _TakePictureState();
 }
 
-class _TakePictureState extends CameraState<TakePictureWidget> {
+class _TakePictureState extends State<TakePictureWidget> {
   String imagePath;
 
   @override
-  Widget buildCameraWidget(BuildContext context) {
-    return StoreConnector<AppState, String>(
-        converter: (store) => store.state.imagePath,
-        builder: (context, imagePath) {
-          this.imagePath = imagePath;
-          if (imagePath == null) {
-            if (widget.liveButton)
-              return BlurryCameraPreview(_controller);
-            else {
-              return CameraButton();
-            }
-          } else {
-            return StoreConnector<AppState, Function>(
-                converter: (store) => () {
-                      store.dispatch(RemovePictureAction());
-                    },
-                builder: (context, clearPicture) {
-                  return GestureDetector(
-                    child: Stack(
-                      children: <Widget>[
-                        AspectRatio(
-                          aspectRatio: IMAGE_RATIO,
-                          child: ImagePreview(
-                            fromFile: true,
-                            pathOrUrl: imagePath,
-                            ratio: IMAGE_RATIO,
-                          ),
-                        ),
-                        Positioned(
-                            child: new Align(
-                          alignment: FractionalOffset.topRight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(Dimens.xs),
-                            child: Container(
-                                decoration: new BoxDecoration(
-                                    color: MyColors.alpha_red,
-                                    borderRadius: new BorderRadius.all(
-                                        const Radius.circular(40.0))),
-                                child: GestureDetector(
-                                  child: Padding(
-                                      padding: const EdgeInsets.all(Dimens.xs),
-                                      child: SvgPicture.asset(MyImages.cross,
-                                          height: Dimens.picto_button_width,
-                                          width: Dimens.picto_button_width,
-                                          color: Colors.white)),
-                                  onTap: clearPicture,
-                                )),
-                          ),
-                        )),
-                      ],
-                    ),
-                  );
-                });
-          }
-        });
+  Widget build(BuildContext context) {
+    this.imagePath = imagePath;
+    if (imagePath == null) {
+      if (widget.liveButton)
+        return BlurryCameraPreview(
+          onPictureTaken: onPictureTaken,
+        );
+      else {
+        return CameraWidget(onPictureTaken);
+      }
+    } else {
+      return GestureDetector(
+        child: Stack(
+          children: <Widget>[
+            AspectRatio(
+              aspectRatio: IMAGE_RATIO,
+              child: ImagePreview(
+                fromFile: true,
+                pathOrUrl: imagePath,
+                ratio: IMAGE_RATIO,
+              ),
+            ),
+            Positioned(
+                child: new Align(
+              alignment: FractionalOffset.topRight,
+              child: Padding(
+                padding: const EdgeInsets.all(Dimens.xs),
+                child: Container(
+                    decoration: new BoxDecoration(
+                        color: MyColors.alpha_red,
+                        borderRadius:
+                            new BorderRadius.all(const Radius.circular(40.0))),
+                    child: GestureDetector(
+                      child: Padding(
+                          padding: const EdgeInsets.all(Dimens.xs),
+                          child: SvgPicture.asset(MyImages.cross,
+                              height: Dimens.picto_button_width,
+                              width: Dimens.picto_button_width,
+                              color: Colors.white)),
+                      onTap: clearPicture,
+                    )),
+              ),
+            )),
+          ],
+        ),
+      );
+    }
+  }
+
+  void clearPicture() {
+    setState(() {
+      imagePath = null;
+    });
+  }
+
+  void onPictureTaken(String path) {
+    setState(() {
+      imagePath = path;
+    });
   }
 }
 
-class CameraButton extends StatelessWidget {
+class CameraWidget extends StatelessWidget {
+  final Function(String path) onPictureTaken;
+
+  CameraWidget(this.onPictureTaken);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -131,30 +136,25 @@ class CameraButton extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () => Navigator.pushNamed(context, CameraScreen.PATH),
+      onTap: () => Navigator.pushNamed(context, CameraScreen.PATH,
+          arguments: onPictureTaken),
     );
   }
 }
 
 class CameraPreviewWidget extends StatefulWidget {
+  final Function(String) onPictureTaken;
+
+  const CameraPreviewWidget(this.onPictureTaken);
+
   @override
   CameraState createState() => CameraPreviewWidgetState();
 }
 
-class CameraPreviewWidgetState extends CameraState {
+class CameraPreviewWidgetState extends CameraState<CameraPreviewWidget> {
   static const TAG = "CameraPreviewWidget";
 
   Widget buildCameraWidget(BuildContext context) {
-    return StoreConnector<AppState, Function(String)>(
-        converter: (store) => (imagePath) =>
-            store.dispatch(PictureTakenAction(filePath: imagePath)),
-        builder: (context, dispatchPicture) {
-          return buildWithDispatchFunction(context, dispatchPicture);
-        });
-  }
-
-  Widget buildWithDispatchFunction(
-      BuildContext context, Function(String) dispatchPicture) {
     return AspectRatio(
         aspectRatio: _controller.value.aspectRatio,
         child: Stack(
@@ -177,7 +177,7 @@ class CameraPreviewWidgetState extends CameraState {
                               height: Dimens.large_picto_button_width,
                               width: Dimens.large_picto_button_width,
                               color: MyColors.second)),
-                      onTap: () => takePicture(dispatchPicture),
+                      onTap: () => takePicture(context),
                     )),
               ),
             )),
@@ -185,12 +185,12 @@ class CameraPreviewWidgetState extends CameraState {
         ));
   }
 
-  Future takePicture(Function(String) dispatchPicture) async {
+  Future takePicture(BuildContext context) async {
     if (!_controller.value.isInitialized || _controller.value.isTakingPicture) {
       return null;
     }
     final Directory extDir = await getApplicationDocumentsDirectory();
-    final String dirPath = '${extDir.path}/Pictures/flutter_test';
+    final String dirPath = '${extDir.path}/Pictures/dpa';
     await Directory(dirPath).create(recursive: true);
     final String filePath = '$dirPath/${timestamp()}.jpg';
 
@@ -198,19 +198,24 @@ class CameraPreviewWidgetState extends CameraState {
       await _controller.takePicture(filePath);
     } on CameraException catch (e) {
       Logger.logError(TAG, "error on taking picture", e);
-      dispatchPicture(null);
     }
-    return dispatchPicture(filePath);
+    widget.onPictureTaken(filePath);
+    Navigator.pop(context);
   }
 }
 
-class BlurryCameraPreview extends StatelessWidget {
-  final CameraController _controller;
+class BlurryCameraPreview extends StatefulWidget {
+  final Function(String) onPictureTaken;
 
-  const BlurryCameraPreview(this._controller);
+  const BlurryCameraPreview({@required this.onPictureTaken});
 
   @override
-  Widget build(BuildContext context) {
+  _BlurryCameraPreviewState createState() => _BlurryCameraPreviewState();
+}
+
+class _BlurryCameraPreviewState extends CameraState<BlurryCameraPreview> {
+  @override
+  Widget buildCameraWidget(BuildContext context) {
     return GestureDetector(
       child: AspectRatio(
         aspectRatio: IMAGE_RATIO,
@@ -248,7 +253,11 @@ class BlurryCameraPreview extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () => Navigator.pushNamed(context, CameraScreen.PATH),
+      onTap: () => Navigator.pushNamed(
+        context,
+        CameraScreen.PATH,
+        arguments: widget.onPictureTaken,
+      ),
     );
   }
 

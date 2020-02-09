@@ -5,12 +5,10 @@ import 'package:flutter/cupertino.dart';
 
 class AppState {
   final User user;
-  final String imagePath;
   final Function(BuildContext) function;
 
   AppState({
     this.user,
-    this.imagePath,
     this.function,
   });
 }
