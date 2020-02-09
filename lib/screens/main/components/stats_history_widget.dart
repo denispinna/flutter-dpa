@@ -102,8 +102,7 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
   Future _loadNextPage({bool isFirstPage = false, showLoading = true}) async {
     if (isLoading || lastPageReached) return;
     isLoading = true;
-    if(showLoading)
-      setState(() {});
+    if (showLoading) setState(() {});
 
     this.error = null;
     final query = await FireDb.instance
@@ -130,9 +129,8 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
     lastPageReached = items.length < ITEM_PER_PAGE;
 
     /* We delay the setState to let the user see the loading icon instead of blinking on a fast network */
-    await Future.delayed(Duration(milliseconds: 500));
-    if(mounted)
-      setState(() => isLoading = false);
+    await Future.delayed(Duration(milliseconds: 200));
+    if (mounted) setState(() => isLoading = false);
   }
 
   Widget _renderStats() {
@@ -141,7 +139,9 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
     if (stats.isNotEmpty) {
       List<Widget> items = List();
       items.addAll(stats.map((stat) {
-        return StatListItem(stat);
+        return StatListItem(
+          stat: stat,
+        );
       }).toList());
 
       if (isLoading) {

@@ -1,8 +1,4 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dpa/components/fire_db_component.dart';
-import 'package:dpa/models/mood.dart';
 
 class StatItem {
   final String id;
@@ -12,6 +8,7 @@ class StatItem {
   final String comment;
   final double mood;
   final double productivity;
+  bool expanded;
 
   StatItem(
       {DateTime date,
@@ -20,7 +17,8 @@ class StatItem {
       this.imageUrl,
       this.comment,
       this.mood,
-      this.productivity}) {
+      this.productivity,
+      this.expanded = false}) {
     this.date = date != null ? date : DateTime.now();
   }
 

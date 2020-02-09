@@ -12,19 +12,18 @@ import 'package:flutter/rendering.dart';
 class StatListItem extends StatefulWidget {
   final StatItem stat;
 
-  const StatListItem(this.stat);
+  const StatListItem({@required this.stat});
 
   @override
   _StatListItemState createState() => _StatListItemState();
 }
 
 class _StatListItemState extends State<StatListItem> {
-  bool expanded = false;
 
   @override
   Widget build(BuildContext context) {
     Widget content;
-    if (expanded)
+    if (widget.stat.expanded)
       content = buildExpandedTile(context);
     else
       content = buildCollapsedTile(context);
@@ -128,8 +127,7 @@ class _StatListItemState extends State<StatListItem> {
   }
 
   void toggleExpand() {
-    setState(() {
-      expanded = !expanded;
-    });
+    widget.stat.expanded = !widget.stat.expanded;
+    setState(() {});
   }
 }
