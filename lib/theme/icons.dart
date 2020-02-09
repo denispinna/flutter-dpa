@@ -38,6 +38,10 @@ class MyIcons {
   static const IconData cross = const IconData(0xe820, fontFamily: _kFontFam);
   static const IconData sleep = const IconData(0xe821, fontFamily: _kFontFam);
   static const IconData star_in_circle = const IconData(0xe822, fontFamily: _kFontFam);
+  static const IconData pie_chart = const IconData(0xe823, fontFamily: _kFontFam);
+  static const IconData profile = const IconData(0xe824, fontFamily: _kFontFam);
+  static const IconData calendar = const IconData(0xe825, fontFamily: _kFontFam);
+  static const IconData plus = const IconData(0xe826, fontFamily: _kFontFam);
 }
 
 

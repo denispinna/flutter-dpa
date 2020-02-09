@@ -11,6 +11,7 @@ class MyImages {
   static const clock_full = AssetImage("assets/clock_full.png");
   static const clock_half = AssetImage("assets/clock_half.png");
   static const clock_empty = AssetImage("assets/clock_empty.png");
+  static const sunset_background = AssetImage("assets/sunset.jpg");
   static const take_picture = "assets/take_picture.svg";
   static const cross = "assets/cross.svg";
   static const mood_first = "assets/mood_first.svg";

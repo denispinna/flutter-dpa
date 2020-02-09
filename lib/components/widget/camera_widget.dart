@@ -35,7 +35,7 @@ class _TakePictureState extends State<TakePictureWidget> {
     this.imagePath = imagePath;
     if (imagePath == null) {
       if (widget.liveButton)
-        return BlurryCameraPreview(
+        return CameraWidgetWithPreview(
           onPictureTaken: onPictureTaken,
         );
       else {
@@ -105,15 +105,18 @@ class CameraWidget extends StatelessWidget {
         aspectRatio: IMAGE_RATIO,
         child: Stack(
           children: <Widget>[
-            Scaffold(
-              backgroundColor: Colors.grey,
-            ),
-            ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade600.withOpacity(0.2))),
+            Container(
+              decoration: new BoxDecoration(
+                image: new DecorationImage(
+                  image: MyImages.sunset_background,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: new BackdropFilter(
+                filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                child: new Container(
+                  decoration: new BoxDecoration(color: Colors.white.withOpacity(0.0)),
+                ),
               ),
             ),
             Center(
@@ -204,16 +207,18 @@ class CameraPreviewWidgetState extends CameraState<CameraPreviewWidget> {
   }
 }
 
-class BlurryCameraPreview extends StatefulWidget {
+class CameraWidgetWithPreview extends StatefulWidget {
   final Function(String) onPictureTaken;
 
-  const BlurryCameraPreview({@required this.onPictureTaken});
+  const CameraWidgetWithPreview({@required this.onPictureTaken});
 
   @override
-  _BlurryCameraPreviewState createState() => _BlurryCameraPreviewState();
+  _CameraWidgetWithPreviewState createState() =>
+      _CameraWidgetWithPreviewState();
 }
 
-class _BlurryCameraPreviewState extends CameraState<BlurryCameraPreview> {
+class _CameraWidgetWithPreviewState
+    extends CameraState<CameraWidgetWithPreview> {
   @override
   Widget buildCameraWidget(BuildContext context) {
     return GestureDetector(

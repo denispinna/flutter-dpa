@@ -8,6 +8,7 @@ import 'package:dpa/screens/main/components/profile_widget.dart';
 import 'package:dpa/screens/main/components/stats_history_widget.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
+import 'package:dpa/theme/icons.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -77,19 +78,19 @@ class _MainState extends ScreenState<MainScreen> {
     barItems = [
       BarItem(
           text: AppLocalizations.of(context).translate('today'),
-          iconData: Icons.mood,
+          iconData: MyIcons.plus,
           color: MyColors.accent_color_1),
       BarItem(
           text: AppLocalizations.of(context).translate('history'),
-          iconData: Icons.accessibility_new,
+          iconData: MyIcons.calendar,
           color: MyColors.accent_color_2),
       BarItem(
           text: AppLocalizations.of(context).translate('stats'),
-          iconData: Icons.bubble_chart,
+          iconData: MyIcons.pie_chart,
           color: MyColors.accent_color_3),
       BarItem(
           text: AppLocalizations.of(context).translate('profile'),
-          iconData: Icons.person,
+          iconData: MyIcons.profile,
           color: MyColors.accent_color_4),
     ];
   }
