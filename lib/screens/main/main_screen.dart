@@ -14,10 +14,10 @@ class MainScreen extends StatefulWidget {
   static const PATH = "/main";
 
   @override
-  State<StatefulWidget> createState() => MainState();
+  State<StatefulWidget> createState() => _MainState();
 }
 
-class MainState extends ScreenState<MainScreen> {
+class _MainState extends ScreenState<MainScreen> {
 
   final PageStorageBucket bucket = PageStorageBucket();
   InputStat inputWidget;

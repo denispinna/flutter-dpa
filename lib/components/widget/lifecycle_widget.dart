@@ -1,3 +1,4 @@
+import 'package:dpa/components/logger.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ abstract class LifecycleWidgetState<T extends StatefulWidget> extends State<T>
     with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
+    Logger.log(runtimeType.toString(), "build");
     return buildWithLifecycle(context);
   }
 

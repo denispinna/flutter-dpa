@@ -32,6 +32,8 @@ class _ConnectedState extends LifecycleWidgetState<MyApp> {
 
   @override
   Widget buildWithLifecycle(BuildContext context) {
+    Logger.log(runtimeType.toString(), "buildWithLifecycle");
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -46,6 +48,8 @@ class _ConnectedState extends LifecycleWidgetState<MyApp> {
   }
 
   Widget buildWithStore(BuildContext context, void ignore) {
+    Logger.log(runtimeType.toString(), "buildWithStore");
+
     return MaterialApp(
         title: 'DPA',
         theme: appTheme(),

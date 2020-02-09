@@ -1,3 +1,4 @@
+import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,8 @@ abstract class CustomStoreConnectedState<W extends StatefulWidget, O>
     extends State<W> {
   @override
   Widget build(BuildContext context) {
+    Logger.log(runtimeType.toString(), "build");
+
     return StoreConnector<AppState, O>(
       converter: converter,
       builder: buildWithStore,

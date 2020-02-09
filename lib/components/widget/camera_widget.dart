@@ -27,10 +27,10 @@ class TakePictureWidget extends StatefulWidget {
   const TakePictureWidget({this.liveButton = false});
 
   @override
-  State<StatefulWidget> createState() => TakePictureState();
+  State<StatefulWidget> createState() => _TakePictureState();
 }
 
-class TakePictureState extends CameraState<TakePictureWidget> {
+class _TakePictureState extends CameraState<TakePictureWidget> {
   String imagePath;
 
   @override
