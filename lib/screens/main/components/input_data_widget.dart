@@ -111,19 +111,32 @@ class InputItemState extends State<InputStat> {
                           )),
                       onRatingUpdate: (rating) {
                         content.productivity = rating;
+                        setState(() {
+
+                        });
                       },
                     )),
+                    Padding(padding: const EdgeInsets.only(top: Dimens.s)),
                     Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: Dimens.padding_xxxl),
                         child: TextFormField(
+                          keyboardType: TextInputType.multiline,
                           initialValue: content.comment,
+                          minLines: 3,
+                          maxLines: 3,
                           onChanged: (text) => content.comment = text,
                           decoration: InputDecoration(
-                              hintText: AppLocalizations.of(context)
-                                  .translate('comment_hint'),
-                              labelText: AppLocalizations.of(context)
-                                  .translate('comment')),
+                            hintText: AppLocalizations.of(context)
+                                .translate('comment_hint'),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: MyColors.light_gray,
+                                width: 1.0,
+                              ),
+                            ),
+                            border: const OutlineInputBorder(),
+                          ),
                         )),
                     Padding(padding: const EdgeInsets.only(top: Dimens.s)),
                     CenterHorizontal(
