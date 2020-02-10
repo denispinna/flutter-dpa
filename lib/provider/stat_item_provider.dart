@@ -24,12 +24,11 @@ List<StatItem> getDefaultStatItems(String userEmail) {
 class PictureStatItem extends TextStatItem {
   const PictureStatItem({@required userEmail})
       : super(
-          id: '',
           userEmail: userEmail,
           isCustom: false,
           isEnabled: true,
-          name: 'default_mood',
-          inputLabel: 'mood_label',
+          key: 'default_picture',
+          inputLabel: null,
           outputLabel: '',
           localizedLabel: true,
           color: MyColors.dark,
@@ -62,11 +61,10 @@ class PictureStatItem extends TextStatItem {
 class MoodStatItem extends QuantityStatItem<int> {
   const MoodStatItem({@required userEmail})
       : super(
-          id: '',
           userEmail: userEmail,
           isCustom: false,
           isEnabled: true,
-          name: 'default_mood',
+          key: 'default_mood',
           inputLabel: 'mood_label',
           outputLabel: '',
           localizedLabel: true,
@@ -137,12 +135,11 @@ class ProductivityStatItem extends QuantityStatItem<double> {
 
   ProductivityStatItem({@required userEmail})
       : super(
-          id: '',
           userEmail: userEmail,
           isCustom: false,
           isEnabled: true,
-          name: 'default_mood',
-          inputLabel: 'mood_label',
+          key: 'default_productivity',
+          inputLabel: 'productivity_label',
           outputLabel: '',
           localizedLabel: true,
           color: MyColors.dark,
@@ -158,7 +155,7 @@ class ProductivityStatItem extends QuantityStatItem<double> {
     return Column(
       children: <Widget>[
         CenterHorizontal(Text(
-          AppLocalizations.of(context).translate('productivity_label'),
+          AppLocalizations.of(context).translate(inputLabel),
           style: TextStyle(color: MyColors.dark, fontSize: Dimens.title_font),
         )),
         Padding(padding: const EdgeInsets.only(top: Dimens.padding_s)),
@@ -197,12 +194,11 @@ class ProductivityStatItem extends QuantityStatItem<double> {
 class CommentStatItem extends TextStatItem {
   const CommentStatItem({@required userEmail})
       : super(
-          id: '',
           userEmail: userEmail,
           isCustom: false,
           isEnabled: true,
-          name: 'default_mood',
-          inputLabel: 'mood_label',
+          key: 'default_comment',
+          inputLabel: 'comment_hint',
           outputLabel: '',
           localizedLabel: true,
           color: MyColors.dark,
@@ -224,7 +220,7 @@ class CommentStatItem extends TextStatItem {
           maxLength: maxLength,
           onChanged: onValueChanged,
           decoration: InputDecoration(
-            hintText: AppLocalizations.of(context).translate('comment_hint'),
+            hintText: AppLocalizations.of(context).translate(inputLabel),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: MyColors.light_gray,

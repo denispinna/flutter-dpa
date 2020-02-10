@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 abstract class StatItem<T> {
-  final String id;
-  final String name;
+  final String key;
   final String userEmail;
   final bool displayInList;
   final bool isCustom;
@@ -14,8 +13,7 @@ abstract class StatItem<T> {
   final Color color;
 
   const StatItem({
-    @required this.id,
-    @required this.name,
+    @required this.key,
     @required this.userEmail,
     @required this.inputLabel,
     @required this.outputLabel,
@@ -40,8 +38,7 @@ abstract class QuantityStatItem<T> extends StatItem<T> {
   final T max;
 
   const QuantityStatItem({
-    @required String id,
-    @required String name,
+    @required String key,
     @required String userEmail,
     @required bool isCustom,
     @required bool isEnabled,
@@ -54,11 +51,10 @@ abstract class QuantityStatItem<T> extends StatItem<T> {
     @required this.min,
     @required this.max,
   }) : super(
-          id: id,
           userEmail: userEmail,
           isCustom: isCustom,
           isEnabled: isEnabled,
-          name: name,
+          key: key,
           inputLabel: inputLabel,
           outputLabel: outputLabel,
           localizedLabel: localizedLabel,
@@ -72,8 +68,7 @@ abstract class TextStatItem extends StatItem<String> {
   final int maxLength;
 
   const TextStatItem({
-    @required String id,
-    @required String name,
+    @required String key,
     @required String userEmail,
     @required bool isCustom,
     @required bool isEnabled,
@@ -85,11 +80,10 @@ abstract class TextStatItem extends StatItem<String> {
     @required int position,
     @required this.maxLength,
   }) : super(
-          id: id,
           userEmail: userEmail,
           isCustom: isCustom,
           isEnabled: isEnabled,
-          name: name,
+          key: key,
           inputLabel: inputLabel,
           outputLabel: outputLabel,
           localizedLabel: localizedLabel,
@@ -103,8 +97,7 @@ abstract class MCQStatItem<T> extends StatItem<T> {
   final List<T> choices;
 
   const MCQStatItem({
-    @required String id,
-    @required String name,
+    @required String key,
     @required String userEmail,
     @required bool isCustom,
     @required bool isEnabled,
@@ -116,11 +109,10 @@ abstract class MCQStatItem<T> extends StatItem<T> {
     @required int position,
     @required this.choices,
   }) : super(
-          id: id,
           userEmail: userEmail,
           isCustom: isCustom,
           isEnabled: isEnabled,
-          name: name,
+          key: key,
           inputLabel: inputLabel,
           outputLabel: outputLabel,
           localizedLabel: localizedLabel,
