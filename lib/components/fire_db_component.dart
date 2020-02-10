@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
-import 'package:dpa/services/auth.dart';
+import 'package:dpa/services/auth_services.dart';
 
 class FireDb {
   static const int CACHE_SIZE = 10737418240;
@@ -42,7 +43,7 @@ class FireDb {
     await users.add(user.toFirestoreData());
   }
 
-  Future<DocumentReference> postStat(StatItem stat) async {
+  Future<DocumentReference> postStat(DateStatEntry stat) async {
     final result = await stats.add(stat.toFirestoreData());
     return result;
   }

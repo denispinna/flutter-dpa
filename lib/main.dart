@@ -1,7 +1,7 @@
 import 'package:dpa/app.dart';
 import 'package:dpa/screens/login/login.dart';
 import 'package:dpa/screens/main/main_screen.dart';
-import 'package:dpa/services/auth.dart';
+import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/store/global/app_reducer.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:flutter/material.dart';

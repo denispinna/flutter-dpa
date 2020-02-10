@@ -1,56 +1,133 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
-class StatItem {
+abstract class StatItem<T> {
   final String id;
-  DateTime date;
-  final String imageUrl;
+  final String name;
   final String userEmail;
-  final String comment;
-  final double mood;
-  final double productivity;
-  bool expanded;
+  final bool displayInList;
+  final bool isCustom;
+  final bool isEnabled;
+  final bool localizedLabel;
+  final int position;
+  final String inputLabel;
+  final String outputLabel;
+  final Color color;
 
-  StatItem(
-      {DateTime date,
-      this.id = "",
-      this.userEmail,
-      this.imageUrl,
-      this.comment,
-      this.mood,
-      this.productivity,
-      this.expanded = false}) {
-    this.date = date != null ? date : DateTime.now();
-  }
+  const StatItem({
+    @required this.id,
+    @required this.name,
+    @required this.userEmail,
+    @required this.inputLabel,
+    @required this.outputLabel,
+    @required this.localizedLabel,
+    @required this.color,
+    @required this.displayInList,
+    @required this.isCustom,
+    @required this.isEnabled,
+    @required this.position,
+  });
 
-  Map<String, dynamic> toFirestoreData() {
-    return <String, dynamic>{
-      'date': date,
-      'userEmail': userEmail,
-      'imageUrl': imageUrl,
-      'mood': mood,
-      'productivity': productivity,
-      'comment': comment,
-    };
-  }
+  Widget getInputWidget(
+      BuildContext context, T initialValue, Function(T) onValueChanged);
 
-  static StatItem fromFirestoreData(DocumentSnapshot document) {
-    Map<String, dynamic> data = document.data;
-    final date = data['date'] as Timestamp;
-    final userEmail = data['userEmail'];
-    final imageUrl = data['imageUrl'];
-    final mood = data['mood'];
-    final productivity = data['productivity'];
-    final comment = data['comment'];
+  Widget getOutputListWidget(BuildContext context, T value);
 
-    return StatItem(
-        id: document.documentID,
-        date: date.toDate(),
-        userEmail: userEmail,
-        imageUrl: imageUrl,
-        mood: mood,
-        productivity: productivity,
-        comment: comment);
-  }
+  Widget getOutputDetailWidget(BuildContext context, T value);
+}
+
+abstract class QuantityStatItem<T> extends StatItem<T> {
+  final T min;
+  final T max;
+
+  const QuantityStatItem({
+    @required String id,
+    @required String name,
+    @required String userEmail,
+    @required bool isCustom,
+    @required bool isEnabled,
+    @required bool localizedLabel,
+    @required bool displayInList,
+    @required String inputLabel,
+    @required String outputLabel,
+    @required Color color,
+    @required int position,
+    @required this.min,
+    @required this.max,
+  }) : super(
+          id: id,
+          userEmail: userEmail,
+          isCustom: isCustom,
+          isEnabled: isEnabled,
+          name: name,
+          inputLabel: inputLabel,
+          outputLabel: outputLabel,
+          localizedLabel: localizedLabel,
+          color: color,
+          position: position,
+          displayInList: displayInList,
+        );
+}
+
+abstract class TextStatItem extends StatItem<String> {
+  final int maxLength;
+
+  const TextStatItem({
+    @required String id,
+    @required String name,
+    @required String userEmail,
+    @required bool isCustom,
+    @required bool isEnabled,
+    @required bool displayInList,
+    @required String inputLabel,
+    @required String outputLabel,
+    @required bool localizedLabel,
+    @required Color color,
+    @required int position,
+    @required this.maxLength,
+  }) : super(
+          id: id,
+          userEmail: userEmail,
+          isCustom: isCustom,
+          isEnabled: isEnabled,
+          name: name,
+          inputLabel: inputLabel,
+          outputLabel: outputLabel,
+          localizedLabel: localizedLabel,
+          color: color,
+          position: position,
+          displayInList: displayInList,
+        );
+}
+
+abstract class MCQStatItem<T> extends StatItem<T> {
+  final List<T> choices;
+
+  const MCQStatItem({
+    @required String id,
+    @required String name,
+    @required String userEmail,
+    @required bool isCustom,
+    @required bool isEnabled,
+    @required bool displayInList,
+    @required String inputLabel,
+    @required String outputLabel,
+    @required bool localizedLabel,
+    @required Color color,
+    @required int position,
+    @required this.choices,
+  }) : super(
+          id: id,
+          userEmail: userEmail,
+          isCustom: isCustom,
+          isEnabled: isEnabled,
+          name: name,
+          inputLabel: inputLabel,
+          outputLabel: outputLabel,
+          localizedLabel: localizedLabel,
+          color: color,
+          position: position,
+          displayInList: displayInList,
+        );
 }
 
 //final _fakeComments = [

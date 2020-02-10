@@ -19,9 +19,13 @@ import 'package:path_provider/path_provider.dart';
 const IMAGE_RATIO = 16 / 9;
 
 class TakePictureWidget extends StatefulWidget {
+  final Function(String) onPictureTaken;
   final bool liveButton;
 
-  const TakePictureWidget({this.liveButton = false});
+  const TakePictureWidget({
+    @required this.onPictureTaken,
+    this.liveButton = false,
+  });
 
   @override
   State<StatefulWidget> createState() => _TakePictureState();
@@ -87,6 +91,7 @@ class _TakePictureState extends State<TakePictureWidget> {
   }
 
   void onPictureTaken(String path) {
+    widget.onPictureTaken(path);
     setState(() {
       imagePath = path;
     });

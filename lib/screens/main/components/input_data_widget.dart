@@ -6,6 +6,7 @@ import 'package:dpa/components/widget/camera_widget.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/models/mood.dart';
 import 'package:dpa/models/productivity.dart';
+import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/store/global/app_state.dart';
@@ -184,7 +185,7 @@ class InputItemState extends State<InputStat> {
   }
 
   void postStat(BuildContext context) {
-    final item = StatItem(
+    final item = DateStatEntry(
       userEmail: content.userEmail,
       imageUrl: content.imageUrl,
       productivity: content.productivity,

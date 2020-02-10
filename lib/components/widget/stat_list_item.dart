@@ -3,22 +3,23 @@ import 'package:dpa/components/widget/image_preview.dart';
 import 'package:dpa/components/widget/mood_widget.dart';
 import 'package:dpa/components/widget/pructivity_widget.dart';
 import 'package:dpa/models/mood.dart';
+import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-class StatListItem extends StatefulWidget {
-  final StatItem stat;
+class StatListWidget extends StatefulWidget {
+  final DateStatEntry stat;
 
-  const StatListItem({@required this.stat});
+  const StatListWidget({@required this.stat});
 
   @override
-  _StatListItemState createState() => _StatListItemState();
+  _StatListWidgetState createState() => _StatListWidgetState();
 }
 
-class _StatListItemState extends State<StatListItem> {
+class _StatListWidgetState extends State<StatListWidget> {
   @override
   Widget build(BuildContext context) {
     Widget content;
@@ -114,7 +115,7 @@ class _StatListItemState extends State<StatListItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 DateTitle(date: widget.stat.date),
-                Container(height: Dimens.xxxxs),
+                SizedBox(height: Dimens.xxxxs),
                 MoodLabel(mood),
                 ProductivityListWidget(widget.stat.productivity),
               ],
