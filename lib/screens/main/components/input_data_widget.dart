@@ -7,7 +7,6 @@ import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/models/mood.dart';
 import 'package:dpa/models/productivity.dart';
 import 'package:dpa/models/stat_entry.dart';
-import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';

@@ -5,7 +5,6 @@ import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/components/widget/stat_list_item.dart';
 import 'package:dpa/models/stat_entry.dart';
-import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/store/global/app_state.dart';

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dpa/models/stat_entry.dart';
-import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/services/auth_services.dart';
 
