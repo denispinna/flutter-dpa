@@ -33,9 +33,9 @@ abstract class StatItem<T> {
   Widget getOutputDetailWidget(BuildContext context, T value);
 }
 
-abstract class QuantityStatItem<T> extends StatItem<T> {
-  final T min;
-  final T max;
+class QuantityStatItem extends StatItem<double> {
+  final double min;
+  final double max;
 
   const QuantityStatItem({
     @required String key,
@@ -62,9 +62,28 @@ abstract class QuantityStatItem<T> extends StatItem<T> {
           position: position,
           displayInList: displayInList,
         );
+
+  @override
+  Widget getInputWidget(BuildContext context, double initialValue,
+      Function(double) onValueChanged) {
+    // TODO: implement getInputWidget
+    return null;
+  }
+
+  @override
+  Widget getOutputDetailWidget(BuildContext context, double value) {
+    // TODO: implement getOutputDetailWidget
+    return null;
+  }
+
+  @override
+  Widget getOutputListWidget(BuildContext context, double value) {
+    // TODO: implement getOutputListWidget
+    return null;
+  }
 }
 
-abstract class TextStatItem extends StatItem<String> {
+class TextStatItem extends StatItem<String> {
   final int maxLength;
 
   const TextStatItem({
@@ -91,12 +110,30 @@ abstract class TextStatItem extends StatItem<String> {
           position: position,
           displayInList: displayInList,
         );
+
+  @override
+  Widget getInputWidget(BuildContext context, String initialValue, Function(String) onValueChanged) {
+    // TODO: implement getInputWidget
+    return null;
+  }
+
+  @override
+  Widget getOutputDetailWidget(BuildContext context, String value) {
+    // TODO: implement getOutputDetailWidget
+    return null;
+  }
+
+  @override
+  Widget getOutputListWidget(BuildContext context, String value) {
+    // TODO: implement getOutputListWidget
+    return null;
+  }
 }
 
-abstract class MCQStatItem<T> extends StatItem<T> {
-  final List<T> choices;
+class McqStatItem extends StatItem<String> {
+  final List<String> choices;
 
-  const MCQStatItem({
+  const McqStatItem({
     @required String key,
     @required String userEmail,
     @required bool isCustom,
@@ -120,6 +157,24 @@ abstract class MCQStatItem<T> extends StatItem<T> {
           position: position,
           displayInList: displayInList,
         );
+
+  @override
+  Widget getInputWidget(BuildContext context, String initialValue, Function(String) onValueChanged) {
+    // TODO: implement getInputWidget
+    return null;
+  }
+
+  @override
+  Widget getOutputDetailWidget(BuildContext context, String value) {
+    // TODO: implement getOutputDetailWidget
+    return null;
+  }
+
+  @override
+  Widget getOutputListWidget(BuildContext context, String value) {
+    // TODO: implement getOutputListWidget
+    return null;
+  }
 }
 
 //final _fakeComments = [

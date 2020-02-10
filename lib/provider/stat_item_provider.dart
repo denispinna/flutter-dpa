@@ -60,7 +60,7 @@ class PictureStatItem extends TextStatItem {
   }
 }
 
-class MoodStatItem extends QuantityStatItem<int> {
+class MoodStatItem extends QuantityStatItem {
   const MoodStatItem({@required userEmail})
       : super(
           userEmail: userEmail,
@@ -79,7 +79,7 @@ class MoodStatItem extends QuantityStatItem<int> {
 
   @override
   Widget getInputWidget(
-      BuildContext context, int initialValue, Function(int) onValueChanged) {
+      BuildContext context, double initialValue, Function(double) onValueChanged) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -100,15 +100,15 @@ class MoodStatItem extends QuantityStatItem<int> {
             );
           },
           minRating: min.toDouble(),
-          onRatingUpdate: (rating) => onValueChanged(rating.toInt()),
+          onRatingUpdate: (rating) => onValueChanged(rating),
         ))
       ],
     );
   }
 
   @override
-  Widget getOutputDetailWidget(BuildContext context, int value) {
-    final mood = Mood.values[value - 1];
+  Widget getOutputDetailWidget(BuildContext context, double value) {
+    final mood = Mood.values[value.toInt() - 1];
 
     return Center(
       child: Padding(
@@ -126,13 +126,13 @@ class MoodStatItem extends QuantityStatItem<int> {
   }
 
   @override
-  Widget getOutputListWidget(BuildContext context, int value) {
-    Mood mood = Mood.values[value - 1];
+  Widget getOutputListWidget(BuildContext context, double value) {
+    Mood mood = Mood.values[value.toInt() - 1];
     return MoodLabel(mood);
   }
 }
 
-class ProductivityStatItem extends QuantityStatItem<double> {
+class ProductivityStatItem extends QuantityStatItem {
   double _productivity;
 
   ProductivityStatItem({@required userEmail})

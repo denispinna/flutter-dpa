@@ -28,7 +28,6 @@ class StatApiImpl extends StatApi {
         .catchError((e) => Logger.logError(runtimeType.toString(), "Error while fetching default items", e));
     if(itemsExist)
       return;
-
   }
 
   Future<bool> defaultItemsExist() async {
