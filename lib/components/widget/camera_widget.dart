@@ -115,7 +115,8 @@ class CameraWidget extends StatelessWidget {
               child: new BackdropFilter(
                 filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                 child: new Container(
-                  decoration: new BoxDecoration(color: Colors.white.withOpacity(0.0)),
+                  decoration:
+                      new BoxDecoration(color: Colors.white.withOpacity(0.0)),
                 ),
               ),
             ),

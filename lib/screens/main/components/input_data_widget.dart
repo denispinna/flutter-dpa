@@ -114,9 +114,7 @@ class InputItemState extends State<InputStat> {
                           )),
                       onRatingUpdate: (rating) {
                         content.productivity = rating;
-                        setState(() {
-
-                        });
+                        setState(() {});
                       },
                     )),
                     Padding(padding: const EdgeInsets.only(top: Dimens.s)),

@@ -9,8 +9,7 @@ class FireDb {
   final _firestore = Firestore.instance;
 
   FireDb() {
-    _firestore.settings(persistenceEnabled: true,
-        cacheSizeBytes: CACHE_SIZE);
+    _firestore.settings(persistenceEnabled: true, cacheSizeBytes: CACHE_SIZE);
   }
 
   CollectionReference get users => _firestore.collection('user');
@@ -29,7 +28,7 @@ class FireDb {
 
   Future<User> findUser(String email) async {
     final query =
-    await users.where('email', isEqualTo: email).limit(1).getDocuments();
+        await users.where('email', isEqualTo: email).limit(1).getDocuments();
     if (query.documents.isEmpty) {
       return null;
     }

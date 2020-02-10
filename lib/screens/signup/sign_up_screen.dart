@@ -12,7 +12,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class SignUpScreenState extends ScreenState<SignUpScreen> {
-
   @override
   Widget buildScreenWidget(BuildContext context) {
     return Scaffold(

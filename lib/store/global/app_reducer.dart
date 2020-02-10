@@ -1,9 +1,9 @@
+import 'package:dpa/components/logger.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/login/login.dart';
 import 'package:dpa/screens/main/main_screen.dart';
 import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
-import 'package:dpa/components/logger.dart';
 import 'package:flutter/cupertino.dart';
 
 const TAG = "reduceAppState";
@@ -16,11 +16,13 @@ AppState reduceAppState(AppState state, dynamic action) {
     case UserLoginAction:
       final loginAction = action as UserLoginAction;
       user = loginAction.user;
-      function = (BuildContext context) => Navigator.pushReplacementNamed(context, MainScreen.PATH);
+      function = (BuildContext context) =>
+          Navigator.pushReplacementNamed(context, MainScreen.PATH);
       break;
     case UserLogoutAction:
       user = null;
-      function = (BuildContext context) => Navigator.pushReplacementNamed(context, LoginScreen.PATH);
+      function = (BuildContext context) =>
+          Navigator.pushReplacementNamed(context, LoginScreen.PATH);
       break;
     case PushFunctionAction:
       final functionAction = action as PushFunctionAction;
@@ -29,8 +31,9 @@ AppState reduceAppState(AppState state, dynamic action) {
   }
 
   final newState = AppState(
-      function: function,
-      user: user,);
+    function: function,
+    user: user,
+  );
 
   Logger.log(TAG, "newState : $newState");
 

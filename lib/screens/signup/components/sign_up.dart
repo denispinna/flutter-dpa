@@ -28,10 +28,9 @@ class SignUpFormState extends State<SignUpForm> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, Function(User)>(
         converter: (store) => (user) {
-          store.dispatch(UserLoginAction(user));
-        },
-        builder: buildWithState
-    );
+              store.dispatch(UserLoginAction(user));
+            },
+        builder: buildWithState);
   }
 
   Widget buildWithState(BuildContext context, Function(User) onLogin) {
@@ -105,11 +104,8 @@ class SignUpFormState extends State<SignUpForm> {
                 // otherwise.
                 if (_formKey.currentState.validate()) {
                   displayMessage('sign_up_message', context);
-                  authApi.signUp(
-                      emailController.text,
-                      passwordController.text,
-                      context,
-                      onLogin);
+                  authApi.signUp(emailController.text, passwordController.text,
+                      context, onLogin);
                 }
               },
               child: Text(AppLocalizations.of(context).translate('sign_up')),

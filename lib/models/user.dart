@@ -70,10 +70,7 @@ class User {
   }
 
   Map<String, dynamic> toFirestoreData() {
-    return <String, dynamic>{
-      'email': email,
-      'imageUrl': imageUrl
-    };
+    return <String, dynamic>{'email': email, 'imageUrl': imageUrl};
   }
 }
 

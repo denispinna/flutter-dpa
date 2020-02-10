@@ -29,7 +29,6 @@ abstract class CustomStoreConnectedState<W extends StatefulWidget, O>
 
 abstract class CustomStoreConnectedStateWithLifecycle<W extends StatefulWidget,
     O> extends LifecycleWidgetState<W> {
-
   CustomStoreConnectedStateWithLifecycle();
 
   @override

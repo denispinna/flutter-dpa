@@ -1,5 +1,4 @@
 import 'package:dpa/models/productivity.dart';
-import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/icons.dart';
 import 'package:dpa/util/text_util.dart';
@@ -93,12 +92,14 @@ class ProductivityDetailWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              if (productivity.floor() == 0) Icon(
+              if (productivity.floor() == 0)
+                Icon(
                   MyIcons.star,
                   color: productivity.productivityColor,
                   size: Dimens.l,
                 )
-              else StarRowWidget(
+              else
+                StarRowWidget(
                   productivity: productivity,
                   iconSize: Dimens.xxl,
                 ),

@@ -1,6 +1,6 @@
 import 'package:dpa/components/fire_db_component.dart';
-import 'package:dpa/models/user.dart';
 import 'package:dpa/components/logger.dart';
+import 'package:dpa/models/user.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class AuthAPI {
 
   Future<User> loadCurrentUser() async {
     final firebaseUser = await auth.currentUser();
-    if(firebaseUser == null) {
+    if (firebaseUser == null) {
       return null;
     }
     user = User.fromFirebaseUser(firebaseUser);
@@ -33,8 +33,7 @@ class AuthAPI {
     final GoogleSignInAccount googleUser =
         await googleSignIn.signIn().catchError(onError);
 
-    if(googleUser == null)
-      return;
+    if (googleUser == null) return;
 
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication.catchError(onError);
@@ -114,7 +113,8 @@ class AuthAPI {
     saveUserInFirestore(firebaseUser, onLoginSuccess);
   }
 
-  Future saveUserInFirestore(FirebaseUser firebaseUser, OnLoginSuccess onLoginSuccess) async {
+  Future saveUserInFirestore(
+      FirebaseUser firebaseUser, OnLoginSuccess onLoginSuccess) async {
     user = User.fromFirebaseUser(firebaseUser);
     await FireDb.instance.saveNewUser(user);
     onLoginSuccess(user);

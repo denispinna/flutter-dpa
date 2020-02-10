@@ -1,6 +1,5 @@
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/widget/bottom_navigation/animated_bottom_bar.dart';
-import 'package:dpa/components/widget/connected_widget.dart';
 import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
@@ -19,7 +18,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainState extends ScreenState<MainScreen> {
-
   final PageStorageBucket bucket = PageStorageBucket();
   InputStat inputWidget;
   StatsHistoryWidget statsWidget;

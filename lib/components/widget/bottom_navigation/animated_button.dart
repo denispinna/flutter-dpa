@@ -14,7 +14,8 @@ class AnimatedButton extends StatefulWidget {
       this.iconData,
       this.iconSize,
       this.animationDuration,
-      this.buttonStyle, this.onTap});
+      this.buttonStyle,
+      this.onTap});
 
   @override
   _AnimatedButtonState createState() => _AnimatedButtonState();
@@ -31,7 +32,8 @@ class _AnimatedButtonState extends State<AnimatedButton>
   void initState() {
     super.initState();
     _currentState = ButtonState.SHOW_ONLY_TEXT;
-    _smallDuration = Duration(milliseconds: (widget.animationDuration.inMilliseconds * 0.2).round());
+    _smallDuration = Duration(
+        milliseconds: (widget.animationDuration.inMilliseconds * 0.2).round());
     _controller =
         AnimationController(vsync: this, duration: widget.animationDuration);
     _controller.addListener(() {
@@ -53,7 +55,8 @@ class _AnimatedButtonState extends State<AnimatedButton>
       }
     });
 
-    _scaleFinalTextAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+    _scaleFinalTextAnimation =
+        Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
   }
 
   @override
@@ -109,7 +112,8 @@ class _AnimatedButtonState extends State<AnimatedButton>
                       )
                     : Container(),
                 SizedBox(
-                  width: _currentState == ButtonState.SHOW_TEXT_ICON ? 30.0 : 0.0,
+                  width:
+                      _currentState == ButtonState.SHOW_TEXT_ICON ? 30.0 : 0.0,
                 ),
                 getTextWidget()
               ],

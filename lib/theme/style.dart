@@ -9,6 +9,6 @@ ThemeData appTheme() {
     buttonColor: Colors.white,
     scaffoldBackgroundColor: Colors.white,
     canvasColor: Colors.white,
-    fontFamily:'Aaargh',
+    fontFamily: 'Aaargh',
   );
 }

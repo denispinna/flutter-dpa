@@ -9,8 +9,7 @@ class UploadImageTask {
   StorageUploadTask uploadTask;
 
   UploadImageTask(String imagePath) {
-    this.storageRef =
-        FirebaseStorage.instance.ref().child(getRemoteFileName());
+    this.storageRef = FirebaseStorage.instance.ref().child(getRemoteFileName());
     this.uploadTask = storageRef.putFile(
       File(imagePath),
       StorageMetadata(

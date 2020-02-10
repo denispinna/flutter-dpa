@@ -26,6 +26,7 @@ extension ProductivityExt on int {
       ),
     );
   }
+
   Icon getProductivityIcon(
       {double size = Dimens.rating_icon_width,
       bool filled = true,
@@ -107,13 +108,21 @@ extension ProductivityExt on int {
 
 extension ProductivityDoubleExt on double {
   Widget getProductivityHalfIcon(
-      {double size = Dimens.rating_icon_width, bool filled = false, Color color}) {
-    return this.floor().getProductivityHalfIcon(size: size, filled: filled, color: color);
+      {double size = Dimens.rating_icon_width,
+      bool filled = false,
+      Color color}) {
+    return this
+        .floor()
+        .getProductivityHalfIcon(size: size, filled: filled, color: color);
   }
 
   Icon getProductivityIcon(
-      {double size = Dimens.rating_icon_width, bool filled = false, Color color}) {
-    return this.floor().getProductivityIcon(size: size, filled: filled, color: color);
+      {double size = Dimens.rating_icon_width,
+      bool filled = false,
+      Color color}) {
+    return this
+        .floor()
+        .getProductivityIcon(size: size, filled: filled, color: color);
   }
 
   String getProductivityLabel(BuildContext context) {

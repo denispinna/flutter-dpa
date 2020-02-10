@@ -12,8 +12,7 @@ void displayMessage(String messageKey, BuildContext context,
   var backgroundColor = MyColors.second;
   if (isError)
     backgroundColor = MyColors.error;
-  else if (isSuccess)
-    backgroundColor = MyColors.success;
+  else if (isSuccess) backgroundColor = MyColors.success;
 
   try {
     Scaffold.of(context).hideCurrentSnackBar();

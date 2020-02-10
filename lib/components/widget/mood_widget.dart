@@ -10,13 +10,13 @@ class MoodLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-        mood.getLabel(context).toUpperCase(),
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            fontSize: Dimens.font_ml,
-            fontWeight: FontWeight.bold,
-            color: mood.color),
-        maxLines: 1,
-      );
+      mood.getLabel(context).toUpperCase(),
+      textAlign: TextAlign.center,
+      style: TextStyle(
+          fontSize: Dimens.font_ml,
+          fontWeight: FontWeight.bold,
+          color: mood.color),
+      maxLines: 1,
+    );
   }
 }

@@ -27,11 +27,10 @@ class LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, Function(User)>(
-      converter: (store) => (user) {
-        store.dispatch(UserLoginAction(user));
-      },
-      builder: buildWithState
-    );
+        converter: (store) => (user) {
+              store.dispatch(UserLoginAction(user));
+            },
+        builder: buildWithState);
   }
 
   Widget buildWithState(BuildContext context, Function(User) onLogin) {
@@ -85,11 +84,8 @@ class LoginFormState extends State<LoginForm> {
                 if (_formKey.currentState.validate()) {
                   displayMessage("login_message", context);
 
-                  authApi.signInWithMail(
-                      emailController.text,
-                      passwordController.text,
-                      context,
-                      onLogin);
+                  authApi.signInWithMail(emailController.text,
+                      passwordController.text, context, onLogin);
                 }
               },
               child: Text(AppLocalizations.of(context).translate('login')),

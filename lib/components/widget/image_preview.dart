@@ -42,17 +42,17 @@ class ImagePreview extends StatelessWidget {
   Widget _buildImageWidget() {
     return (fromFile)
         ? Image.file(
-      File(pathOrUrl),
-      fit: BoxFit.cover,
-    )
+            File(pathOrUrl),
+            fit: BoxFit.cover,
+          )
         : CachedNetworkImage(
-      placeholder: (context, url) => Center(
-        child: CircularProgressIndicator(
-          valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
-        ),
-      ),
-      imageUrl: pathOrUrl,
-      fit: BoxFit.cover,
-    );
+            placeholder: (context, url) => Center(
+              child: CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
+              ),
+            ),
+            imageUrl: pathOrUrl,
+            fit: BoxFit.cover,
+          );
   }
 }

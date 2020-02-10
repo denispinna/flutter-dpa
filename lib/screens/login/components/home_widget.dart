@@ -41,7 +41,8 @@ class HomeWidget extends StatelessWidget {
     );
   }
 
-  Future signInWithGoogle(BuildContext context, Function(User) onUserLoggedIn) async {
+  Future signInWithGoogle(
+      BuildContext context, Function(User) onUserLoggedIn) async {
     authApi.signInWithGoogle(context, onUserLoggedIn);
   }
 

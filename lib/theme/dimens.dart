@@ -1,4 +1,3 @@
-
 class Dimens {
   static const xxxxs = 2.0;
   static const xxxs = 4.0;

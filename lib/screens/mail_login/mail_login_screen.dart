@@ -9,8 +9,8 @@ class MailLoginScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _MailLoginScreenState();
 }
-class _MailLoginScreenState extends ScreenState<MailLoginScreen> {
 
+class _MailLoginScreenState extends ScreenState<MailLoginScreen> {
   @override
   Widget buildScreenWidget(BuildContext context) {
     return Scaffold(

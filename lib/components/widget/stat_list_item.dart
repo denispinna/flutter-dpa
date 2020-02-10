@@ -19,7 +19,6 @@ class StatListItem extends StatefulWidget {
 }
 
 class _StatListItemState extends State<StatListItem> {
-
   @override
   Widget build(BuildContext context) {
     Widget content;
@@ -60,12 +59,12 @@ class _StatListItemState extends State<StatListItem> {
                 ),
               ),
             ),
-            if(widget.stat.imageUrl != null) Center(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, Dimens.s, 0, 0),
-                child: ImagePreview(pathOrUrl: widget.stat.imageUrl)
+            if (widget.stat.imageUrl != null)
+              Center(
+                child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, Dimens.s, 0, 0),
+                    child: ImagePreview(pathOrUrl: widget.stat.imageUrl)),
               ),
-            ),
             Center(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, Dimens.s, 0, 0),

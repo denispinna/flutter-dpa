@@ -15,7 +15,8 @@ class EmailSignInButton extends StatelessWidget {
     return CenterHorizontal(FlatButton(
       onPressed: onPressed,
       color: MyColors.second,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimens.xxl)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Dimens.xxl)),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(
             0, Dimens.padding_xs, 0, Dimens.padding_xs),

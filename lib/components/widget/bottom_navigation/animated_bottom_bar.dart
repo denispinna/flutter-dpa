@@ -10,7 +10,8 @@ class AnimatedBottomBar extends StatefulWidget {
   AnimatedBottomBar(
       {this.barItems,
       this.animationDuration = const Duration(milliseconds: 500),
-      this.onBarTap, this.barStyle});
+      this.onBarTap,
+      this.barStyle});
 
   @override
   _AnimatedBottomBarState createState() => _AnimatedBottomBarState();
@@ -54,7 +55,8 @@ class _AnimatedBottomBarState extends State<AnimatedBottomBar>
           });
         },
         child: AnimatedContainer(
-          padding: const EdgeInsets.symmetric(horizontal: Dimens.s, vertical: Dimens.xxs),
+          padding: const EdgeInsets.symmetric(
+              horizontal: Dimens.s, vertical: Dimens.xxs),
           duration: widget.animationDuration,
           decoration: BoxDecoration(
               color: isSelected
@@ -96,7 +98,10 @@ class BarStyle {
   final double fontSize, iconSize;
   final FontWeight fontWeight;
 
-  BarStyle({this.fontSize = Dimens.ml, this.iconSize = Dimens.l, this.fontWeight = FontWeight.w600});
+  BarStyle(
+      {this.fontSize = Dimens.ml,
+      this.iconSize = Dimens.l,
+      this.fontWeight = FontWeight.w600});
 }
 
 class BarItem {

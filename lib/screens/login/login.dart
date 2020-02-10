@@ -18,19 +18,19 @@ class _LoginState extends ScreenState<LoginScreen> {
   Widget buildScreenWidget(BuildContext context) {
     return Scaffold(
         body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: MyImages.home_background,
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: MyImages.home_background, fit: BoxFit.cover),
-            ),
-            child: Center(child: HomeWidget()),
-          ),
-        ));
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: MyImages.home_background,
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: MyImages.home_background, fit: BoxFit.cover),
+        ),
+        child: Center(child: HomeWidget()),
+      ),
+    ));
   }
 }

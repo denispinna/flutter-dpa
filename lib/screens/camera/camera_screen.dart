@@ -14,16 +14,17 @@ class _CameraState extends ScreenState<CameraScreen> {
 
   @override
   Widget buildScreenWidget(BuildContext context) {
-    final Function(String) onPictureTaken = ModalRoute.of(context).settings.arguments;
+    final Function(String) onPictureTaken =
+        ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
         backgroundColor: Colors.black,
         body: Center(
             child: ListView(
-              shrinkWrap: true,
-              children: <Widget>[
-                CameraPreviewWidget(onPictureTaken),
-              ],
-            )));
+          shrinkWrap: true,
+          children: <Widget>[
+            CameraPreviewWidget(onPictureTaken),
+          ],
+        )));
   }
 }

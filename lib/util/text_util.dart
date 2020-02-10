@@ -1,5 +1,3 @@
-
-
 class TextUtil {
   static bool isEmailValid(String value) {
     Pattern pattern =
@@ -12,8 +10,9 @@ class TextUtil {
 extension StringExt on String {
   String upperCaseFirstCharacter() {
     try {
-      return this.substring(0, 1).toUpperCase() + this.substring(1, this.length);
-    } catch (e){
+      return this.substring(0, 1).toUpperCase() +
+          this.substring(1, this.length);
+    } catch (e) {
       return this;
     }
   }
