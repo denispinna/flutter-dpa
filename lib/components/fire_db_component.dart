@@ -6,16 +6,16 @@ import 'package:dpa/services/auth.dart';
 class FireDb {
   static const int CACHE_SIZE = 10737418240;
   static FireDb instance = FireDb();
-  final firestore = Firestore.instance;
+  final _firestore = Firestore.instance;
 
   FireDb() {
-    firestore.settings(persistenceEnabled: true,
+    _firestore.settings(persistenceEnabled: true,
         cacheSizeBytes: CACHE_SIZE);
   }
 
-  CollectionReference get users => firestore.collection('user');
+  CollectionReference get users => _firestore.collection('user');
 
-  CollectionReference get stats => firestore.collection('stat');
+  CollectionReference get stats => _firestore.collection('stat');
 
   Query getOrderedStats({DocumentSnapshot lastVisible, int limit = 10}) {
     final query = stats
