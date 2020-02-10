@@ -1,3 +1,4 @@
+import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -14,4 +15,10 @@ class UserLogoutAction implements AppAction {}
 class PushFunctionAction implements AppAction {
   final Function(BuildContext) function;
   PushFunctionAction(this.function);
+}
+
+class AddStatItemsAction implements AppAction {
+  final List<StatItem> toAdd;
+
+  AddStatItemsAction(this.toAdd);
 }

@@ -1,4 +1,5 @@
 import 'package:dpa/components/logger.dart';
+import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/login/login.dart';
 import 'package:dpa/screens/main/main_screen.dart';
@@ -10,6 +11,7 @@ const TAG = "reduceAppState";
 
 AppState reduceAppState(AppState state, dynamic action) {
   User user = state.user;
+  List<StatItem> statItems = state.statItems;
   Function(BuildContext) function;
 
   switch (action.runtimeType) {
@@ -28,11 +30,16 @@ AppState reduceAppState(AppState state, dynamic action) {
       final functionAction = action as PushFunctionAction;
       function = functionAction.function;
       break;
+    case AddStatItemsAction:
+      final addStatItemsAction = action as AddStatItemsAction;
+      statItems.addAll(addStatItemsAction.toAdd);
+      break;
   }
 
   final newState = AppState(
     function: function,
     user: user,
+    statItems: statItems,
   );
 
   Logger.log(TAG, "newState : $newState");

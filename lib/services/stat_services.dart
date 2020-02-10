@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dpa/components/fire_db_component.dart';
 import 'package:dpa/components/logger.dart';
+import 'package:dpa/models/remote_stat_item.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/stat_parser.dart';
@@ -9,7 +10,11 @@ import 'package:dpa/services/auth_services.dart';
 
 abstract class StatApi {
   Future setupDefaultItems();
+
   Query getOrderedStats({DocumentSnapshot lastVisible, int limit});
+
+  Query getEnabledStatItem();
+
   Future<DocumentReference> postStatEntry(DateStatEntry stat);
 }
 
@@ -28,14 +33,22 @@ class StatApiImpl extends StatApi {
   }
 
   @override
+  Query getEnabledStatItem() {
+    return fireDb.statsItems
+        .where(StatItemField.userEmail.label,
+            isEqualTo: AuthAPI.instance.user.email)
+        .orderBy(StatItemField.position.label);
+  }
+
+  @override
   Future setupDefaultItems() async {
-    bool itemsExist = await _defaultItemsExist()
-        .catchError((e) => Logger.logError(runtimeType.toString(), "Error while fetching default items", e));
-    if(itemsExist)
-      return;
+    bool itemsExist = await _defaultItemsExist().catchError((e) =>
+        Logger.logError(
+            runtimeType.toString(), "Error while fetching default items", e));
+    if (itemsExist) return;
 
     final items = getDefaultStatItems();
-    for(final item in items) {
+    for (final item in items) {
       await postStatItem(item);
     }
   }
@@ -46,7 +59,7 @@ class StatApiImpl extends StatApi {
 
   @override
   Future<DocumentReference> postStatEntry(DateStatEntry stat) async {
-   return await fireDb.stats.add(stat.toFirestoreData());
+    return await fireDb.stats.add(stat.toFirestoreData());
   }
 
   Future<bool> _defaultItemsExist() async {
@@ -54,10 +67,12 @@ class StatApiImpl extends StatApi {
         .where('userEmail', isEqualTo: AuthAPI.instance.user.email)
         .limit(1);
 
-    final result = await query.getDocuments()
-        .catchError((error) => {Logger.logError(runtimeType.toString(), "Error while fetching default items", error)});
+    final result = await query.getDocuments().catchError((error) => {
+          Logger.logError(runtimeType.toString(),
+              "Error while fetching default items", error)
+        });
 
-    if(result != null && result.documents.length > 0)
+    if (result != null && result.documents.length > 0)
       return true;
     else
       return false;

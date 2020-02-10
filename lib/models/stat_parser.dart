@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dpa/models/remote_stat_item.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/provider/stat_item_provider.dart';
@@ -141,4 +142,10 @@ extension ParseStatItem on StatItem {
 
   Map<String, dynamic> toFirestoreData() =>
       this._toRemoteItem().toFirestoreData();
+}
+
+List<StatItem> parseStatItems(List<DocumentSnapshot> documents) {
+  return documents.map((DocumentSnapshot document) {
+    return document.data.toStatItem();
+  }).toList();
 }

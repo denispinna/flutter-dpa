@@ -27,6 +27,21 @@ abstract class CustomStoreConnectedState<W extends StatefulWidget, O>
   Widget buildWithStore(BuildContext context, O output);
 }
 
+abstract class CustomConnectedScreenState<W extends StatefulWidget, O>
+    extends ScreenState<W> {
+  @override
+  Widget buildScreenWidget(BuildContext context) {
+    return StoreConnector<AppState, O>(
+      converter: converter,
+      builder: buildWithStore,
+    );
+  }
+
+  O converter(Store store);
+
+  Widget buildWithStore(BuildContext context, O output);
+}
+
 abstract class CustomStoreConnectedStateWithLifecycle<W extends StatefulWidget,
     O> extends LifecycleWidgetState<W> {
   CustomStoreConnectedStateWithLifecycle();

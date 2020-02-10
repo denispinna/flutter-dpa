@@ -1,16 +1,21 @@
 import 'package:dpa/components/app_localization.dart';
+import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/bottom_navigation/animated_bottom_bar.dart';
-import 'package:dpa/components/widget/lifecycle_widget.dart';
+import 'package:dpa/components/widget/connected_widget.dart';
 import 'package:dpa/components/widget/loading_widget.dart';
+import 'package:dpa/models/stat_parser.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';
 import 'package:dpa/screens/main/components/stats_history_widget.dart';
 import 'package:dpa/services/api.dart';
+import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/icons.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:redux/src/store.dart';
 
 class MainScreen extends StatefulWidget {
   static const PATH = "/main";
@@ -19,7 +24,8 @@ class MainScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _MainState();
 }
 
-class _MainState extends ScreenState<MainScreen> {
+class _MainState extends CustomConnectedScreenState<MainScreen,
+    Function(AppAction)> {
   final PageStorageBucket bucket = PageStorageBucket();
   InputStat inputWidget;
   StatsHistoryWidget statsWidget;
@@ -29,6 +35,7 @@ class _MainState extends ScreenState<MainScreen> {
   User user;
   int currentIndex = 0;
   bool synchronized = false;
+  Function(AppAction) dispatchAction;
 
   @override
   void initState() {
@@ -42,9 +49,11 @@ class _MainState extends ScreenState<MainScreen> {
   }
 
   @override
-  Widget buildScreenWidget(BuildContext context) {
+  Widget buildWithStore(BuildContext context, Function(AppAction) dispatchAction) {
+    this.dispatchAction = dispatchAction;
     if (!synchronized)
       return Scaffold(backgroundColor: MyColors.light, body: LoadingWidget());
+
 
     if (barItems == null) setupBarItems();
     user = ModalRoute.of(context).settings.arguments;
@@ -103,7 +112,21 @@ class _MainState extends ScreenState<MainScreen> {
   Future sync() async {
     await Future.delayed(Duration(milliseconds: 500));
     await API.statApi.setupDefaultItems();
-    synchronized = true;
+    final query = await API.statApi
+        .getEnabledStatItem()
+        .getDocuments()
+        .catchError((error) => {
+              //TODO: Show an error state here
+              Logger.logError(runtimeType.toString(),
+                  "Error while fetching stat items", error)
+            });
+    final statItems = await compute(parseStatItems, query.documents);
+    this.dispatchAction(AddStatItemsAction(statItems));
+    this.synchronized = true;
     setState(() {});
   }
+
+  @override
+  Function(AppAction) converter(Store store) =>
+      (action) => (store.dispatch(action));
 }
