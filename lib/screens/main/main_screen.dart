@@ -1,10 +1,12 @@
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/widget/bottom_navigation/animated_bottom_bar.dart';
 import 'package:dpa/components/widget/lifecycle_widget.dart';
+import 'package:dpa/components/widget/loading_widget.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';
 import 'package:dpa/screens/main/components/stats_history_widget.dart';
+import 'package:dpa/services/api.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/icons.dart';
@@ -25,7 +27,8 @@ class _MainState extends ScreenState<MainScreen> {
   List<BarItem> barItems;
   List<Widget> pages;
   User user;
-  var currentIndex = 0;
+  int currentIndex = 0;
+  bool synchronized = false;
 
   @override
   void initState() {
@@ -35,13 +38,17 @@ class _MainState extends ScreenState<MainScreen> {
     profileWidget = ProfileWidget(key: PageStorageKey('profileWidget'));
 
     pages = [inputWidget, statsWidget, Container(), profileWidget];
+    sync();
   }
 
   @override
   Widget buildScreenWidget(BuildContext context) {
+    if (!synchronized)
+      return Scaffold(backgroundColor: MyColors.light, body: LoadingWidget());
+
     if (barItems == null) setupBarItems();
     user = ModalRoute.of(context).settings.arguments;
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: MyColors.light_background,
       body: pages[currentIndex],
       bottomNavigationBar: AnimatedBottomBar(
@@ -91,5 +98,12 @@ class _MainState extends ScreenState<MainScreen> {
           iconData: MyIcons.profile,
           color: MyColors.accent_color_4),
     ];
+  }
+
+  Future sync() async {
+    await Future.delayed(Duration(milliseconds: 500));
+    await API.statApi.setupDefaultItems();
+    synchronized = true;
+    setState(() {});
   }
 }

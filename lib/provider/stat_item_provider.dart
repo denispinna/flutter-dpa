@@ -13,7 +13,7 @@ import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-List<StatItem> getDefaultStatItems(String userEmail) {
+List<StatItem> getDefaultStatItems() {
   String userEmail = AuthAPI.instance.user.email;
   List<StatItem> defaultItems = List();
   defaultItems.add(PictureStatItem(userEmail: userEmail));

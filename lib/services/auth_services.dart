@@ -116,7 +116,7 @@ class AuthAPI {
   Future saveUserInFirestore(
       FirebaseUser firebaseUser, OnLoginSuccess onLoginSuccess) async {
     user = User.fromFirebaseUser(firebaseUser);
-    await FireDb.instance.saveNewUser(user);
+    await saveNewUser(user);
     onLoginSuccess(user);
   }
 
@@ -133,6 +133,22 @@ class AuthAPI {
     }
     await auth.signOut();
     onSuccess();
+  }
+
+  Future<User> findUser(String email) async {
+    final query =
+    await FireDb.instance.users.where('email', isEqualTo: email).limit(1).getDocuments();
+    if (query.documents.isEmpty) {
+      return null;
+    }
+    final data = query.documents[0].data;
+    return User.fromFirestoreData(data);
+  }
+
+  Future saveNewUser(User user) async {
+    final existingUser = await findUser(user.email);
+    if (existingUser != null) return;
+    await FireDb.instance.users.add(user.toFirestoreData());
   }
 }
 

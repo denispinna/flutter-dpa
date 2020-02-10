@@ -21,7 +21,7 @@ extension ParseRemoteItem on RemoteStatItem {
       choicesString = null;
 
     return <String, dynamic>{
-      StatItemField.type.label: runtimeType.toString(),
+      StatItemField.type.label: type,
       StatItemField.key.label: key,
       StatItemField.userEmail.label: userEmail,
       StatItemField.isCustom.label: isCustom,

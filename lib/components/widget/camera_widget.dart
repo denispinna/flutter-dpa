@@ -32,6 +32,11 @@ class TakePictureWidget extends StatefulWidget {
 }
 
 class _TakePictureState extends State<TakePictureWidget> {
+  static _TakePictureState instance;
+
+  _TakePictureState() {
+    instance = this;
+  }
   String imagePath;
 
   @override
@@ -329,11 +334,14 @@ abstract class CameraState<W extends StatefulWidget>
   }
 
   Widget buildLoadingWidget() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(Dimens.l),
-        child: CircularProgressIndicator(
-          valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
+    return Scaffold(
+      backgroundColor: MyColors.light,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(Dimens.l),
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
+          ),
         ),
       ),
     );

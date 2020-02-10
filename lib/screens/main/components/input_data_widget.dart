@@ -4,10 +4,13 @@ import 'package:dpa/components/fire_db_component.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/camera_widget.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
+import 'package:dpa/components/widget/loading_widget.dart';
 import 'package:dpa/models/mood.dart';
 import 'package:dpa/models/productivity.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/user.dart';
+import 'package:dpa/services/api.dart';
+import 'package:dpa/services/stat_services.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
@@ -27,7 +30,7 @@ class InputItemState extends State<InputStat> {
   static const String TAG = "InputItemState";
   static final contentKey = ValueKey(TAG);
   final _formKey = GlobalKey<FormState>();
-  Function clearPicture;
+  TakePictureWidget takePictureWidget;
   StateData content;
   bool formPosted = false;
 
@@ -40,12 +43,11 @@ class InputItemState extends State<InputStat> {
       return Center(
           child: Padding(
         padding: const EdgeInsets.all(Dimens.l),
-        child: CircularProgressIndicator(
-          valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
-        ),
+        child: LoadingWidget(showLabel: false,
+        label: 'processing',),
       ));
     } else if (formPosted) {
-      clearPicture();
+      takePictureWidget = TakePictureWidget(onPictureTaken: (path) => content.imagePath = path);
       displayMessage('post_stat_success', context, isSuccess: true);
       formPosted = false;
     }
@@ -55,6 +57,9 @@ class InputItemState extends State<InputStat> {
         return state.user;
       },
       builder: (context, user) {
+        if(takePictureWidget == null)
+          takePictureWidget = TakePictureWidget(onPictureTaken: (path) => content.imagePath = path);
+
         this.content.userEmail = user.email;
         return Scaffold(
           body: ListView(
@@ -64,7 +69,7 @@ class InputItemState extends State<InputStat> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    TakePictureWidget(),
+                    takePictureWidget,
                     Padding(
                         padding: const EdgeInsets.only(top: Dimens.padding_m)),
                     CenterHorizontal(Text(
@@ -163,7 +168,6 @@ class InputItemState extends State<InputStat> {
   }
 
   void onFormValid(BuildContext context) {
-    displayMessage("processing", context);
     setState(() {
       content.loading = true;
     });
@@ -191,7 +195,7 @@ class InputItemState extends State<InputStat> {
       mood: content.mood,
       comment: content.comment,
     );
-    FireDb.instance.postStat(item).then((result) {
+    API.statApi.postStatEntry(item).then((result) {
       formPosted = true;
       setState(() {
         content = StateData();
