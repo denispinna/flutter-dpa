@@ -4,8 +4,14 @@ import 'package:dpa/models/user.dart';
 import 'package:dpa/services/auth.dart';
 
 class FireDb {
+  static const int CACHE_SIZE = 10737418240;
   static FireDb instance = FireDb();
   final firestore = Firestore.instance;
+
+  FireDb() {
+    firestore.settings(persistenceEnabled: true,
+        cacheSizeBytes: CACHE_SIZE);
+  }
 
   CollectionReference get users => firestore.collection('user');
 
@@ -16,12 +22,14 @@ class FireDb {
         .where('userEmail', isEqualTo: AuthAPI.instance.user.email)
         .orderBy('date', descending: true)
         .limit(limit);
-    return (lastVisible != null) ? query.startAfterDocument(lastVisible) : query;
+    return (lastVisible != null)
+        ? query.startAfterDocument(lastVisible)
+        : query;
   }
 
   Future<User> findUser(String email) async {
     final query =
-        await users.where('email', isEqualTo: email).limit(1).getDocuments();
+    await users.where('email', isEqualTo: email).limit(1).getDocuments();
     if (query.documents.isEmpty) {
       return null;
     }
