@@ -16,16 +16,6 @@ class FireDb {
 
   CollectionReference get stats => _firestore.collection('stat');
 
-  Query getOrderedStats({DocumentSnapshot lastVisible, int limit = 10}) {
-    final query = stats
-        .where('userEmail', isEqualTo: AuthAPI.instance.user.email)
-        .orderBy('date', descending: true)
-        .limit(limit);
-    return (lastVisible != null)
-        ? query.startAfterDocument(lastVisible)
-        : query;
-  }
-
   Future<User> findUser(String email) async {
     final query =
         await users.where('email', isEqualTo: email).limit(1).getDocuments();

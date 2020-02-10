@@ -7,6 +7,7 @@ import 'package:dpa/components/widget/stat_list_item.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/services/auth_services.dart';
+import 'package:dpa/services/stat_services.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
@@ -105,7 +106,7 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
     if (showLoading) setState(() {});
 
     this.error = null;
-    final query = await FireDb.instance
+    final query = await StatApiImpl.instance
         .getOrderedStats(lastVisible: lastDocument, limit: ITEM_PER_PAGE)
         .getDocuments()
         .catchError((error) => {this.error = error});

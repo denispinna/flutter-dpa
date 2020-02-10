@@ -7,12 +7,14 @@ import 'package:dpa/components/widget/pructivity_widget.dart';
 import 'package:dpa/models/mood.dart';
 import 'package:dpa/models/productivity.dart';
 import 'package:dpa/models/stat_item.dart';
+import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 List<StatItem> getDefaultStatItems(String userEmail) {
+  String userEmail = AuthAPI.instance.user.email;
   List<StatItem> defaultItems = List();
   defaultItems.add(PictureStatItem(userEmail: userEmail));
   defaultItems.add(MoodStatItem(userEmail: userEmail));
