@@ -2,10 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
+import 'package:dpa/components/widget/connected_widget.dart';
 import 'package:dpa/components/widget/loading_widget.dart';
 import 'package:dpa/components/widget/stat_list_item.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_entry_parser.dart';
+import 'package:dpa/models/stat_item_parser.dart';
+import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/services/api.dart';
 import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/theme/colors.dart';
@@ -13,6 +16,7 @@ import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:redux/src/store.dart';
 
 class StatsHistoryWidget extends StatefulWidget {
   const StatsHistoryWidget({Key key}) : super(key: key);
@@ -21,7 +25,7 @@ class StatsHistoryWidget extends StatefulWidget {
   State<StatefulWidget> createState() => StatsHistoryWidgetState();
 }
 
-class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
+class StatsHistoryWidgetState extends CustomStoreConnectedState<StatsHistoryWidget, List<StatItem>> {
   static const TAG = "StatsHistoryWidget";
   static const ITEM_PER_PAGE = 10;
   static final contentKey = ValueKey(TAG);
@@ -49,7 +53,7 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildWithStore(BuildContext context, List<StatItem> statItems) {
     Logger.log(runtimeType.toString(), "build");
     _persisAndRecoverContent(context);
 
@@ -66,7 +70,7 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
       );
     } else {
       return new RefreshIndicator(
-        child: _renderStats(),
+        child: _renderStats(statItems),
         onRefresh: _refreshData,
       );
     }
@@ -115,14 +119,15 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
     if (mounted) setState(() => isLoading = false);
   }
 
-  Widget _renderStats() {
+  Widget _renderStats(List<StatItem> statItems) {
     _persisAndRecoverContent(context);
 
     if (stats.isNotEmpty) {
       List<Widget> items = List();
       items.addAll(stats.map((stat) {
         return StatListWidget(
-          stat: stat,
+          statEntry: stat,
+          statItems: statItems.toKeyTypeMap(),
         );
       }).toList());
 
@@ -191,4 +196,7 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
   Future persistContent(BuildContext context) async {
     PageStorage.of(context).writeState(context, stats, identifier: contentKey);
   }
+
+  @override
+  List<StatItem> converter(Store store) => store.state.statItems;
 }

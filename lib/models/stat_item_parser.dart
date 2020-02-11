@@ -5,11 +5,21 @@ import 'package:dpa/provider/stat_item_provider.dart';
 
 const SPLIT_CHAR = ';';
 
+extension StatItemListExt on List<StatItem> {
+  Map<String, StatItem> toKeyTypeMap() {
+    Map<String, StatItem> keyTypeMap = Map();
+    for(final item in this)
+      keyTypeMap[item.key] = item;
+    return keyTypeMap;
+  }
+}
+
 extension ParseFirestoreData on Map<String, dynamic>  {
   StatItem toStatItem() {
     return RemoteStatItem.fromFirestoreData(this).toStatItem();
   }
 }
+
 extension ParseRemoteItem on RemoteStatItem {
   Map<String, dynamic> toFirestoreData() {
     String choicesString = '';

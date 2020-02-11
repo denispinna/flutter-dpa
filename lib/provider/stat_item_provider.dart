@@ -23,7 +23,8 @@ List<StatItem> getDefaultStatItems() {
   ));
   defaultItems.add(MoodStatItem(
     userEmail: userEmail,
-    key: DefaultStatItem.default_mood.label,));
+    key: DefaultStatItem.default_mood.label,
+  ));
   defaultItems.add(ProductivityStatItem(
     userEmail: userEmail,
     key: DefaultStatItem.default_productivity.label,
@@ -36,9 +37,13 @@ List<StatItem> getDefaultStatItems() {
 }
 
 extension DefaultExt on StatEntry {
-  double get productivity => this.stats[DefaultStatItem.default_productivity.label];
+  double get productivity =>
+      this.stats[DefaultStatItem.default_productivity.label];
+
   double get mood => this.stats[DefaultStatItem.default_mood.label];
+
   String get imageUrl => this.stats[DefaultStatItem.default_picture.label];
+
   String get comment => this.stats[DefaultStatItem.default_comment.label];
 }
 
@@ -69,6 +74,7 @@ class PictureStatItem extends TextStatItem {
           maxLength: null,
           position: 0,
           displayInList: false,
+          type: 'PictureStatItem',
         );
 
   @override
@@ -118,7 +124,7 @@ class MoodStatItem extends QuantityStatItem {
           min: 1,
           max: 5,
           position: 1,
-          displayInList: true,
+          displayInList: true
         );
 
   @override
@@ -203,7 +209,7 @@ class ProductivityStatItem extends QuantityStatItem {
           min: 0,
           max: 5,
           position: 2,
-          displayInList: true,
+          displayInList: true
         );
 
   @override
@@ -275,6 +281,7 @@ class CommentStatItem extends TextStatItem {
           maxLength: 1000,
           position: 3,
           displayInList: false,
+          type: 'CommentStatItem',
         );
 
   @override

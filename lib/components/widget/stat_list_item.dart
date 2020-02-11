@@ -1,9 +1,7 @@
 import 'package:dpa/components/widget/date_widget.dart';
-import 'package:dpa/components/widget/image_preview.dart';
-import 'package:dpa/components/widget/mood_widget.dart';
-import 'package:dpa/components/widget/pructivity_widget.dart';
 import 'package:dpa/models/mood.dart';
 import 'package:dpa/models/stat_entry.dart';
+import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/provider/stat_item_provider.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,19 +9,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class StatListWidget extends StatefulWidget {
-  final StatEntry stat;
+  final StatEntry statEntry;
+  final Map<String, StatItem> statItems;
 
-  const StatListWidget({@required this.stat});
+  const StatListWidget({@required this.statEntry, @required this.statItems});
 
   @override
   _StatListWidgetState createState() => _StatListWidgetState();
 }
 
 class _StatListWidgetState extends State<StatListWidget> {
+  List<Widget> collapsedWidgets = List();
+  List<Widget> expandedWidgets = List();
+  List<MapEntry<StatItem, dynamic>> orderedStatEntries = List();
+
+  @override
+  void initState() {
+    super.initState();
+    for (final entry in widget.statEntry.stats.entries) {
+      final item = widget.statItems[entry.key];
+      orderedStatEntries.add(MapEntry(item, entry.value));
+    }
+
+    orderedStatEntries.sort((a, b) => a.key.position.compareTo(b.key.position));
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content;
-    if (widget.stat.expanded)
+    if (widget.statEntry.expanded)
       content = buildExpandedTile(context);
     else
       content = buildCollapsedTile(context);
@@ -37,61 +51,20 @@ class _StatListWidgetState extends State<StatListWidget> {
   }
 
   Widget buildExpandedTile(BuildContext context) {
-    final mood = Mood.values[widget.stat.mood.toInt() - 1];
+    if (expandedWidgets.length == 0) setupExpandedWidgets();
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(Dimens.s),
         child: Column(
-          children: <Widget>[
-            DateTitle(
-              date: widget.stat.date,
-              fontSize: Dimens.m,
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, Dimens.s, 0, 0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    mood.icon,
-                    SizedBox(width: Dimens.s),
-                    MoodLabel(mood)
-                  ],
-                ),
-              ),
-            ),
-            if (widget.stat.imageUrl != null)
-              Center(
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, Dimens.s, 0, 0),
-                    child: ImagePreview(pathOrUrl: widget.stat.imageUrl)),
-              ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, Dimens.s, 0, 0),
-                child: ProductivityDetailWidget(widget.stat.productivity),
-              ),
-            ),
-            if (widget.stat.comment != null && widget.stat.comment.length > 0)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, Dimens.s, 0, 0),
-                child: Text(
-                  widget.stat.comment,
-                  style: TextStyle(
-                    fontSize: Dimens.font_ml,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-          ],
+          children: expandedWidgets,
         ),
       ),
     );
   }
 
   Widget buildCollapsedTile(BuildContext context) {
-    Mood mood = Mood.values[widget.stat.mood.toInt() - 1];
+    Mood mood = Mood.values[widget.statEntry.mood.toInt() - 1];
+    if (collapsedWidgets.length == 0) setupCollapsedWidgets();
 
     return Card(
       elevation: Dimens.xxxxs,
@@ -113,12 +86,7 @@ class _StatListWidgetState extends State<StatListWidget> {
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                DateTitle(date: widget.stat.date),
-                SizedBox(height: Dimens.xxxxs),
-                MoodLabel(mood),
-                ProductivityListWidget(widget.stat.productivity),
-              ],
+              children: collapsedWidgets,
             ),
           ],
         ),
@@ -127,7 +95,32 @@ class _StatListWidgetState extends State<StatListWidget> {
   }
 
   void toggleExpand() {
-    widget.stat.expanded = !widget.stat.expanded;
+    widget.statEntry.expanded = !widget.statEntry.expanded;
     setState(() {});
+  }
+
+  void setupCollapsedWidgets() {
+    collapsedWidgets.add(DateTitle(date: widget.statEntry.date));
+    for (final entry in orderedStatEntries) {
+      if (entry.key != null && entry.key.displayInList) {
+        collapsedWidgets.add(SizedBox(height: Dimens.xxxxs));
+        collapsedWidgets.add(entry.key
+            .getOutputListWidget(context: context, value: entry.value));
+      }
+    }
+  }
+
+  void setupExpandedWidgets() {
+    expandedWidgets.add(DateTitle(
+      date: widget.statEntry.date,
+      fontSize: Dimens.m,
+    ));
+    for (final entry in orderedStatEntries) {
+      if (entry.key != null) {
+        expandedWidgets.add(SizedBox(height: Dimens.s));
+        expandedWidgets.add(entry.key
+            .getOutputDetailWidget(context: context, value: entry.value));
+      }
+    }
   }
 }
