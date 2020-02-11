@@ -25,12 +25,21 @@ abstract class StatItem<T> {
     @required this.position,
   });
 
-  Widget getInputWidget(
-      BuildContext context, T initialValue, Function(T) onValueChanged);
+  Widget getInputWidget({
+    @required BuildContext context,
+    @required Function(T) onValueChanged,
+    T initialValue,
+  });
 
-  Widget getOutputListWidget(BuildContext context, T value);
+  Widget getOutputListWidget({
+    @required BuildContext context,
+    @required T value,
+  });
 
-  Widget getOutputDetailWidget(BuildContext context, T value);
+  Widget getOutputDetailWidget({
+    @required BuildContext context,
+    @required T value,
+  });
 }
 
 class QuantityStatItem extends StatItem<double> {
@@ -64,20 +73,28 @@ class QuantityStatItem extends StatItem<double> {
         );
 
   @override
-  Widget getInputWidget(BuildContext context, double initialValue,
-      Function(double) onValueChanged) {
+  Widget getInputWidget({
+    @required BuildContext context,
+    @required Function(double) onValueChanged,
+    double initialValue,
+  }) {
     // TODO: implement getInputWidget
     return null;
   }
 
-  @override
-  Widget getOutputDetailWidget(BuildContext context, double value) {
+  Widget getOutputDetailWidget({
+    @required BuildContext context,
+    @required double value,
+  }) {
     // TODO: implement getOutputDetailWidget
     return null;
   }
 
   @override
-  Widget getOutputListWidget(BuildContext context, double value) {
+  Widget getOutputListWidget({
+    @required BuildContext context,
+    @required double value,
+  }) {
     // TODO: implement getOutputListWidget
     return null;
   }
@@ -111,20 +128,29 @@ class TextStatItem extends StatItem<String> {
           displayInList: displayInList,
         );
 
-  @override
-  Widget getInputWidget(BuildContext context, String initialValue, Function(String) onValueChanged) {
+  Widget getInputWidget({
+    @required BuildContext context,
+    @required Function(String) onValueChanged,
+    String initialValue,
+  }) {
     // TODO: implement getInputWidget
     return null;
   }
 
   @override
-  Widget getOutputDetailWidget(BuildContext context, String value) {
+  Widget getOutputDetailWidget({
+    @required BuildContext context,
+    @required String value,
+  }) {
     // TODO: implement getOutputDetailWidget
     return null;
   }
 
   @override
-  Widget getOutputListWidget(BuildContext context, String value) {
+  Widget getOutputListWidget({
+    @required BuildContext context,
+    @required String value,
+  }) {
     // TODO: implement getOutputListWidget
     return null;
   }
@@ -159,19 +185,29 @@ class McqStatItem extends StatItem<String> {
         );
 
   @override
-  Widget getInputWidget(BuildContext context, String initialValue, Function(String) onValueChanged) {
+  Widget getInputWidget({
+    @required BuildContext context,
+    @required Function(String) onValueChanged,
+    String initialValue,
+  }) {
     // TODO: implement getInputWidget
     return null;
   }
 
   @override
-  Widget getOutputDetailWidget(BuildContext context, String value) {
+  Widget getOutputDetailWidget({
+    @required BuildContext context,
+    @required String value,
+  }) {
     // TODO: implement getOutputDetailWidget
     return null;
   }
 
   @override
-  Widget getOutputListWidget(BuildContext context, String value) {
+  Widget getOutputListWidget({
+    @required BuildContext context,
+    @required String value,
+  }) {
     // TODO: implement getOutputListWidget
     return null;
   }

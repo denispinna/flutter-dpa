@@ -8,8 +8,8 @@ class AppState {
   final List<StatItem> statItems;
 
   AppState({
-    this.user,
-    this.function,
-    this.statItems,
+    @required this.user,
+    @required this.function,
+    @required this.statItems,
   });
 }

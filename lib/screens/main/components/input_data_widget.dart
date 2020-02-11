@@ -1,10 +1,13 @@
+import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/file_manager.dart';
 import 'package:dpa/components/widget/camera_widget.dart';
+import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/components/widget/connected_widget.dart';
 import 'package:dpa/components/widget/loading_widget.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/services/api.dart';
+import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/material.dart';
@@ -27,15 +30,10 @@ class InputItemState
   @override
   Widget buildWithStore(BuildContext context, List<StatItem> statItems) {
     persistAndRecoverContent(context);
-    if (content.loading) {
-      return Center(
-          child: Padding(
-        padding: const EdgeInsets.all(Dimens.l),
-        child: LoadingWidget(
-          showLabel: false,
-          label: 'processing',
-        ),
-      ));
+    if (content.loading || statItems.length == 0) {
+      return LoadingWidget(
+        showLabel: false,
+      );
     } else if (formPosted) {
       displayMessage('post_stat_success', context, isSuccess: true);
       formPosted = false;
@@ -44,7 +42,30 @@ class InputItemState
   }
 
   Widget buildInputForm(BuildContext context, List<StatItem> statItems) {
-    return Column();
+    List<Widget> inputWidgets = List();
+    inputWidgets
+        .add(Padding(padding: const EdgeInsets.only(top: Dimens.padding_l)));
+    for (final item in statItems) {
+      inputWidgets.add(item.getInputWidget(
+        context: context,
+        onValueChanged: null,
+      ));
+      inputWidgets
+          .add(Padding(padding: const EdgeInsets.only(top: Dimens.padding_m)));
+    }
+    inputWidgets.add(CenterHorizontal(
+      RaisedButton(
+        color: MyColors.white,
+        onPressed: () {
+          //TODO: Add check on components (something had been done)
+          onFormValid(context);
+        },
+        child: Text(AppLocalizations.of(context).translate('save')),
+      ),
+    ));
+    return Column(
+      children: inputWidgets,
+    );
   }
 
   @override

@@ -40,13 +40,20 @@ class PictureStatItem extends TextStatItem {
         );
 
   @override
-  Widget getInputWidget(BuildContext context, String initialValue,
-      Function(String) onValueChanged) {
+  Widget getInputWidget({
+    @required BuildContext context,
+    @required Function(String) onValueChanged,
+    String initialValue,
+  }) {
+    //TODO: Add default value to the widget (in case of editing)
     return TakePictureWidget(onPictureTaken: onValueChanged);
   }
 
   @override
-  Widget getOutputDetailWidget(BuildContext context, String value) {
+  Widget getOutputDetailWidget({
+    @required BuildContext context,
+    @required String value,
+  }) {
     return Center(
       child: Padding(
           padding: const EdgeInsets.fromLTRB(0, Dimens.s, 0, 0),
@@ -55,7 +62,10 @@ class PictureStatItem extends TextStatItem {
   }
 
   @override
-  Widget getOutputListWidget(BuildContext context, String value) {
+  Widget getOutputListWidget({
+    @required BuildContext context,
+    @required String value,
+  }) {
     return null;
   }
 }
@@ -78,8 +88,11 @@ class MoodStatItem extends QuantityStatItem {
         );
 
   @override
-  Widget getInputWidget(
-      BuildContext context, double initialValue, Function(double) onValueChanged) {
+  Widget getInputWidget({
+    @required BuildContext context,
+    @required Function(double) onValueChanged,
+    double initialValue,
+  }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -90,7 +103,7 @@ class MoodStatItem extends QuantityStatItem {
         )),
         Padding(padding: const EdgeInsets.only(top: Dimens.padding_s)),
         CenterHorizontal(RatingBar(
-          initialRating: initialValue.toDouble(),
+          initialRating: (initialValue != null) ? initialValue : 3.0,
           itemCount: 5,
           itemSize: Dimens.input_rating_icon_width,
           itemBuilder: (context, index) {
@@ -107,7 +120,10 @@ class MoodStatItem extends QuantityStatItem {
   }
 
   @override
-  Widget getOutputDetailWidget(BuildContext context, double value) {
+  Widget getOutputDetailWidget({
+    @required BuildContext context,
+    @required double value,
+  }) {
     final mood = Mood.values[value.toInt() - 1];
 
     return Center(
@@ -126,7 +142,10 @@ class MoodStatItem extends QuantityStatItem {
   }
 
   @override
-  Widget getOutputListWidget(BuildContext context, double value) {
+  Widget getOutputListWidget({
+    @required BuildContext context,
+    @required double value,
+  }) {
     Mood mood = Mood.values[value.toInt() - 1];
     return MoodLabel(mood);
   }
@@ -152,8 +171,13 @@ class ProductivityStatItem extends QuantityStatItem {
         );
 
   @override
-  Widget getInputWidget(BuildContext context, double initialValue,
-      Function(double) onValueChanged) {
+  Widget getInputWidget({
+    @required BuildContext context,
+    @required double initialValue,
+    @required Function(double) onValueChanged,
+  }) {
+    _productivity = (initialValue != null) ? initialValue : 2.5;
+
     return Column(
       children: <Widget>[
         CenterHorizontal(Text(
@@ -162,7 +186,7 @@ class ProductivityStatItem extends QuantityStatItem {
         )),
         Padding(padding: const EdgeInsets.only(top: Dimens.padding_s)),
         CenterHorizontal(RatingBar(
-          initialRating: initialValue,
+          initialRating: _productivity,
           direction: Axis.horizontal,
           allowHalfRating: true,
           itemCount: 5,
@@ -183,12 +207,18 @@ class ProductivityStatItem extends QuantityStatItem {
   }
 
   @override
-  Widget getOutputDetailWidget(BuildContext context, double value) {
+  Widget getOutputDetailWidget({
+    @required BuildContext context,
+    @required double value,
+  }) {
     return ProductivityDetailWidget(value);
   }
 
   @override
-  Widget getOutputListWidget(BuildContext context, double value) {
+  Widget getOutputListWidget({
+    @required BuildContext context,
+    @required double value,
+  }) {
     return ProductivityListWidget(value);
   }
 }
@@ -210,13 +240,16 @@ class CommentStatItem extends TextStatItem {
         );
 
   @override
-  Widget getInputWidget(BuildContext context, String initialValue,
-      Function(String) onValueChanged) {
+  Widget getInputWidget({
+    @required BuildContext context,
+    @required String initialValue,
+    @required Function(String) onValueChanged,
+  }) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: Dimens.padding_xxxl),
         child: TextFormField(
           keyboardType: TextInputType.multiline,
-          initialValue: initialValue,
+          initialValue: (initialValue != null) ? initialValue : "",
           minLines: 3,
           maxLines: 3,
           maxLength: maxLength,
@@ -235,7 +268,10 @@ class CommentStatItem extends TextStatItem {
   }
 
   @override
-  Widget getOutputDetailWidget(BuildContext context, String value) {
+  Widget getOutputDetailWidget({
+    @required BuildContext context,
+    @required String value,
+  }) {
     return Text(
       value,
       style: TextStyle(
@@ -247,7 +283,10 @@ class CommentStatItem extends TextStatItem {
   }
 
   @override
-  Widget getOutputListWidget(BuildContext context, String value) {
+  Widget getOutputListWidget({
+    @required BuildContext context,
+    @required String value,
+  }) {
     return null;
   }
 }

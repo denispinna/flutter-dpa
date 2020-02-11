@@ -15,6 +15,8 @@ Future<void> main() async {
 
   final initialState = AppState(
     user: currentUser,
+    function: null,
+    statItems: List(),
   );
 
   final appStore =
