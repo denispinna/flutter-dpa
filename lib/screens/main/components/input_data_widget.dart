@@ -8,6 +8,7 @@ import 'package:dpa/components/widget/connected_widget.dart';
 import 'package:dpa/components/widget/loading_widget.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_item.dart';
+import 'package:dpa/provider/stat_item_provider.dart';
 import 'package:dpa/services/api.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
@@ -82,16 +83,17 @@ class InputItemState
     setState(() {
       content.loading = true;
     });
-    if (content.imagePath != null && content.imageUrl == null) {
-      uploadImage(context);
+    final imagePath = content.stats[DefaultStatItem.default_picture];
+    if (imagePath != null && content.imageUrl == null) {
+      uploadImage(context, imagePath);
     } else {
       postStat(context);
     }
   }
 
-  void uploadImage(BuildContext context) {
+  void uploadImage(BuildContext context, String imagePath) {
     if (content.task != null) return;
-    this.content.task = UploadImageTask(content.imagePath);
+    this.content.task = UploadImageTask(imagePath);
     content.task.execute().then((imageUrl) {
       this.content.imageUrl = imageUrl;
       postStat(context);
@@ -99,13 +101,8 @@ class InputItemState
   }
 
   void postStat(BuildContext context) {
-    final item = DateStatEntry(
-      userEmail: content.userEmail,
-      imageUrl: content.imageUrl,
-      productivity: content.productivity,
-      mood: content.mood,
-      comment: content.comment,
-    );
+    //TODO: Add stats here to the entry
+    final item = DateStatEntry();
     API.statApi.postStatEntry(item).then((result) {
       formPosted = true;
       setState(() {
@@ -141,12 +138,7 @@ class InputItemState
 
 class StateData {
   String imageUrl;
-  String imagePath;
-  String userEmail;
-  String comment;
   bool loading = false;
   UploadImageTask task;
-  var mood = 3.0;
-  var productivity = 2.5;
   HashMap<String, Object> stats = HashMap();
 }

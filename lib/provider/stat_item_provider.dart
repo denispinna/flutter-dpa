@@ -16,20 +16,40 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 List<StatItem> getDefaultStatItems() {
   String userEmail = AuthAPI.instance.user.email;
   List<StatItem> defaultItems = List();
-  defaultItems.add(PictureStatItem(userEmail: userEmail));
-  defaultItems.add(MoodStatItem(userEmail: userEmail));
-  defaultItems.add(ProductivityStatItem(userEmail: userEmail));
-  defaultItems.add(CommentStatItem(userEmail: userEmail));
+  defaultItems.add(PictureStatItem(
+    userEmail: userEmail,
+    key: DefaultStatItem.default_picture.toString(),
+  ));
+  defaultItems.add(MoodStatItem(
+    userEmail: userEmail,
+    key: DefaultStatItem.default_mood.toString(),));
+  defaultItems.add(ProductivityStatItem(
+    userEmail: userEmail,
+    key: DefaultStatItem.default_productivity.toString(),
+  ));
+  defaultItems.add(CommentStatItem(
+    userEmail: userEmail,
+    key: DefaultStatItem.default_comment.toString(),
+  ));
   return defaultItems;
 }
 
+enum DefaultStatItem {
+  default_picture,
+  default_mood,
+  default_productivity,
+  default_comment,
+}
+
 class PictureStatItem extends TextStatItem {
-  const PictureStatItem({@required userEmail})
-      : super(
+  const PictureStatItem({
+    @required String userEmail,
+    @required String key,
+  }) : super(
           userEmail: userEmail,
           isCustom: false,
           isEnabled: true,
-          key: 'default_picture',
+          key: key,
           inputLabel: null,
           outputLabel: '',
           localizedLabel: true,
@@ -71,12 +91,14 @@ class PictureStatItem extends TextStatItem {
 }
 
 class MoodStatItem extends QuantityStatItem {
-  const MoodStatItem({@required userEmail})
-      : super(
+  const MoodStatItem({
+    @required String userEmail,
+    @required String key,
+  }) : super(
           userEmail: userEmail,
           isCustom: false,
           isEnabled: true,
-          key: 'default_mood',
+          key: key,
           inputLabel: 'mood_label',
           outputLabel: '',
           localizedLabel: true,
@@ -154,12 +176,14 @@ class MoodStatItem extends QuantityStatItem {
 class ProductivityStatItem extends QuantityStatItem {
   double _productivity;
 
-  ProductivityStatItem({@required userEmail})
-      : super(
+  ProductivityStatItem({
+    @required String userEmail,
+    @required String key,
+  }) : super(
           userEmail: userEmail,
           isCustom: false,
           isEnabled: true,
-          key: 'default_productivity',
+          key: key,
           inputLabel: 'productivity_label',
           outputLabel: '',
           localizedLabel: true,
@@ -224,12 +248,14 @@ class ProductivityStatItem extends QuantityStatItem {
 }
 
 class CommentStatItem extends TextStatItem {
-  const CommentStatItem({@required userEmail})
-      : super(
+  const CommentStatItem({
+    @required String userEmail,
+    @required String key,
+  }) : super(
           userEmail: userEmail,
           isCustom: false,
           isEnabled: true,
-          key: 'default_comment',
+          key: key,
           inputLabel: 'comment_hint',
           outputLabel: '',
           localizedLabel: true,
