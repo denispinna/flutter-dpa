@@ -113,19 +113,18 @@ class MoodStatItem extends QuantityStatItem {
     @required String userEmail,
     @required String key,
   }) : super(
-          userEmail: userEmail,
-          isCustom: false,
-          isEnabled: true,
-          key: key,
-          inputLabel: 'mood_label',
-          outputLabel: '',
-          localizedLabel: true,
-          color: MyColors.dark,
-          min: 1,
-          max: 5,
-          position: 1,
-          displayInList: true
-        );
+            userEmail: userEmail,
+            isCustom: false,
+            isEnabled: true,
+            key: key,
+            inputLabel: 'mood_label',
+            outputLabel: '',
+            localizedLabel: true,
+            color: MyColors.dark,
+            min: 1,
+            max: 5,
+            position: 1,
+            displayInList: true);
 
   @override
   Widget getInputWidget({
@@ -198,19 +197,18 @@ class ProductivityStatItem extends QuantityStatItem {
     @required String userEmail,
     @required String key,
   }) : super(
-          userEmail: userEmail,
-          isCustom: false,
-          isEnabled: true,
-          key: key,
-          inputLabel: 'productivity_label',
-          outputLabel: '',
-          localizedLabel: true,
-          color: MyColors.dark,
-          min: 0,
-          max: 5,
-          position: 2,
-          displayInList: true
-        );
+            userEmail: userEmail,
+            isCustom: false,
+            isEnabled: true,
+            key: key,
+            inputLabel: 'productivity_label',
+            outputLabel: '',
+            localizedLabel: true,
+            color: MyColors.dark,
+            min: 0,
+            max: 5,
+            position: 2,
+            displayInList: true);
 
   @override
   Widget getInputWidget({

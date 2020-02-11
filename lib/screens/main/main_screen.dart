@@ -24,8 +24,8 @@ class MainScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _MainState();
 }
 
-class _MainState extends CustomConnectedScreenState<MainScreen,
-    Function(AppAction)> {
+class _MainState
+    extends CustomConnectedScreenState<MainScreen, Function(AppAction)> {
   final PageStorageBucket bucket = PageStorageBucket();
   InputStat inputWidget;
   StatsHistoryWidget statsWidget;
@@ -49,11 +49,11 @@ class _MainState extends CustomConnectedScreenState<MainScreen,
   }
 
   @override
-  Widget buildWithStore(BuildContext context, Function(AppAction) dispatchAction) {
+  Widget buildWithStore(
+      BuildContext context, Function(AppAction) dispatchAction) {
     this.dispatchAction = dispatchAction;
     if (!synchronized)
       return Scaffold(backgroundColor: MyColors.light, body: LoadingWidget());
-
 
     if (barItems == null) setupBarItems();
     user = ModalRoute.of(context).settings.arguments;

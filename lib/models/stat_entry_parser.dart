@@ -19,14 +19,10 @@ extension ParseDocToStat on DocumentSnapshot {
     Map<String, dynamic> data = this.data;
     final date = data[_Fields.date.label] as Timestamp;
     final stats = HashMap<String, dynamic>();
-    for(final statEntry in data[_Fields.stats.label].entries){
+    for (final statEntry in data[_Fields.stats.label].entries) {
       stats[statEntry.key] = statEntry.value;
     }
-    return StatEntry(
-      id: this.documentID,
-      date: date.toDate(),
-      stats: stats
-    );
+    return StatEntry(id: this.documentID, date: date.toDate(), stats: stats);
   }
 }
 

@@ -7,8 +7,8 @@ import 'package:dpa/components/widget/loading_widget.dart';
 import 'package:dpa/components/widget/stat_list_item.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_entry_parser.dart';
-import 'package:dpa/models/stat_item_parser.dart';
 import 'package:dpa/models/stat_item.dart';
+import 'package:dpa/models/stat_item_parser.dart';
 import 'package:dpa/services/api.dart';
 import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/theme/colors.dart';
@@ -25,7 +25,8 @@ class StatsHistoryWidget extends StatefulWidget {
   State<StatefulWidget> createState() => StatsHistoryWidgetState();
 }
 
-class StatsHistoryWidgetState extends CustomStoreConnectedState<StatsHistoryWidget, List<StatItem>> {
+class StatsHistoryWidgetState
+    extends CustomStoreConnectedState<StatsHistoryWidget, List<StatItem>> {
   static const TAG = "StatsHistoryWidget";
   static const ITEM_PER_PAGE = 10;
   static final contentKey = ValueKey(TAG);

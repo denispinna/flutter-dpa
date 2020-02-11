@@ -136,8 +136,10 @@ class AuthAPI {
   }
 
   Future<User> findUser(String email) async {
-    final query =
-    await FireDb.instance.users.where('email', isEqualTo: email).limit(1).getDocuments();
+    final query = await FireDb.instance.users
+        .where('email', isEqualTo: email)
+        .limit(1)
+        .getDocuments();
     if (query.documents.isEmpty) {
       return null;
     }

@@ -3,9 +3,9 @@ import 'package:dpa/components/db/fire_db_component.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/models/remote_stat_item.dart';
 import 'package:dpa/models/stat_entry.dart';
+import 'package:dpa/models/stat_entry_parser.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/stat_item_parser.dart';
-import 'package:dpa/models/stat_entry_parser.dart';
 import 'package:dpa/provider/stat_item_provider.dart';
 import 'package:dpa/services/auth_services.dart';
 
@@ -65,7 +65,8 @@ class StatApiImpl extends StatApi {
 
   Future<bool> _defaultItemsExist() async {
     final query = fireDb.statsItems
-        .where(StatItemField.user_email.label, isEqualTo: AuthAPI.instance.user.email)
+        .where(StatItemField.user_email.label,
+            isEqualTo: AuthAPI.instance.user.email)
         .limit(1);
 
     final result = await query.getDocuments().catchError((error) => {

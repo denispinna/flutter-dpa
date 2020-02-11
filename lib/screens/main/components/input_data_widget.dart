@@ -106,7 +106,7 @@ class InputItemState
       stats: content.stats,
     );
     // We replace the image path by the imageUrl
-    if(content.imageUrl != null)
+    if (content.imageUrl != null)
       content.stats[DefaultStatItem.default_picture.label] = content.imageUrl;
 
     API.statApi.postStatEntry(item).then((result) {

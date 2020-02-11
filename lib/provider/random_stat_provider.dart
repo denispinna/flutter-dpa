@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:math';
+
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/provider/stat_item_provider.dart';
 import 'package:dpa/services/api.dart';
@@ -52,8 +53,5 @@ StatEntry _generateFakeStat(DateTime date) {
   stats[DefaultStatItem.default_picture.label] = imageUrl;
   stats[DefaultStatItem.default_productivity.label] = productivity;
 
-  return StatEntry(
-    date: date,
-    stats: stats
-  );
+  return StatEntry(date: date, stats: stats);
 }
