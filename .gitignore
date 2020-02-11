@@ -72,3 +72,5 @@
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 ios
 .flutter-plugins-dependencies
+db_tool/node_modules
+package-lock.json
