@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
+import 'package:dpa/components/widget/loading_widget.dart';
 import 'package:dpa/components/widget/stat_list_item.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/user.dart';
@@ -70,12 +71,8 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
     }
 
     if (stats == null) {
-      return Center(
-        child: Container(
-          child: CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
-          ),
-        ),
+      return LoadingWidget(
+        showLabel: false,
       );
     } else {
       return new RefreshIndicator(

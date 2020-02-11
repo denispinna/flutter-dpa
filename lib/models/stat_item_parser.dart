@@ -24,18 +24,18 @@ extension ParseRemoteItem on RemoteStatItem {
     return <String, dynamic>{
       StatItemField.type.label: type,
       StatItemField.key.label: key,
-      StatItemField.userEmail.label: userEmail,
-      StatItemField.isCustom.label: isCustom,
-      StatItemField.isEnabled.label: isEnabled,
-      StatItemField.localizedLabel.label: localizedLabel,
-      StatItemField.displayInList.label: displayInList,
-      StatItemField.inputLabel.label: inputLabel,
-      StatItemField.outputLabel.label: outputLabel,
+      StatItemField.user_email.label: userEmail,
+      StatItemField.is_custom.label: isCustom,
+      StatItemField.is_enabled.label: isEnabled,
+      StatItemField.localized_label.label: localizedLabel,
+      StatItemField.display_in_list.label: displayInList,
+      StatItemField.input_label.label: inputLabel,
+      StatItemField.output_label.label: outputLabel,
       StatItemField.color.label: color.value,
       StatItemField.position.label: position,
       StatItemField.min.label: min,
       StatItemField.max.label: max,
-      StatItemField.maxLength.label: maxLength,
+      StatItemField.max_length.label: maxLength,
       StatItemField.choices.label: choicesString,
     };
   }
@@ -44,18 +44,22 @@ extension ParseRemoteItem on RemoteStatItem {
     switch (type) {
       case 'PictureStatItem':
         return PictureStatItem(
+          key: key,
           userEmail: userEmail,
         );
       case 'MoodStatItem':
         return MoodStatItem(
+          key: key,
           userEmail: userEmail,
         );
       case 'ProductivityStatItem':
         return ProductivityStatItem(
+          key: key,
           userEmail: userEmail,
         );
       case 'CommentStatItem':
         return CommentStatItem(
+          key: key,
           userEmail: userEmail,
         );
       case 'QuantityStatItem':

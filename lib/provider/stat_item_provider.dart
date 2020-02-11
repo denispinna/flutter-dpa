@@ -19,27 +19,27 @@ List<StatItem> getDefaultStatItems() {
   List<StatItem> defaultItems = List();
   defaultItems.add(PictureStatItem(
     userEmail: userEmail,
-    key: DefaultStatItem.default_picture.toString(),
+    key: DefaultStatItem.default_picture.label,
   ));
   defaultItems.add(MoodStatItem(
     userEmail: userEmail,
-    key: DefaultStatItem.default_mood.toString(),));
+    key: DefaultStatItem.default_mood.label,));
   defaultItems.add(ProductivityStatItem(
     userEmail: userEmail,
-    key: DefaultStatItem.default_productivity.toString(),
+    key: DefaultStatItem.default_productivity.label,
   ));
   defaultItems.add(CommentStatItem(
     userEmail: userEmail,
-    key: DefaultStatItem.default_comment.toString(),
+    key: DefaultStatItem.default_comment.label,
   ));
   return defaultItems;
 }
 
 extension DefaultExt on StatEntry {
-  double get productivity => this.stats[DefaultStatItem.default_productivity.toString()];
-  double get mood => this.stats[DefaultStatItem.default_mood.toString()];
-  String get imageUrl => this.stats[DefaultStatItem.default_picture.toString()];
-  String get comment => this.stats[DefaultStatItem.default_comment.toString()];
+  double get productivity => this.stats[DefaultStatItem.default_productivity.label];
+  double get mood => this.stats[DefaultStatItem.default_mood.label];
+  String get imageUrl => this.stats[DefaultStatItem.default_picture.label];
+  String get comment => this.stats[DefaultStatItem.default_comment.label];
 }
 
 enum DefaultStatItem {
@@ -47,6 +47,10 @@ enum DefaultStatItem {
   default_mood,
   default_productivity,
   default_comment,
+}
+
+extension DefaultStatItemExt on DefaultStatItem {
+  String get label => this.toString().split(".")[1];
 }
 
 class PictureStatItem extends TextStatItem {

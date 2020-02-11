@@ -1,4 +1,4 @@
-import 'package:dpa/components/fire_db_component.dart';
+import 'package:dpa/components/db/fire_db_component.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/util/view_util.dart';

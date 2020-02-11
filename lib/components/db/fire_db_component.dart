@@ -14,5 +14,5 @@ class FireDb {
 
   CollectionReference get stats => _firestore.collection('stat');
 
-  CollectionReference get statsItems => _firestore.collection('stats_items');
+  CollectionReference get statsItems => _firestore.collection('stat_item');
 }

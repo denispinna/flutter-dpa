@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dpa/theme/colors.dart';
+import 'package:dpa/components/widget/loading_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -47,8 +47,8 @@ class ImagePreview extends StatelessWidget {
           )
         : CachedNetworkImage(
             placeholder: (context, url) => Center(
-              child: CircularProgressIndicator(
-                valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
+              child: LoadingWidget(
+                showLabel: false,
               ),
             ),
             imageUrl: pathOrUrl,

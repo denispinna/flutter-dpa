@@ -38,7 +38,8 @@ class InputItemState
         showLabel: false,
       );
     } else if (formPosted) {
-      displayMessage('post_stat_success', context, isSuccess: true);
+      Future.delayed(Duration(milliseconds: 200),
+          () => displayMessage('post_stat_success', context, isSuccess: true));
       formPosted = false;
     }
     return buildInputForm(context, statItems);
@@ -51,11 +52,8 @@ class InputItemState
     for (final item in statItems) {
       inputWidgets.add(item.getInputWidget(
         context: context,
-        onValueChanged: (value) => onValueChanged(
-          key: item.key,
-          value: value,
-          context: context
-        ),
+        onValueChanged: (value) =>
+            onValueChanged(key: item.key, value: value, context: context),
         initialValue: content.stats[item.key],
       ));
       inputWidgets
@@ -65,7 +63,7 @@ class InputItemState
       RaisedButton(
         color: MyColors.white,
         onPressed: () {
-          //TODO: Add check on components (something had been done)
+          //TODO: Add check on components (something has been done)
           onFormValid(context);
         },
         child: Text(AppLocalizations.of(context).translate('save')),
@@ -85,7 +83,7 @@ class InputItemState
     setState(() {
       content.loading = true;
     });
-    final imagePath = content.stats[DefaultStatItem.default_picture];
+    final imagePath = content.stats[DefaultStatItem.default_picture.label];
     if (imagePath != null && content.imageUrl == null) {
       uploadImage(context, imagePath);
     } else {
@@ -103,8 +101,14 @@ class InputItemState
   }
 
   void postStat(BuildContext context) {
-    //TODO: Add stats here to the entry
-    final item = StatEntry();
+    final item = StatEntry(
+      date: DateTime.now(),
+      stats: content.stats,
+    );
+    // We replace the image path by the imageUrl
+    if(content.imageUrl != null)
+      content.stats[DefaultStatItem.default_picture.label] = content.imageUrl;
+
     API.statApi.postStatEntry(item).then((result) {
       formPosted = true;
       setState(() {

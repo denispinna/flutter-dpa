@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dpa/components/fire_db_component.dart';
+import 'package:dpa/components/db/fire_db_component.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/models/remote_stat_item.dart';
 import 'package:dpa/models/stat_entry.dart';
@@ -36,7 +36,7 @@ class StatApiImpl extends StatApi {
   @override
   Query getEnabledStatItem() {
     return fireDb.statsItems
-        .where(StatItemField.userEmail.label,
+        .where(StatItemField.user_email.label,
             isEqualTo: AuthAPI.instance.user.email)
         .orderBy(StatItemField.position.label);
   }
@@ -65,7 +65,7 @@ class StatApiImpl extends StatApi {
 
   Future<bool> _defaultItemsExist() async {
     final query = fireDb.statsItems
-        .where('userEmail', isEqualTo: AuthAPI.instance.user.email)
+        .where(StatItemField.user_email.label, isEqualTo: AuthAPI.instance.user.email)
         .limit(1);
 
     final result = await query.getDocuments().catchError((error) => {

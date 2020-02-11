@@ -6,6 +6,7 @@ import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/image_preview.dart';
 import 'package:dpa/components/widget/lifecycle_widget.dart';
+import 'package:dpa/components/widget/loading_widget.dart';
 import 'package:dpa/provider/camera_provider.dart';
 import 'package:dpa/screens/camera/camera_screen.dart';
 import 'package:dpa/theme/colors.dart';
@@ -37,6 +38,7 @@ class _TakePictureState extends State<TakePictureWidget> {
   _TakePictureState() {
     instance = this;
   }
+
   String imagePath;
 
   @override
@@ -334,17 +336,7 @@ abstract class CameraState<W extends StatefulWidget>
   }
 
   Widget buildLoadingWidget() {
-    return Scaffold(
-      backgroundColor: MyColors.light,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(Dimens.l),
-          child: CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(MyColors.second),
-          ),
-        ),
-      ),
-    );
+    return LoadingWidget();
   }
 
   Widget buildCameraWidget(BuildContext context);
