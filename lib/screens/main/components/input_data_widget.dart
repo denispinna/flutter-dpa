@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/file_manager.dart';
 import 'package:dpa/components/widget/camera_widget.dart';
@@ -48,7 +50,12 @@ class InputItemState
     for (final item in statItems) {
       inputWidgets.add(item.getInputWidget(
         context: context,
-        onValueChanged: null,
+        onValueChanged: (value) => onValueChanged(
+          key: item.key,
+          value: value,
+          context: context
+        ),
+        initialValue: content.stats[item.key],
       ));
       inputWidgets
           .add(Padding(padding: const EdgeInsets.only(top: Dimens.padding_m)));
@@ -121,6 +128,15 @@ class InputItemState
           .writeState(context, content, identifier: contentKey);
     }
   }
+
+  onValueChanged({
+    @required String key,
+    @required Object value,
+    @required BuildContext context,
+  }) {
+    content.stats[key] = value;
+    persistAndRecoverContent(context);
+  }
 }
 
 class StateData {
@@ -132,4 +148,5 @@ class StateData {
   UploadImageTask task;
   var mood = 3.0;
   var productivity = 2.5;
+  HashMap<String, Object> stats = HashMap();
 }
