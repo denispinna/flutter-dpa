@@ -6,6 +6,7 @@ import 'package:dpa/components/widget/mood_widget.dart';
 import 'package:dpa/components/widget/pructivity_widget.dart';
 import 'package:dpa/models/mood.dart';
 import 'package:dpa/models/productivity.dart';
+import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/theme/colors.dart';
@@ -32,6 +33,13 @@ List<StatItem> getDefaultStatItems() {
     key: DefaultStatItem.default_comment.toString(),
   ));
   return defaultItems;
+}
+
+extension DefaultExt on StatEntry {
+  double get productivity => this.stats[DefaultStatItem.default_productivity.toString()];
+  double get mood => this.stats[DefaultStatItem.default_mood.toString()];
+  String get imageUrl => this.stats[DefaultStatItem.default_picture.toString()];
+  String get comment => this.stats[DefaultStatItem.default_comment.toString()];
 }
 
 enum DefaultStatItem {

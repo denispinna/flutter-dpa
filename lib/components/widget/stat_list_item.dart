@@ -4,13 +4,14 @@ import 'package:dpa/components/widget/mood_widget.dart';
 import 'package:dpa/components/widget/pructivity_widget.dart';
 import 'package:dpa/models/mood.dart';
 import 'package:dpa/models/stat_entry.dart';
+import 'package:dpa/provider/stat_item_provider.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class StatListWidget extends StatefulWidget {
-  final DateStatEntry stat;
+  final StatEntry stat;
 
   const StatListWidget({@required this.stat});
 

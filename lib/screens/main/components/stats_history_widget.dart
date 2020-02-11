@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dpa/components/app_localization.dart';
-import 'package:dpa/components/fire_db_component.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/components/widget/stat_list_item.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/user.dart';
+import 'package:dpa/models/stat_entry_parser.dart';
 import 'package:dpa/services/api.dart';
 import 'package:dpa/services/auth_services.dart';
-import 'package:dpa/services/stat_services.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
@@ -16,12 +15,6 @@ import 'package:dpa/util/view_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-
-List<DateStatEntry> parseStats(List<DocumentSnapshot> documents) {
-  return documents.map((DocumentSnapshot document) {
-    return DateStatEntry.fromFirestoreData(document);
-  }).toList();
-}
 
 class StatsHistoryWidget extends StatefulWidget {
   const StatsHistoryWidget({Key key}) : super(key: key);
@@ -36,7 +29,7 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
   static final contentKey = ValueKey(TAG);
   final authApi = AuthAPI.instance;
   var error;
-  List<DateStatEntry> stats;
+  List<StatEntry> stats;
   bool isLoading = false;
   bool lastPageReached = false;
   DocumentSnapshot lastDocument;
@@ -121,8 +114,8 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
     }
 
     final documents = query.documents;
-    final items = await compute(parseStats, documents);
-    if (stats == null) stats = List<DateStatEntry>();
+    final items = await compute(parseStatEntries, documents);
+    if (stats == null) stats = List<StatEntry>();
     /* We do not want to add the items from the first page if some other items were recovered from an earlier state */
     if (!(isFirstPage && stats.length > 0)) {
       stats.addAll(items);

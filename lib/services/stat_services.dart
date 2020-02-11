@@ -4,7 +4,8 @@ import 'package:dpa/components/logger.dart';
 import 'package:dpa/models/remote_stat_item.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_item.dart';
-import 'package:dpa/models/stat_parser.dart';
+import 'package:dpa/models/stat_item_parser.dart';
+import 'package:dpa/models/stat_entry_parser.dart';
 import 'package:dpa/provider/stat_item_provider.dart';
 import 'package:dpa/services/auth_services.dart';
 
@@ -15,7 +16,7 @@ abstract class StatApi {
 
   Query getEnabledStatItem();
 
-  Future<DocumentReference> postStatEntry(DateStatEntry stat);
+  Future<DocumentReference> postStatEntry(StatEntry stat);
 }
 
 class StatApiImpl extends StatApi {
@@ -58,7 +59,7 @@ class StatApiImpl extends StatApi {
   }
 
   @override
-  Future<DocumentReference> postStatEntry(DateStatEntry stat) async {
+  Future<DocumentReference> postStatEntry(StatEntry stat) async {
     return await fireDb.stats.add(stat.toFirestoreData());
   }
 

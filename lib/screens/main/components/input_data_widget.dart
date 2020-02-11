@@ -71,8 +71,10 @@ class InputItemState
         child: Text(AppLocalizations.of(context).translate('save')),
       ),
     ));
-    return Column(
-      children: inputWidgets,
+    return SingleChildScrollView(
+      child: Column(
+        children: inputWidgets,
+      ),
     );
   }
 
@@ -102,7 +104,7 @@ class InputItemState
 
   void postStat(BuildContext context) {
     //TODO: Add stats here to the entry
-    final item = DateStatEntry();
+    final item = StatEntry();
     API.statApi.postStatEntry(item).then((result) {
       formPosted = true;
       setState(() {
@@ -140,5 +142,5 @@ class StateData {
   String imageUrl;
   bool loading = false;
   UploadImageTask task;
-  HashMap<String, Object> stats = HashMap();
+  HashMap<String, dynamic> stats = HashMap();
 }

@@ -3,7 +3,7 @@ import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/bottom_navigation/animated_bottom_bar.dart';
 import 'package:dpa/components/widget/connected_widget.dart';
 import 'package:dpa/components/widget/loading_widget.dart';
-import 'package:dpa/models/stat_parser.dart';
+import 'package:dpa/models/stat_item_parser.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';

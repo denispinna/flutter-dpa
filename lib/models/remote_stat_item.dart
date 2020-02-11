@@ -1,4 +1,4 @@
-import 'package:dpa/models/stat_parser.dart';
+import 'package:dpa/models/stat_item_parser.dart';
 import 'package:flutter/material.dart';
 
 class RemoteStatItem {
