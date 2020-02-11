@@ -5,17 +5,14 @@ import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/components/widget/loading_widget.dart';
 import 'package:dpa/components/widget/stat_list_item.dart';
 import 'package:dpa/models/stat_entry.dart';
-import 'package:dpa/models/user.dart';
 import 'package:dpa/models/stat_entry_parser.dart';
 import 'package:dpa/services/api.dart';
 import 'package:dpa/services/auth_services.dart';
-import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 class StatsHistoryWidget extends StatefulWidget {
   const StatsHistoryWidget({Key key}) : super(key: key);
@@ -54,13 +51,6 @@ class StatsHistoryWidgetState extends State<StatsHistoryWidget> {
   @override
   Widget build(BuildContext context) {
     Logger.log(runtimeType.toString(), "build");
-
-    return StoreConnector<AppState, User>(
-        converter: (store) => store.state.user, builder: buildWithUser);
-  }
-
-  Widget buildWithUser(BuildContext context, User user) {
-    if (user == null) return Container();
     _persisAndRecoverContent(context);
 
     if (error != null) {
