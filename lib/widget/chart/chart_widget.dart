@@ -7,6 +7,7 @@ import 'package:dpa/widget/base/connected_widget.dart';
 import 'package:dpa/widget/chart/donut_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class GlobalChartsScreen extends StatefulWidget {
   @override
@@ -18,7 +19,9 @@ class _GlobalChartsScreenState extends StateWithLoading<GlobalChartsScreen> {
 
   @override
   Widget buildWidget(BuildContext context) {
-    return chartWidget;
+    return Scaffold(
+      body: chartWidget,
+    );
   }
 
   @override

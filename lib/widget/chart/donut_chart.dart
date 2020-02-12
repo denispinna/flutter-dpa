@@ -18,7 +18,7 @@ class DonutChart extends StatelessWidget {
       new charts.Series<DonutGraphData, String>(
         id: 'Mood',
         data: data,
-        domainFn: (DonutGraphData entry, _) => entry.occurrences.toString(),
+        domainFn: (DonutGraphData entry, _) => entry.label,
         measureFn: (DonutGraphData entry, _) => entry.percentage,
         labelAccessorFn: (DonutGraphData entry, _) => entry.occurrences.toString(),
         colorFn: (DonutGraphData entry, _) =>
@@ -44,6 +44,14 @@ class DonutChart extends StatelessWidget {
               ),
             ],
         ),
+        behaviors: [
+          charts.DatumLegend(
+            outsideJustification: charts.OutsideJustification.endDrawArea,
+            horizontalFirst: false,
+            desiredMaxRows: 2,
+            cellPadding: EdgeInsets.all(Dimens.xxxs)
+          )
+        ],
       ),
     );
   }

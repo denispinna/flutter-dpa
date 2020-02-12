@@ -62,7 +62,7 @@ extension MoodExt on Mood {
       case Mood.first:
         return Colors.red;
       case Mood.second:
-        return Colors.redAccent;
+        return Colors.redAccent.withOpacity(0.9);
       case Mood.third:
         return Colors.amber;
       case Mood.fourth:
