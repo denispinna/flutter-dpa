@@ -47,11 +47,11 @@ StatEntry _generateFakeStat(DateTime date) {
   final comment = _fakeComments[random.nextInt(_fakeComments.length)];
   final imageUrl = _fakeImages[random.nextInt(_fakeImages.length)];
 
-  HashMap<String, dynamic> stats = HashMap();
-  stats[DefaultStatItem.default_mood.label] = mood;
-  stats[DefaultStatItem.default_comment.label] = comment;
-  stats[DefaultStatItem.default_picture.label] = imageUrl;
-  stats[DefaultStatItem.default_productivity.label] = productivity;
+  HashMap<String, dynamic> elements = HashMap();
+  elements[DefaultStatItem.default_mood.label] = mood;
+  elements[DefaultStatItem.default_comment.label] = comment;
+  elements[DefaultStatItem.default_picture.label] = imageUrl;
+  elements[DefaultStatItem.default_productivity.label] = productivity;
 
-  return StatEntry(date: date, stats: stats);
+  return StatEntry(date: date, elements: elements);
 }

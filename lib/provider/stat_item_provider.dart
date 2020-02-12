@@ -38,13 +38,13 @@ List<StatItem> getDefaultStatItems() {
 
 extension DefaultExt on StatEntry {
   double get productivity =>
-      this.stats[DefaultStatItem.default_productivity.label];
+      this.elements[DefaultStatItem.default_productivity.label];
 
-  double get mood => this.stats[DefaultStatItem.default_mood.label];
+  double get mood => this.elements[DefaultStatItem.default_mood.label];
 
-  String get imageUrl => this.stats[DefaultStatItem.default_picture.label];
+  String get imageUrl => this.elements[DefaultStatItem.default_picture.label];
 
-  String get comment => this.stats[DefaultStatItem.default_comment.label];
+  String get comment => this.elements[DefaultStatItem.default_comment.label];
 }
 
 enum DefaultStatItem {

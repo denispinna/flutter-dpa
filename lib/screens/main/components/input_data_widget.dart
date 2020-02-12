@@ -53,7 +53,7 @@ class InputItemState extends StoreConnectedState<InputStat, List<StatItem>> {
         context: context,
         onValueChanged: (value) =>
             onValueChanged(key: item.key, value: value, context: context),
-        initialValue: content.stats[item.key],
+        initialValue: content.elements[item.key],
       ));
       inputWidgets
           .add(Padding(padding: const EdgeInsets.only(top: Dimens.padding_m)));
@@ -82,7 +82,7 @@ class InputItemState extends StoreConnectedState<InputStat, List<StatItem>> {
     setState(() {
       content.loading = true;
     });
-    final imagePath = content.stats[DefaultStatItem.default_picture.label];
+    final imagePath = content.elements[DefaultStatItem.default_picture.label];
     if (imagePath != null && content.imageUrl == null) {
       uploadImage(context, imagePath);
     } else {
@@ -102,11 +102,11 @@ class InputItemState extends StoreConnectedState<InputStat, List<StatItem>> {
   void postStat(BuildContext context) {
     final item = StatEntry(
       date: DateTime.now(),
-      stats: content.stats,
+      elements: content.elements,
     );
     // We replace the image path by the imageUrl
     if (content.imageUrl != null)
-      content.stats[DefaultStatItem.default_picture.label] = content.imageUrl;
+      content.elements[DefaultStatItem.default_picture.label] = content.imageUrl;
 
     API.statApi.postStatEntry(item).then((result) {
       formPosted = true;
@@ -136,7 +136,7 @@ class InputItemState extends StoreConnectedState<InputStat, List<StatItem>> {
     @required Object value,
     @required BuildContext context,
   }) {
-    content.stats[key] = value;
+    content.elements[key] = value;
     persistAndRecoverContent(context);
   }
 }
@@ -145,5 +145,5 @@ class StateData {
   String imageUrl;
   bool loading = false;
   UploadImageTask task;
-  HashMap<String, dynamic> stats = HashMap();
+  HashMap<String, dynamic> elements = HashMap();
 }

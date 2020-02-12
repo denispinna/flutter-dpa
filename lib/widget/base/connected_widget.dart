@@ -38,11 +38,12 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
   @override
   void initState() {
     super.initState();
-    load();
+    if (shouldLoadOnInit()) load();
   }
 
   @override
   Widget build(BuildContext context) {
+    onBuild(context);
     Logger.log(runtimeType.toString(), "build");
     return (error != null)
         ? buildErrorWidget(context)
@@ -89,7 +90,7 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
   }
 
   Future load({bool showLoading = false}) async {
-    if (showLoading)
+    if (showLoading && mounted)
       setState(() {
         isLoading = true;
       });
@@ -101,7 +102,7 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
   Future retry() async {
     error = null;
     isLoading = true;
-    setState(() {});
+    if (mounted) setState(() {});
     await Future.delayed(Duration(milliseconds: 500));
     error = null;
     load();
@@ -112,13 +113,17 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
     this.error = error;
     Logger.logError(
         this.runtimeType.toString(), "Error while fetching data", error);
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   FutureOr onSuccess(dynamic value) {
     isLoading = false;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   Widget buildWidget(BuildContext context);
+
+  void onBuild(BuildContext context) {}
+
+  bool shouldLoadOnInit() => true;
 }

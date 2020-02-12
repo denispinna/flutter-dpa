@@ -48,4 +48,5 @@ class Dimens {
   static const rating_icon_width = 50.0;
   static const loading_width = 80.0;
   static const error_icon_width = 80.0;
+  static const pie_chart_width = 70.0;
 }

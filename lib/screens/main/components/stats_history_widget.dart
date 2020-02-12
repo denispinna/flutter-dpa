@@ -68,7 +68,7 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
 
   @override
   Widget buildWidget(BuildContext context) {
-    _persisAndRecoverContent(context);
+    _persistContent(context);
     return new RefreshIndicator(
       child: _renderStats(),
       onRefresh: _refreshData,
@@ -89,6 +89,9 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
   Future loadFunction() async {
     await _loadNextPage(isFirstPage: true);
   }
+
+  @override
+  bool shouldLoadOnInit() => false;
 
   Future _loadNextPage({bool isFirstPage = false}) async {
     QuerySnapshot query;
@@ -123,8 +126,6 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
   }
 
   Widget _renderStats() {
-    _persisAndRecoverContent(context);
-
     if (stats.isNotEmpty) {
       List<Widget> items = List();
       items.addAll(stats.map((stat) {
@@ -187,16 +188,20 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
         ]));
   }
 
-  void _persisAndRecoverContent(BuildContext context) {
+  @override
+  void onBuild(BuildContext context) {
     if (stats == null) {
       stats =
           PageStorage.of(context).readState(context, identifier: contentKey);
-    } else {
-      persistContent(context);
+      (stats == null)
+          ? load(showLoading: true)
+          : setState(() {
+              isLoading = false;
+            });
     }
   }
 
-  Future persistContent(BuildContext context) async {
+  Future _persistContent(BuildContext context) async {
     PageStorage.of(context).writeState(context, stats, identifier: contentKey);
   }
 }

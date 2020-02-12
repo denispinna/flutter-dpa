@@ -20,7 +20,7 @@ abstract class StatApi {
     @required DateTime to,
   });
 
-  Query getEnabledStatItem();
+  Query getEnabledStatItems();
 
   Future<DocumentReference> postStatEntry(StatEntry stat);
 }
@@ -58,8 +58,9 @@ class StatApiImpl extends StatApi {
     return query;
   }
 
+  //TODO: filter on enabled
   @override
-  Query getEnabledStatItem() {
+  Query getEnabledStatItems() {
     return fireDb.statsItems
         .where(StatItemField.user_email.label,
             isEqualTo: AuthAPI.instance.user.email)

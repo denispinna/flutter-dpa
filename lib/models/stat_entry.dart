@@ -4,13 +4,13 @@ import 'package:flutter/cupertino.dart';
 
 class StatEntry {
   final String id;
-  final HashMap<String, dynamic> stats;
+  final HashMap<String, dynamic> elements;
   DateTime date;
   bool expanded;
 
   StatEntry({
     @required DateTime date,
-    @required this.stats,
+    @required this.elements,
     this.expanded = false,
     this.id = "",
   }) {

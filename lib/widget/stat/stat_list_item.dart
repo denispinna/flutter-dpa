@@ -26,7 +26,7 @@ class _StatListWidgetState extends State<StatListWidget> {
   @override
   void initState() {
     super.initState();
-    for (final entry in widget.statEntry.stats.entries) {
+    for (final entry in widget.statEntry.elements.entries) {
       final item = widget.statItems[entry.key];
       orderedStatEntries.add(MapEntry(item, entry.value));
     }

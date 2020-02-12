@@ -28,6 +28,9 @@ class _MainScreenState extends ScreenState<MainScreen> {
   Widget buildScreenWidget(BuildContext context) {
     return _MainStoreConnectedWidget();
   }
+
+  @override
+  bool get leaveAppOnPop => true;
 }
 
 class _MainStoreConnectedWidget extends StatefulWidget {
@@ -101,9 +104,6 @@ class _MainWidgetState extends StateWithLoading<_MainWidget> {
     });
   }
 
-  @override
-  bool get leaveAppOnPop => true;
-
   void setupBarItems() {
     barItems = [
       BarItem(
@@ -129,7 +129,7 @@ class _MainWidgetState extends StateWithLoading<_MainWidget> {
   Future loadFunction() async {
     await Future.delayed(Duration(milliseconds: 200));
     await API.statApi.setupDefaultItems();
-    final query = await API.statApi.getEnabledStatItem().getDocuments();
+    final query = await API.statApi.getEnabledStatItems().getDocuments();
     final statItems = await compute(parseStatItems, query.documents);
     if (widget.dispatchAction == null) return;
     widget.dispatchAction(AddStatItemsAction(statItems));
