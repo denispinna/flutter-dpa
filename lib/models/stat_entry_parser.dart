@@ -7,9 +7,9 @@ import 'package:dpa/services/auth_services.dart';
 extension StatEntryExt on StatEntry {
   Map<String, dynamic> toFirestoreData() {
     return <String, dynamic>{
-      _Fields.date.label: date,
-      _Fields.userEmail.label: AuthAPI.instance.user.email,
-      _Fields.stats.label: stats
+      StatEntryFields.date.label: date,
+      StatEntryFields.userEmail.label: AuthAPI.instance.user.email,
+      StatEntryFields.stats.label: stats
     };
   }
 }
@@ -17,22 +17,22 @@ extension StatEntryExt on StatEntry {
 extension ParseDocToStat on DocumentSnapshot {
   StatEntry toStatEntry() {
     Map<String, dynamic> data = this.data;
-    final date = data[_Fields.date.label] as Timestamp;
+    final date = data[StatEntryFields.date.label] as Timestamp;
     final stats = HashMap<String, dynamic>();
-    for (final statEntry in data[_Fields.stats.label].entries) {
+    for (final statEntry in data[StatEntryFields.stats.label].entries) {
       stats[statEntry.key] = statEntry.value;
     }
     return StatEntry(id: this.documentID, date: date.toDate(), stats: stats);
   }
 }
 
-enum _Fields {
+enum StatEntryFields {
   date,
   userEmail,
   stats,
 }
 
-extension _FieldExt on _Fields {
+extension StatEntryFieldExt on StatEntryFields {
   String get label => this.toString().split(".")[1];
 }
 

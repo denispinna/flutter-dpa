@@ -1,4 +1,5 @@
 import 'package:dpa/widget/base/loading_widget.dart';
+import 'package:dpa/widget/chart/chart_widget.dart';
 import 'package:flutter/material.dart';
 
 class StatisticTabs extends StatefulWidget {
@@ -33,7 +34,7 @@ class _StatisticState extends State<StatisticTabs> {
           ),
           body: TabBarView(
             children: [
-              Icon(Icons.directions_car),
+              GlobalChartsScreen(),
               Icon(Icons.directions_transit),
               Icon(Icons.directions_bike),
             ],

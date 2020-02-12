@@ -8,11 +8,17 @@ import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/models/stat_item_parser.dart';
 import 'package:dpa/provider/stat_item_provider.dart';
 import 'package:dpa/services/auth_services.dart';
+import 'package:flutter/material.dart';
 
 abstract class StatApi {
   Future setupDefaultItems();
 
   Query getOrderedStats({DocumentSnapshot lastVisible, int limit});
+
+  Query getStats({
+    @required DateTime from,
+    @required DateTime to,
+  });
 
   Query getEnabledStatItem();
 
@@ -25,12 +31,31 @@ class StatApiImpl extends StatApi {
   @override
   Query getOrderedStats({DocumentSnapshot lastVisible, int limit = 10}) {
     final query = fireDb.stats
-        .where('userEmail', isEqualTo: AuthAPI.instance.user.email)
-        .orderBy('date', descending: true)
+        .where(StatEntryFields.userEmail.label,
+            isEqualTo: AuthAPI.instance.user.email)
+        .orderBy(StatEntryFields.date.label, descending: true)
         .limit(limit);
     return (lastVisible != null)
         ? query.startAfterDocument(lastVisible)
         : query;
+  }
+
+  @override
+  Query getStats({
+    @required DateTime from,
+    @required DateTime to,
+  }) {
+    final query = fireDb.stats
+        .where(StatEntryFields.userEmail.label,
+            isEqualTo: AuthAPI.instance.user.email)
+        .where(
+          StatEntryFields.date.label,
+          isGreaterThanOrEqualTo: from,
+          isLessThanOrEqualTo: to,
+        )
+        .orderBy(StatEntryFields.date.label, descending: true);
+
+    return query;
   }
 
   @override
