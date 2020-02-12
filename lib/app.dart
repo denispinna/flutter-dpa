@@ -1,4 +1,4 @@
-import 'package:dpa/components/ActionWidget.dart';
+import 'package:dpa/components/widget/base/ActionWidget.dart';
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/base/lifecycle_widget.dart';
