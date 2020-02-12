@@ -7,6 +7,7 @@ import 'package:dpa/models/stat_item_parser.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';
+import 'package:dpa/screens/main/components/statistic_screen.dart';
 import 'package:dpa/screens/main/components/stats_history_widget.dart';
 import 'package:dpa/services/api.dart';
 import 'package:dpa/store/global/app_actions.dart';
@@ -27,9 +28,6 @@ class MainScreen extends StatefulWidget {
 class _MainState
     extends CustomConnectedScreenState<MainScreen, Function(AppAction)> {
   final PageStorageBucket bucket = PageStorageBucket();
-  InputStat inputWidget;
-  StatsHistoryWidget statsWidget;
-  ProfileWidget profileWidget;
   List<BarItem> barItems;
   List<Widget> pages;
   User user;
@@ -40,11 +38,11 @@ class _MainState
   @override
   void initState() {
     super.initState();
-    inputWidget = InputStat(key: PageStorageKey('inputWidget'));
-    statsWidget = StatsHistoryWidget(key: PageStorageKey('statsWidget'));
-    profileWidget = ProfileWidget(key: PageStorageKey('profileWidget'));
-
-    pages = [inputWidget, statsWidget, Container(), profileWidget];
+    InputStat inputWidget = InputStat(key: PageStorageKey('inputWidget'));
+    StatsHistoryWidget statsWidget = StatsHistoryWidget(key: PageStorageKey('statsWidget'));
+    ProfileWidget profileWidget = ProfileWidget(key: PageStorageKey('profileWidget'));
+    StatisticWidget statisticWidget = StatisticWidget(key: PageStorageKey('statisticWidget'));
+    pages = [inputWidget, statsWidget, statisticWidget, profileWidget];
     sync();
   }
 
