@@ -24,7 +24,7 @@ class InputStat extends StatefulWidget {
 }
 
 class InputItemState
-    extends CustomStoreConnectedState<InputStat, List<StatItem>> {
+    extends StoreConnectedState<InputStat, List<StatItem>> {
   static final contentKey = ValueKey('InputItemState');
   TakePictureWidget takePictureWidget;
   StateData content;

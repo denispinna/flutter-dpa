@@ -54,5 +54,6 @@
   "productivity_fourth" : "quite productive",
   "productivity_fifth" : "pretty productive",
   "productivity_sixth" : "extremely productive",
-  "loading" : "Loading..."
+  "loading" : "Loading...",
+  "retry" : "Retry"
 }

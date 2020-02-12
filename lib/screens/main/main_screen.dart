@@ -2,9 +2,8 @@ import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/bottom_navigation/animated_bottom_bar.dart';
 import 'package:dpa/components/widget/connected_widget.dart';
-import 'package:dpa/components/widget/loading_widget.dart';
+import 'package:dpa/components/widget/lifecycle_widget.dart';
 import 'package:dpa/models/stat_item_parser.dart';
-import 'package:dpa/models/user.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';
 import 'package:dpa/screens/main/components/statistic_screen.dart';
@@ -22,39 +21,68 @@ class MainScreen extends StatefulWidget {
   static const PATH = "/main";
 
   @override
-  State<StatefulWidget> createState() => _MainState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainState
-    extends CustomConnectedScreenState<MainScreen, Function(AppAction)> {
+class _MainScreenState extends ScreenState<MainScreen> {
+  @override
+  Widget buildScreenWidget(BuildContext context) {
+    return _MainStoreConnectedWidget();
+  }
+}
+
+class _MainStoreConnectedWidget extends StatefulWidget {
+  @override
+  _MainStoreConnectedWidgetState createState() =>
+      _MainStoreConnectedWidgetState();
+}
+
+class _MainStoreConnectedWidgetState extends StoreConnectedState<
+    _MainStoreConnectedWidget, Function(AppAction)> {
+  @override
+  Widget buildWithStore(
+      BuildContext context, Function(AppAction) dispatchAction) {
+    return _MainWidget(dispatchAction);
+  }
+
+  @override
+  Function(AppAction) converter(Store store) =>
+      (action) => (store.dispatch(action));
+}
+
+class _MainWidget extends StatefulWidget {
+  final Function(AppAction) dispatchAction;
+
+  const _MainWidget(this.dispatchAction);
+
+  @override
+  _MainWidgetState createState() => _MainWidgetState();
+}
+
+class _MainWidgetState extends StateWithLoading<_MainWidget> {
   final PageStorageBucket bucket = PageStorageBucket();
   List<BarItem> barItems;
   List<Widget> pages;
-  User user;
   int currentIndex = 0;
-  bool synchronized = false;
-  Function(AppAction) dispatchAction;
 
   @override
   void initState() {
     super.initState();
     InputStat inputWidget = InputStat(key: PageStorageKey('inputWidget'));
-    StatsHistoryWidget statsWidget = StatsHistoryWidget(key: PageStorageKey('statsWidget'));
-    ProfileWidget profileWidget = ProfileWidget(key: PageStorageKey('profileWidget'));
-    StatisticWidget statisticWidget = StatisticWidget(key: PageStorageKey('statisticWidget'));
+    StatsHistoryWidget statsWidget =
+        StatsHistoryWidget(key: PageStorageKey('statsWidget'));
+    ProfileWidget profileWidget =
+        ProfileWidget(key: PageStorageKey('profileWidget'));
+    StatisticWidget statisticWidget =
+        StatisticWidget(key: PageStorageKey('statisticWidget'));
     pages = [inputWidget, statsWidget, statisticWidget, profileWidget];
-    sync();
+    loadFunction = sync();
+    load();
   }
 
   @override
-  Widget buildWithStore(
-      BuildContext context, Function(AppAction) dispatchAction) {
-    this.dispatchAction = dispatchAction;
-    if (!synchronized)
-      return Scaffold(backgroundColor: MyColors.light, body: LoadingWidget());
-
+  Widget buildDataWidget(BuildContext context) {
     if (barItems == null) setupBarItems();
-    user = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       backgroundColor: MyColors.light_background,
       body: pages[currentIndex],
@@ -108,7 +136,7 @@ class _MainState
   }
 
   Future sync() async {
-    await Future.delayed(Duration(milliseconds: 500));
+    await Future.delayed(Duration(milliseconds: 200));
     await API.statApi.setupDefaultItems();
     final query = await API.statApi
         .getEnabledStatItem()
@@ -119,12 +147,7 @@ class _MainState
                   "Error while fetching stat items", error)
             });
     final statItems = await compute(parseStatItems, query.documents);
-    this.dispatchAction(AddStatItemsAction(statItems));
-    this.synchronized = true;
-    setState(() {});
+    if (widget.dispatchAction == null) return;
+    widget.dispatchAction(AddStatItemsAction(statItems));
   }
-
-  @override
-  Function(AppAction) converter(Store store) =>
-      (action) => (store.dispatch(action));
 }

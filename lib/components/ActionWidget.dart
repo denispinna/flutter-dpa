@@ -13,7 +13,7 @@ class ActionWidget extends StatefulWidget {
   _ActionWidgetState createState() => _ActionWidgetState();
 }
 
-class _ActionWidgetState extends CustomStoreConnectedStateWithLifecycle<
+class _ActionWidgetState extends StoreConnectedState<
     ActionWidget, Function(BuildContext)> {
   bool pushInitialRoute = true;
   Function(BuildContext) lastAction;

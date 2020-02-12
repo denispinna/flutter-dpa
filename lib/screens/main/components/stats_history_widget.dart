@@ -26,7 +26,7 @@ class StatsHistoryWidget extends StatefulWidget {
 }
 
 class StatsHistoryWidgetState
-    extends CustomStoreConnectedState<StatsHistoryWidget, List<StatItem>> {
+    extends StoreConnectedState<StatsHistoryWidget, List<StatItem>> {
   static const TAG = "StatsHistoryWidget";
   static const ITEM_PER_PAGE = 10;
   static final contentKey = ValueKey(TAG);
