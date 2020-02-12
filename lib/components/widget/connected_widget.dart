@@ -30,14 +30,21 @@ abstract class StoreConnectedState<W extends StatefulWidget, O>
 }
 
 abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
-  Future loadFunction;
   dynamic error;
-  bool loading = true;
+  bool isLoading = true;
 
-  bool get displayDataWidget => !loading;
+  bool get displayDataWidget => !isLoading;
+
+
+  @override
+  void initState() {
+    super.initState();
+    load();
+  }
 
   @override
   Widget build(BuildContext context) {
+    Logger.log(runtimeType.toString(), "build");
     return (error != null)
         ? buildErrorWidget(context)
         : (displayDataWidget)
@@ -66,7 +73,8 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
             SizedBox(height: Dimens.s),
             Text(
               AppLocalizations.of(context).translate('generic_error_message'),
-              style: TextStyle(fontSize: Dimens.font_xl, color: MyColors.second),
+              style:
+                  TextStyle(fontSize: Dimens.font_xl, color: MyColors.second),
             ),
             SizedBox(height: Dimens.s),
             RaisedButton(
@@ -81,13 +89,19 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
     );
   }
 
-  void load() {
-    loadFunction.then(onSuccess).catchError(onError);
+  Future load({bool showLoading = false}) async {
+    if (showLoading)
+      setState(() {
+        isLoading = true;
+      });
+    await loadFunction().then(onSuccess).catchError(onError);
   }
+
+  Future loadFunction();
 
   Future retry() async {
     error = null;
-    loading = true;
+    isLoading = true;
     setState(() {});
     await Future.delayed(Duration(milliseconds: 500));
     error = null;
@@ -95,7 +109,7 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
   }
 
   void onError(dynamic error) {
-    loading = false;
+    isLoading = false;
     this.error = error;
     Logger.logError(
         this.runtimeType.toString(), "Error while fetching data", error);
@@ -103,10 +117,9 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
   }
 
   FutureOr onSuccess(dynamic value) {
-    loading = false;
+    isLoading = false;
     setState(() {});
   }
 
   Widget buildDataWidget(BuildContext context);
-
 }

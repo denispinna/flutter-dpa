@@ -76,8 +76,6 @@ class _MainWidgetState extends StateWithLoading<_MainWidget> {
     StatisticWidget statisticWidget =
         StatisticWidget(key: PageStorageKey('statisticWidget'));
     pages = [inputWidget, statsWidget, statisticWidget, profileWidget];
-    loadFunction = sync();
-    load();
   }
 
   @override
@@ -135,17 +133,13 @@ class _MainWidgetState extends StateWithLoading<_MainWidget> {
     ];
   }
 
-  Future sync() async {
+  @override
+  Future loadFunction() async {
     await Future.delayed(Duration(milliseconds: 200));
     await API.statApi.setupDefaultItems();
     final query = await API.statApi
         .getEnabledStatItem()
-        .getDocuments()
-        .catchError((error) => {
-              //TODO: Show an error state here
-              Logger.logError(runtimeType.toString(),
-                  "Error while fetching stat items", error)
-            });
+        .getDocuments();
     final statItems = await compute(parseStatItems, query.documents);
     if (widget.dispatchAction == null) return;
     widget.dispatchAction(AddStatItemsAction(statItems));

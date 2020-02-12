@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dpa/components/app_localization.dart';
-import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/components/widget/connected_widget.dart';
-import 'package:dpa/components/widget/loading_widget.dart';
 import 'package:dpa/components/widget/stat_list_item.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_entry_parser.dart';
@@ -13,7 +11,6 @@ import 'package:dpa/services/api.dart';
 import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
-import 'package:dpa/util/view_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/src/store.dart';
@@ -22,18 +19,36 @@ class StatsHistoryWidget extends StatefulWidget {
   const StatsHistoryWidget({Key key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => StatsHistoryWidgetState();
+  State<StatefulWidget> createState() => _StatsHistoryWidgetState();
 }
 
-class StatsHistoryWidgetState
+class _StatsHistoryWidgetState
     extends StoreConnectedState<StatsHistoryWidget, List<StatItem>> {
+  @override
+  Widget buildWithStore(BuildContext context, List<StatItem> statItems) {
+    return StatHistoryList(statItems);
+  }
+
+  @override
+  List<StatItem> converter(Store store) => store.state.statItems;
+}
+
+class StatHistoryList extends StatefulWidget {
+  final List<StatItem> statItems;
+
+  const StatHistoryList(this.statItems);
+
+  @override
+  _StatHistoryListState createState() => _StatHistoryListState();
+}
+
+class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
   static const TAG = "StatsHistoryWidget";
   static const ITEM_PER_PAGE = 10;
   static final contentKey = ValueKey(TAG);
   final authApi = AuthAPI.instance;
-  var error;
   List<StatEntry> stats;
-  bool isLoading = false;
+  bool isLoadingNext = false;
   bool lastPageReached = false;
   DocumentSnapshot lastDocument;
   ScrollController scrollController = ScrollController();
@@ -41,8 +56,6 @@ class StatsHistoryWidgetState
   @override
   void initState() {
     super.initState();
-    _loadNextPage(isFirstPage: true);
-
     scrollController.addListener(() {
       double maxScroll = scrollController.position.maxScrollExtent;
       double currentScroll = scrollController.position.pixels;
@@ -54,27 +67,12 @@ class StatsHistoryWidgetState
   }
 
   @override
-  Widget buildWithStore(BuildContext context, List<StatItem> statItems) {
-    Logger.log(runtimeType.toString(), "build");
+  Widget buildDataWidget(BuildContext context) {
     _persisAndRecoverContent(context);
-
-    if (error != null) {
-      Logger.logError(TAG, "Error on fetching stats", error);
-      return Center(
-          child: Text(
-              AppLocalizations.of(context).translate('generic_error_message')));
-    }
-
-    if (stats == null) {
-      return LoadingWidget(
-        showLabel: false,
-      );
-    } else {
-      return new RefreshIndicator(
-        child: _renderStats(statItems),
-        onRefresh: _refreshData,
-      );
-    }
+    return new RefreshIndicator(
+      child: _renderStats(),
+      onRefresh: _refreshData,
+    );
   }
 
   Future<void> _refreshData() async {
@@ -82,27 +80,31 @@ class StatsHistoryWidgetState
     lastDocument = null;
     lastPageReached = false;
     isLoading = false;
+    isLoadingNext = false;
     await Future.delayed(Duration(milliseconds: 500));
-    await _loadNextPage(showLoading: false);
+    await load();
   }
 
-  Future _loadNextPage({bool isFirstPage = false, showLoading = true}) async {
-    if (isLoading || lastPageReached) return;
-    isLoading = true;
-    if (showLoading) setState(() {});
+  @override
+  Future loadFunction() async {
+    await _loadNextPage(isFirstPage: true);
+  }
 
-    this.error = null;
-    final query = await API.statApi
-        .getOrderedStats(lastVisible: lastDocument, limit: ITEM_PER_PAGE)
-        .getDocuments()
-        .catchError((error) => {this.error = error});
-
-    if (this.error != null) {
+  Future _loadNextPage({bool isFirstPage = false}) async {
+    QuerySnapshot query;
+    if (isFirstPage) {
+      query = await API.statApi
+          .getOrderedStats(lastVisible: lastDocument, limit: ITEM_PER_PAGE)
+          .getDocuments();
+    } else {
+      if (isLoading || isLoadingNext || lastPageReached) return;
       setState(() {
-        isLoading = false;
+        isLoadingNext = true;
       });
-      displayMessage("generic_error_message", context, isError: true);
-      return;
+      query = await API.statApi
+          .getOrderedStats(lastVisible: lastDocument, limit: ITEM_PER_PAGE)
+          .getDocuments()
+          .catchError((error) {});
     }
 
     final documents = query.documents;
@@ -117,10 +119,10 @@ class StatsHistoryWidgetState
 
     /* We delay the setState to let the user see the loading icon instead of blinking on a fast network */
     await Future.delayed(Duration(milliseconds: 200));
-    if (mounted) setState(() => isLoading = false);
+    if (mounted) setState(() => isLoadingNext = false);
   }
 
-  Widget _renderStats(List<StatItem> statItems) {
+  Widget _renderStats() {
     _persisAndRecoverContent(context);
 
     if (stats.isNotEmpty) {
@@ -128,11 +130,11 @@ class StatsHistoryWidgetState
       items.addAll(stats.map((stat) {
         return StatListWidget(
           statEntry: stat,
-          statItems: statItems.toKeyTypeMap(),
+          statItems: widget.statItems.toKeyTypeMap(),
         );
       }).toList());
 
-      if (isLoading) {
+      if (isLoadingNext) {
         items.add(Center(
           child: Container(
             margin: const EdgeInsets.all(Dimens.xxs),
@@ -197,7 +199,4 @@ class StatsHistoryWidgetState
   Future persistContent(BuildContext context) async {
     PageStorage.of(context).writeState(context, stats, identifier: contentKey);
   }
-
-  @override
-  List<StatItem> converter(Store store) => store.state.statItems;
 }
