@@ -1,7 +1,7 @@
 import 'package:dpa/components/ActionWidget.dart';
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
-import 'package:dpa/components/widget/lifecycle_widget.dart';
+import 'package:dpa/components/widget/base/lifecycle_widget.dart';
 import 'package:dpa/screens/camera/camera_screen.dart';
 import 'package:dpa/screens/login/login.dart';
 import 'package:dpa/screens/mail_login/mail_login_screen.dart';

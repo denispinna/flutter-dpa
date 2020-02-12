@@ -1,4 +1,4 @@
-import 'package:dpa/components/widget/lifecycle_widget.dart';
+import 'package:dpa/components/widget/base/lifecycle_widget.dart';
 import 'package:dpa/screens/login/components/home_widget.dart';
 import 'package:dpa/theme/images.dart';
 import 'package:flutter/material.dart';

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
-import 'package:dpa/components/widget/loading_widget.dart';
+import 'package:dpa/components/widget/base/loading_widget.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';

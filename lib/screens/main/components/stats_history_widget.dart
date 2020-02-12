@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/widget/centerHorizontal.dart';
-import 'package:dpa/components/widget/connected_widget.dart';
+import 'package:dpa/components/widget/base/connected_widget.dart';
 import 'package:dpa/components/widget/stat_list_item.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_entry_parser.dart';

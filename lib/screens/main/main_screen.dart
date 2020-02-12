@@ -1,8 +1,8 @@
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
 import 'package:dpa/components/widget/bottom_navigation/animated_bottom_bar.dart';
-import 'package:dpa/components/widget/connected_widget.dart';
-import 'package:dpa/components/widget/lifecycle_widget.dart';
+import 'package:dpa/components/widget/base/connected_widget.dart';
+import 'package:dpa/components/widget/base/lifecycle_widget.dart';
 import 'package:dpa/models/stat_item_parser.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';
@@ -73,8 +73,8 @@ class _MainWidgetState extends StateWithLoading<_MainWidget> {
         StatsHistoryWidget(key: PageStorageKey('statsWidget'));
     ProfileWidget profileWidget =
         ProfileWidget(key: PageStorageKey('profileWidget'));
-    StatisticWidget statisticWidget =
-        StatisticWidget(key: PageStorageKey('statisticWidget'));
+    StatisticTabs statisticWidget =
+        StatisticTabs(key: PageStorageKey('statisticWidget'));
     pages = [inputWidget, statsWidget, statisticWidget, profileWidget];
   }
 
@@ -93,13 +93,6 @@ class _MainWidgetState extends StateWithLoading<_MainWidget> {
               currentIndex = index;
             });
           }),
-    );
-  }
-
-  Widget getCurrentTabView() {
-    return PageStorage(
-      child: pages[currentIndex],
-      bucket: bucket,
     );
   }
 

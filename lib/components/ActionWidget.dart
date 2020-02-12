@@ -1,4 +1,4 @@
-import 'package:dpa/components/widget/connected_widget.dart';
+import 'package:dpa/components/widget/base/connected_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/src/store.dart';

@@ -1,14 +1,14 @@
-import 'package:dpa/components/widget/loading_widget.dart';
+import 'package:dpa/components/widget/base/loading_widget.dart';
 import 'package:flutter/material.dart';
 
-class StatisticWidget extends StatefulWidget {
-  StatisticWidget({Key key}) : super(key: key);
+class StatisticTabs extends StatefulWidget {
+  StatisticTabs({Key key}) : super(key: key);
 
   @override
   _StatisticState createState() => _StatisticState();
 }
 
-class _StatisticState extends State<StatisticWidget> {
+class _StatisticState extends State<StatisticTabs> {
   static final contentKey = ValueKey('_StatisticState ');
   _StateData content;
 
