@@ -3,7 +3,7 @@ import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/provider/stat_item_provider.dart';
 import 'package:dpa/theme/dimens.dart';
-import 'package:dpa/widget/stat/date_widget.dart';
+import 'package:dpa/widget/date/date_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

@@ -5,6 +5,7 @@ import 'package:dpa/models/stat_item_parser.dart';
 import 'package:dpa/services/api.dart';
 import 'package:dpa/widget/base/connected_widget.dart';
 import 'package:dpa/widget/chart/donut_chart.dart';
+import 'package:dpa/widget/date/date_range_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -15,22 +16,46 @@ class GlobalChartsScreen extends StatefulWidget {
 }
 
 class _GlobalChartsScreenState extends StateWithLoading<GlobalChartsScreen> {
+  DateTime startDate;
+  DateTime endDate;
   ChartWidget chartWidget;
+
+  @override
+  void initState() {
+    DateTime now = DateTime(2020, 1, 13);
+    startDate = DateTime(now.year, now.month - 1, now.day);
+    endDate = now;
+    super.initState();
+  }
 
   @override
   Widget buildWidget(BuildContext context) {
     return Scaffold(
-      body: chartWidget,
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          DateRangePicker(
+            startDateSelected: startDate,
+            endDateSelected: endDate,
+            onStartDateChanged: (date) {
+              this.startDate = date;
+              load(showLoading: true);
+            },
+            onEndDateChanged: (date) {
+              this.endDate = date;
+              load(showLoading: true);
+            },
+          ),
+          chartWidget,
+        ],
+      ),
     );
   }
 
   @override
   Future loadFunction() async {
-    DateTime now = DateTime.now();
-    DateTime firstDayOfMonth = DateTime(now.year - 1, now.month, 1);
-    var snapshot = await API.statApi
-        .getStats(from: firstDayOfMonth, to: now)
-        .getDocuments();
+    var snapshot =
+        await API.statApi.getStats(from: startDate, to: endDate).getDocuments();
     final entries = await compute(parseStatEntries, snapshot.documents);
     snapshot = await API.statApi.getEnabledStatItems().getDocuments();
     final statItems = await compute(parseStatItems, snapshot.documents);
@@ -52,7 +77,8 @@ class ChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return ConstrainedBox(
+      constraints: BoxConstraints.expand(height: 400.0),
       child: DonutChart.generate(entries, statItems[1], context),
     );
   }

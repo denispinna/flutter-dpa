@@ -47,8 +47,7 @@ class DonutChart extends StatelessWidget {
         behaviors: [
           charts.DatumLegend(
             outsideJustification: charts.OutsideJustification.endDrawArea,
-            horizontalFirst: false,
-            desiredMaxRows: 2,
+            horizontalFirst: true,
             cellPadding: EdgeInsets.all(Dimens.xxxs)
           )
         ],
