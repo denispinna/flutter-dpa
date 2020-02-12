@@ -1,6 +1,6 @@
 import 'package:dpa/components/app_localization.dart';
-import 'package:dpa/components/widget/base/lifecycle_widget.dart';
 import 'package:dpa/screens/mail_login/components/login_form.dart';
+import 'package:dpa/widget/base/lifecycle_widget.dart';
 import 'package:flutter/material.dart';
 
 class MailLoginScreen extends StatefulWidget {

@@ -1,13 +1,13 @@
 import 'package:dpa/components/app_localization.dart';
-import 'package:dpa/components/widget/login/emailLoginButton.dart';
-import 'package:dpa/components/widget/login/facebookLoginButton.dart';
-import 'package:dpa/components/widget/login/googleLoginButton.dart';
-import 'package:dpa/components/widget/title.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/dimens.dart';
+import 'package:dpa/widget/login/emailLoginButton.dart';
+import 'package:dpa/widget/login/facebookLoginButton.dart';
+import 'package:dpa/widget/login/googleLoginButton.dart';
+import 'package:dpa/widget/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 

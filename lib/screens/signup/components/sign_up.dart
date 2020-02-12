@@ -1,5 +1,4 @@
 import 'package:dpa/components/app_localization.dart';
-import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/store/global/app_actions.dart';
@@ -7,6 +6,7 @@ import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/util/text_util.dart';
 import 'package:dpa/util/view_util.dart';
+import 'package:dpa/widget/centerHorizontal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 

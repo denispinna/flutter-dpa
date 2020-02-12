@@ -1,8 +1,4 @@
 import 'package:dpa/components/app_localization.dart';
-import 'package:dpa/components/logger.dart';
-import 'package:dpa/components/widget/bottom_navigation/animated_bottom_bar.dart';
-import 'package:dpa/components/widget/base/connected_widget.dart';
-import 'package:dpa/components/widget/base/lifecycle_widget.dart';
 import 'package:dpa/models/stat_item_parser.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';
@@ -13,6 +9,9 @@ import 'package:dpa/store/global/app_actions.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/icons.dart';
+import 'package:dpa/widget/base/connected_widget.dart';
+import 'package:dpa/widget/base/lifecycle_widget.dart';
+import 'package:dpa/widget/bottom_navigation/animated_bottom_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/src/store.dart';
@@ -79,7 +78,7 @@ class _MainWidgetState extends StateWithLoading<_MainWidget> {
   }
 
   @override
-  Widget buildDataWidget(BuildContext context) {
+  Widget buildWidget(BuildContext context) {
     if (barItems == null) setupBarItems();
     return Scaffold(
       backgroundColor: MyColors.light_background,
@@ -130,9 +129,7 @@ class _MainWidgetState extends StateWithLoading<_MainWidget> {
   Future loadFunction() async {
     await Future.delayed(Duration(milliseconds: 200));
     await API.statApi.setupDefaultItems();
-    final query = await API.statApi
-        .getEnabledStatItem()
-        .getDocuments();
+    final query = await API.statApi.getEnabledStatItem().getDocuments();
     final statItems = await compute(parseStatItems, query.documents);
     if (widget.dispatchAction == null) return;
     widget.dispatchAction(AddStatItemsAction(statItems));

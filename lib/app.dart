@@ -1,7 +1,5 @@
-import 'package:dpa/components/widget/base/ActionWidget.dart';
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
-import 'package:dpa/components/widget/base/lifecycle_widget.dart';
 import 'package:dpa/screens/camera/camera_screen.dart';
 import 'package:dpa/screens/login/login.dart';
 import 'package:dpa/screens/mail_login/mail_login_screen.dart';
@@ -9,6 +7,7 @@ import 'package:dpa/screens/main/main_screen.dart';
 import 'package:dpa/screens/signup/sign_up_screen.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/style.dart';
+import 'package:dpa/widget/base/ActionWidget.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +15,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+
+import 'widget/base/lifecycle_widget.dart';
 
 class MyApp extends StatefulWidget {
   final Store store;

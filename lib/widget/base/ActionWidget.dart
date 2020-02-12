@@ -1,4 +1,4 @@
-import 'package:dpa/components/widget/base/connected_widget.dart';
+import 'package:dpa/widget/base/connected_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/src/store.dart';
@@ -13,8 +13,8 @@ class ActionWidget extends StatefulWidget {
   _ActionWidgetState createState() => _ActionWidgetState();
 }
 
-class _ActionWidgetState extends StoreConnectedState<
-    ActionWidget, Function(BuildContext)> {
+class _ActionWidgetState
+    extends StoreConnectedState<ActionWidget, Function(BuildContext)> {
   bool pushInitialRoute = true;
   Function(BuildContext) lastAction;
 

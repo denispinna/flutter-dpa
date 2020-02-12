@@ -1,5 +1,5 @@
-import 'package:dpa/components/widget/camera_widget.dart';
-import 'package:dpa/components/widget/base/lifecycle_widget.dart';
+import 'package:dpa/widget/base/lifecycle_widget.dart';
+import 'package:dpa/widget/camera_widget.dart';
 import 'package:flutter/material.dart';
 
 class CameraScreen extends StatefulWidget {

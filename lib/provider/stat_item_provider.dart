@@ -1,9 +1,4 @@
 import 'package:dpa/components/app_localization.dart';
-import 'package:dpa/components/widget/camera_widget.dart';
-import 'package:dpa/components/widget/centerHorizontal.dart';
-import 'package:dpa/components/widget/image_preview.dart';
-import 'package:dpa/components/widget/stat/mood_widget.dart';
-import 'package:dpa/components/widget/stat/pructivity_widget.dart';
 import 'package:dpa/models/mood.dart';
 import 'package:dpa/models/productivity.dart';
 import 'package:dpa/models/stat_entry.dart';
@@ -11,6 +6,11 @@ import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
+import 'package:dpa/widget/camera_widget.dart';
+import 'package:dpa/widget/centerHorizontal.dart';
+import 'package:dpa/widget/image_preview.dart';
+import 'package:dpa/widget/stat/mood_widget.dart';
+import 'package:dpa/widget/stat/pructivity_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 

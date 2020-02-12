@@ -2,10 +2,6 @@ import 'dart:collection';
 
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/file_manager.dart';
-import 'package:dpa/components/widget/camera_widget.dart';
-import 'package:dpa/components/widget/centerHorizontal.dart';
-import 'package:dpa/components/widget/base/connected_widget.dart';
-import 'package:dpa/components/widget/base/loading_widget.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/provider/stat_item_provider.dart';
@@ -13,6 +9,10 @@ import 'package:dpa/services/api.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/util/view_util.dart';
+import 'package:dpa/widget/base/connected_widget.dart';
+import 'package:dpa/widget/base/loading_widget.dart';
+import 'package:dpa/widget/camera_widget.dart';
+import 'package:dpa/widget/centerHorizontal.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/src/store.dart';
 
@@ -23,8 +23,7 @@ class InputStat extends StatefulWidget {
   InputItemState createState() => InputItemState();
 }
 
-class InputItemState
-    extends StoreConnectedState<InputStat, List<StatItem>> {
+class InputItemState extends StoreConnectedState<InputStat, List<StatItem>> {
   static final contentKey = ValueKey('InputItemState');
   TakePictureWidget takePictureWidget;
   StateData content;

@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
-import 'package:dpa/components/widget/base/loading_widget.dart';
 import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/images.dart';
+import 'package:dpa/widget/base/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
@@ -35,7 +35,6 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
 
   bool get displayDataWidget => !isLoading;
 
-
   @override
   void initState() {
     super.initState();
@@ -48,7 +47,7 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
     return (error != null)
         ? buildErrorWidget(context)
         : (displayDataWidget)
-            ? buildDataWidget(context)
+            ? buildWidget(context)
             : buildLoadingWidget(context);
   }
 
@@ -121,5 +120,5 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
     setState(() {});
   }
 
-  Widget buildDataWidget(BuildContext context);
+  Widget buildWidget(BuildContext context);
 }

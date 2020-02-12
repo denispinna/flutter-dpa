@@ -1,6 +1,6 @@
-import 'package:dpa/components/widget/base/lifecycle_widget.dart';
 import 'package:dpa/screens/login/components/home_widget.dart';
 import 'package:dpa/theme/images.dart';
+import 'package:dpa/widget/base/lifecycle_widget.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {

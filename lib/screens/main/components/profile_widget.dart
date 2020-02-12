@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/components/logger.dart';
-import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/models/user.dart';
 import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/store/global/app_actions.dart';
@@ -9,6 +8,7 @@ import 'package:dpa/store/global/app_state.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/images.dart';
+import 'package:dpa/widget/centerHorizontal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 

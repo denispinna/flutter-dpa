@@ -1,4 +1,4 @@
-import 'package:dpa/components/widget/base/loading_widget.dart';
+import 'package:dpa/widget/base/loading_widget.dart';
 import 'package:flutter/material.dart';
 
 class StatisticTabs extends StatefulWidget {

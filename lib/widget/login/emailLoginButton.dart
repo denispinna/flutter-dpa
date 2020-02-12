@@ -1,8 +1,8 @@
 import 'package:dpa/components/app_localization.dart';
-import 'package:dpa/components/widget/centerHorizontal.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/images.dart';
+import 'package:dpa/widget/centerHorizontal.dart';
 import 'package:flutter/material.dart';
 
 class EmailSignInButton extends StatelessWidget {
