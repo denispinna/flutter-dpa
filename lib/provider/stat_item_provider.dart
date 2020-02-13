@@ -74,7 +74,7 @@ class PictureStatItem extends TextStatItem {
           maxLength: null,
           position: 0,
           displayInList: false,
-          type: 'PictureStatItem',
+          name: 'Picture',
         );
 
   @override
@@ -124,7 +124,8 @@ class MoodStatItem extends QuantityStatItem {
             min: 1,
             max: 5,
             position: 1,
-            displayInList: true);
+            displayInList: true,
+            name: 'Mood');
 
   @override
   Widget getInputWidget({
@@ -208,7 +209,8 @@ class ProductivityStatItem extends QuantityStatItem {
             min: 0,
             max: 5,
             position: 2,
-            displayInList: true);
+            displayInList: true,
+            name: 'Productivity');
 
   @override
   Widget getInputWidget({
@@ -268,19 +270,18 @@ class CommentStatItem extends TextStatItem {
     @required String userEmail,
     @required String key,
   }) : super(
-          userEmail: userEmail,
-          isCustom: false,
-          isEnabled: true,
-          key: key,
-          inputLabel: 'comment_hint',
-          outputLabel: '',
-          localizedLabel: true,
-          color: MyColors.dark,
-          maxLength: 1000,
-          position: 3,
-          displayInList: false,
-          type: 'CommentStatItem',
-        );
+            userEmail: userEmail,
+            isCustom: false,
+            isEnabled: true,
+            key: key,
+            inputLabel: 'comment_hint',
+            outputLabel: '',
+            localizedLabel: true,
+            color: MyColors.dark,
+            maxLength: 1000,
+            position: 3,
+            displayInList: false,
+            name: 'Comment');
 
   @override
   Widget getInputWidget({

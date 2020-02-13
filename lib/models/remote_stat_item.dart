@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class RemoteStatItem {
   final String key;
   final String userEmail;
+  final String name;
   final bool displayInList;
   final bool isCustom;
   final bool isEnabled;
@@ -34,6 +35,7 @@ class RemoteStatItem {
     @required this.maxLength,
     @required this.choices,
     @required this.type,
+    @required this.name,
   });
 
   static RemoteStatItem fromFirestoreData(Map<String, dynamic> data) {
@@ -52,6 +54,7 @@ class RemoteStatItem {
     final choicesString = data[StatItemField.choices.label];
     final maxLength = data[StatItemField.max_length.label];
     final type = data[StatItemField.type.label];
+    final name = data[StatItemField.name.label];
     final choices = (choicesString != null)
         ? (choicesString as String).split(SPLIT_CHAR)
         : null;
@@ -69,9 +72,10 @@ class RemoteStatItem {
       position: position,
       min: min,
       max: max,
-      type: type,
       maxLength: maxLength,
       choices: choices,
+      name: name,
+      type: type,
     );
   }
 }
@@ -91,7 +95,8 @@ enum StatItemField {
   min,
   max,
   max_length,
-  choices
+  choices,
+  name,
 }
 
 extension FieldExt on StatItemField {

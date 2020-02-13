@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 abstract class StatItem<T> {
   final String key;
   final String userEmail;
+  final String name;
   final bool displayInList;
   final bool isCustom;
   final bool isEnabled;
@@ -15,6 +16,7 @@ abstract class StatItem<T> {
   const StatItem({
     @required this.key,
     @required this.userEmail,
+    @required this.name,
     @required this.inputLabel,
     @required this.outputLabel,
     @required this.localizedLabel,
@@ -49,6 +51,7 @@ class QuantityStatItem extends StatItem<double> {
   const QuantityStatItem({
     @required String key,
     @required String userEmail,
+    @required String name,
     @required bool isCustom,
     @required bool isEnabled,
     @required bool localizedLabel,
@@ -61,6 +64,7 @@ class QuantityStatItem extends StatItem<double> {
     @required this.max,
   }) : super(
           userEmail: userEmail,
+          name: name,
           isCustom: isCustom,
           isEnabled: isEnabled,
           key: key,
@@ -106,18 +110,19 @@ class TextStatItem extends StatItem<String> {
   const TextStatItem({
     @required String key,
     @required String userEmail,
+    @required String name,
     @required bool isCustom,
     @required bool isEnabled,
     @required bool displayInList,
     @required String inputLabel,
     @required String outputLabel,
-    @required String type,
     @required bool localizedLabel,
     @required Color color,
     @required int position,
     @required this.maxLength,
   }) : super(
           userEmail: userEmail,
+          name: name,
           isCustom: isCustom,
           isEnabled: isEnabled,
           key: key,
@@ -163,18 +168,19 @@ class McqStatItem extends StatItem<String> {
   const McqStatItem({
     @required String key,
     @required String userEmail,
+    @required String name,
     @required bool isCustom,
     @required bool isEnabled,
     @required bool displayInList,
     @required String inputLabel,
     @required String outputLabel,
-    @required String type,
     @required bool localizedLabel,
     @required Color color,
     @required int position,
     @required this.choices,
   }) : super(
           userEmail: userEmail,
+          name: name,
           isCustom: isCustom,
           isEnabled: isEnabled,
           key: key,

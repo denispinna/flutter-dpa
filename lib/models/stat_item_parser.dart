@@ -21,8 +21,9 @@ extension ParseFirestoreData on Map<String, dynamic> {
 
 extension ParseRemoteItem on RemoteStatItem {
   Map<String, dynamic> toFirestoreData() {
-    String choicesString = '';
+    String choicesString;
     if (choices != null) {
+      choicesString = '';
       choices.forEach((element) => choicesString += '$element$SPLIT_CHAR');
       //If the string is not empty then we remove the last split character
       if (choicesString.length > 0)
@@ -44,7 +45,10 @@ extension ParseRemoteItem on RemoteStatItem {
       StatItemField.position.label: position,
       StatItemField.min.label: min,
       StatItemField.max.label: max,
+      StatItemField.name.label: name,
       StatItemField.max_length.label: maxLength,
+      StatItemField.max_length.label: maxLength,
+      StatItemField.type.label: type,
       StatItemField.choices.label: choicesString,
     };
   }
@@ -85,6 +89,7 @@ extension ParseRemoteItem on RemoteStatItem {
           position: position,
           min: min,
           max: max,
+          name: name,
         );
       case 'TextStatItem':
         return TextStatItem(
@@ -98,6 +103,7 @@ extension ParseRemoteItem on RemoteStatItem {
             outputLabel: outputLabel,
             color: color,
             position: position,
+            name: name,
             maxLength: maxLength);
       case 'McqStatItem':
         return McqStatItem(
@@ -111,6 +117,7 @@ extension ParseRemoteItem on RemoteStatItem {
             outputLabel: outputLabel,
             color: color,
             position: position,
+            name: name,
             choices: choices);
       default:
         return null;
@@ -150,7 +157,9 @@ extension ParseStatItem on StatItem {
         max: max,
         choices: choices,
         maxLength: maxLength,
-        type: this.runtimeType.toString());
+        name: name,
+        type: this.runtimeType.toString()
+    );
   }
 
   Map<String, dynamic> toFirestoreData() =>
