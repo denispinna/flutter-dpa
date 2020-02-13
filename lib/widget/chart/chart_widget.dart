@@ -2,7 +2,6 @@ import 'package:dpa/components/logger.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_entry_parser.dart';
 import 'package:dpa/models/stat_item.dart';
-import 'package:dpa/models/stat_item_parser.dart';
 import 'package:dpa/services/api.dart';
 import 'package:dpa/widget/base/connected_widget.dart';
 import 'package:dpa/widget/chart/donut_chart.dart';
@@ -10,28 +9,28 @@ import 'package:dpa/widget/date/date_range_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:redux/src/store.dart';
 
 class GlobalChartsScreen extends StatefulWidget {
   @override
   _GlobalChartsScreenState createState() => _GlobalChartsScreenState();
 }
 
-class _GlobalChartsScreenState extends StateWithLoading<GlobalChartsScreen> {
-  List<StatItem> statItems;
+class _GlobalChartsScreenState
+    extends StoreConnectedState<GlobalChartsScreen, List<StatItem>> {
   DateTime startDate;
   DateTime endDate;
-  ChartWidget chartWidget;
 
   @override
   void initState() {
+    super.initState();
     DateTime now = DateTime.now();
     startDate = DateTime(now.year, now.month - 1, now.day);
-    endDate = now;
-    super.initState();
+    endDate = DateTime(now.year, now.month, now.day);
   }
 
   @override
-  Widget buildWidget(BuildContext context) {
+  Widget buildWithStore(BuildContext context, List<StatItem> statItems) {
     return Scaffold(
       body: Flex(
         direction: Axis.vertical,
@@ -40,16 +39,20 @@ class _GlobalChartsScreenState extends StateWithLoading<GlobalChartsScreen> {
             startDateSelected: startDate,
             endDateSelected: endDate,
             onStartDateChanged: (date) {
-              this.startDate = date;
-              load(showLoading: false);
+              startDate = date;
+              setState(() {});
             },
             onEndDateChanged: (date) {
-              this.endDate = date;
-              load(showLoading: false);
+              endDate = date;
+              setState(() {});
             },
           ),
           Expanded(
-            child: chartWidget,
+            child: ChartWidget(
+              statItems: statItems,
+              startDate: startDate,
+              endDate: endDate,
+            ),
           ),
         ],
       ),
@@ -57,17 +60,7 @@ class _GlobalChartsScreenState extends StateWithLoading<GlobalChartsScreen> {
   }
 
   @override
-  Future loadFunction() async {
-    if (statItems == null) {
-      final snapshot = await API.statApi.getEnabledStatItems().getDocuments();
-      this.statItems = await compute(parseStatItems, snapshot.documents);
-    }
-    chartWidget = ChartWidget(
-      statItems: statItems,
-      startDate: startDate,
-      endDate: endDate,
-    );
-  }
+  List<StatItem> converter(Store store) => store.state.statItems;
 }
 
 class ChartWidget extends StatefulWidget {
@@ -86,22 +79,22 @@ class ChartWidget extends StatefulWidget {
 }
 
 class _ChartWidgetState extends StateWithLoading<ChartWidget> {
-  Widget chartWidget;
-  List<StatEntry> entries;
-  DateTime lastStartDate;
-  DateTime lastEndDate;
+  static final contentKey = ValueKey('_ChartWidgetState');
+  _ChartWidgetStateContent _content;
+
+  @override
+  void initState() {
+    recoverContent();
+    super.initState();
+  }
 
   @override
   Widget buildWidget(BuildContext context) {
-    if(shouldLoad()) {
-      load();
-      return buildLoadingWidget(context);
-    }
-    Logger.log(runtimeType.toString(),
-        '$this built with ${widget.startDate} - ${widget.endDate}');
+    _persistContent();
+    if (shouldLoad()) load();
     return ConstrainedBox(
       constraints: BoxConstraints.expand(height: 400.0),
-      child: chartWidget,
+      child: _content.chartWidget,
     );
   }
 
@@ -110,25 +103,54 @@ class _ChartWidgetState extends StateWithLoading<ChartWidget> {
 
   @override
   bool shouldLoad() =>
-      entries == null ||
-      lastStartDate != widget.startDate ||
-      lastEndDate != widget.endDate;
+      _content.chartWidget == null ||
+      _content.entries == null ||
+      _content.lastStartDate != widget.startDate ||
+      _content.lastEndDate != widget.endDate;
 
   @override
   Future loadFunction() async {
-    if (chartWidget != null && !shouldLoad()) return;
+    if (!shouldLoad()) return;
+    Logger.log(runtimeType.toString(), "${shouldLoad()}"
+        "\n${_content.entries.length}"
+        "\n${_content.lastStartDate} != ${widget.startDate}"
+        "\n${_content.lastEndDate} != ${widget.endDate}"
+        "\n${_content.chartWidget}");
+
     var snapshot = await API.statApi
         .getStats(from: widget.startDate, to: widget.endDate)
         .getDocuments();
     final entries = await compute(parseStatEntries, snapshot.documents);
-    this.entries = entries;
+    _content.entries = entries;
     Logger.log(runtimeType.toString(),
         '${entries.length} entries loaded for the chart.');
     if (entries == null || entries.length == 0)
-      chartWidget = Container();
+      _content.chartWidget = Container();
     else
-      chartWidget = DonutChart.generate(entries, widget.statItems[1], context);
-    lastStartDate = widget.startDate;
-    lastEndDate = widget.endDate;
+      _content.chartWidget =
+          DonutChart.generate(entries, widget.statItems[1], context);
+    _content.lastStartDate = widget.startDate;
+    _content.lastEndDate = widget.endDate;
   }
+
+  void initContent() => _content = _ChartWidgetStateContent();
+
+  void recoverContent() {
+    _content =
+        PageStorage.of(context).readState(context, identifier: contentKey);
+    if (_content == null) {
+      Logger.log(runtimeType.toString(), "initContent()");
+      initContent();
+    }
+  }
+
+  Future _persistContent() async => PageStorage.of(context)
+      .writeState(context, _content, identifier: contentKey);
+}
+
+class _ChartWidgetStateContent {
+  Widget chartWidget;
+  List<StatEntry> entries;
+  DateTime lastStartDate;
+  DateTime lastEndDate;
 }

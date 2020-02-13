@@ -55,7 +55,8 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
 
   @override
   void initState() {
-    super.initState();
+    stats =
+        PageStorage.of(context).readState(context, identifier: contentKey);
     scrollController.addListener(() {
       double maxScroll = scrollController.position.maxScrollExtent;
       double currentScroll = scrollController.position.pixels;
@@ -64,6 +65,7 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
         _loadNextPage();
       }
     });
+    super.initState();
   }
 
   @override
@@ -91,7 +93,7 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
   }
 
   @override
-  bool shouldLoad() => false;
+  bool shouldLoad() => stats == null;
 
   Future _loadNextPage({bool isFirstPage = false}) async {
     QuerySnapshot query;
@@ -186,19 +188,6 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
             ),
           )),
         ]));
-  }
-
-  @override
-  void onBuild(BuildContext context) {
-    if (stats == null) {
-      stats =
-          PageStorage.of(context).readState(context, identifier: contentKey);
-      (stats == null)
-          ? load(showLoading: true)
-          : setState(() {
-              isLoading = false;
-            });
-    }
   }
 
   Future _persistContent(BuildContext context) async {

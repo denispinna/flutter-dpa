@@ -30,6 +30,7 @@ abstract class StoreConnectedState<W extends StatefulWidget, O>
 }
 
 //TODO: Add an empty state
+//TODO: Add pull to refresh
 abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
   dynamic error;
   bool isLoading = true;
@@ -41,6 +42,7 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
     super.initState();
     Logger.log(runtimeType.toString(), 'initState $this');
     if (shouldLoad()) load();
+    else isLoading = false;
   }
 
   @override

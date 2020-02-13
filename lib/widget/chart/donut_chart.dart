@@ -35,7 +35,7 @@ class DonutChart extends StatelessWidget {
       child: charts.PieChart(
         seriesList,
         animate: animate,
-        animationDuration: Duration(seconds: 1),
+        animationDuration: Duration(milliseconds: 500),
         defaultRenderer: new charts.ArcRendererConfig(
             arcWidth: Dimens.pie_chart_width.toInt(),
             arcRendererDecorators: [

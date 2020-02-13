@@ -2,7 +2,7 @@ import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/models/stat_item_parser.dart';
 import 'package:dpa/screens/main/components/input_data_widget.dart';
 import 'package:dpa/screens/main/components/profile_widget.dart';
-import 'package:dpa/screens/main/components/statistic_screen.dart';
+import 'package:dpa/screens/main/components/charts_screen.dart';
 import 'package:dpa/screens/main/components/stats_history_widget.dart';
 import 'package:dpa/services/api.dart';
 import 'package:dpa/store/global/app_actions.dart';
