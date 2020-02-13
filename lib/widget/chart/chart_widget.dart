@@ -1,4 +1,3 @@
-import 'package:dpa/components/logger.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_entry_parser.dart';
 import 'package:dpa/models/stat_item.dart';
@@ -111,19 +110,12 @@ class _ChartWidgetState extends StateWithLoading<ChartWidget> {
   @override
   Future loadFunction() async {
     if (!shouldLoad()) return;
-    Logger.log(runtimeType.toString(), "${shouldLoad()}"
-        "\n${_content.entries.length}"
-        "\n${_content.lastStartDate} != ${widget.startDate}"
-        "\n${_content.lastEndDate} != ${widget.endDate}"
-        "\n${_content.chartWidget}");
 
     var snapshot = await API.statApi
         .getStats(from: widget.startDate, to: widget.endDate)
         .getDocuments();
     final entries = await compute(parseStatEntries, snapshot.documents);
     _content.entries = entries;
-    Logger.log(runtimeType.toString(),
-        '${entries.length} entries loaded for the chart.');
     if (entries == null || entries.length == 0)
       _content.chartWidget = Container();
     else
@@ -138,10 +130,7 @@ class _ChartWidgetState extends StateWithLoading<ChartWidget> {
   void recoverContent() {
     _content =
         PageStorage.of(context).readState(context, identifier: contentKey);
-    if (_content == null) {
-      Logger.log(runtimeType.toString(), "initContent()");
-      initContent();
-    }
+    if (_content == null) initContent();
   }
 
   Future _persistContent() async => PageStorage.of(context)
