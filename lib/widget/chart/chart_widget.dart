@@ -17,8 +17,10 @@ class GlobalChartsScreen extends StatefulWidget {
 
 class _GlobalChartsScreenState
     extends StoreConnectedState<GlobalChartsScreen, List<StatItem>> {
+  List<StatItem> statItems;
   DateTime startDate;
   DateTime endDate;
+  StatItem statItem;
 
   @override
   void initState() {
@@ -30,6 +32,8 @@ class _GlobalChartsScreenState
 
   @override
   Widget buildWithStore(BuildContext context, List<StatItem> statItems) {
+    this.statItems = statItems;
+    this.statItem = statItems[1];
     return Scaffold(
       body: Flex(
         direction: Axis.vertical,
@@ -48,7 +52,7 @@ class _GlobalChartsScreenState
           ),
           Expanded(
             child: ChartWidget(
-              statItems: statItems,
+              statItem: statItem,
               startDate: startDate,
               endDate: endDate,
             ),
@@ -65,10 +69,10 @@ class _GlobalChartsScreenState
 class ChartWidget extends StatefulWidget {
   final DateTime startDate;
   final DateTime endDate;
-  final List<StatItem> statItems;
+  final StatItem statItem;
 
   const ChartWidget({
-    @required this.statItems,
+    @required this.statItem,
     @required this.startDate,
     @required this.endDate,
   });
@@ -120,7 +124,7 @@ class _ChartWidgetState extends StateWithLoading<ChartWidget> {
       _content.chartWidget = Container();
     else
       _content.chartWidget =
-          DonutChart.generate(entries, widget.statItems[1], context);
+          DonutChart.generate(entries, widget.statItem, context);
     _content.lastStartDate = widget.startDate;
     _content.lastEndDate = widget.endDate;
   }
