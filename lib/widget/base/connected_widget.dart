@@ -99,10 +99,10 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
 
   Future load({bool showLoading = false}) async {
     Logger.log(runtimeType.toString(), 'load $this');
-    if (showLoading && mounted)
-      setState(() {
-        isLoading = true;
-      });
+    if (showLoading && mounted){
+      isLoading = true;
+      setState(() {});
+    }
     await loadFunction().then(onSuccess).catchError(onError);
   }
 

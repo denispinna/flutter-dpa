@@ -55,7 +55,7 @@ extension GraphExt on List<StatEntry> {
     int total = 0;
 
     for (final entry in this) {
-      final value = entry.elements[key];
+      final value = entry.elements[key].round().toDouble();
       if (value != null) {
         total++;
         (data[value] == null)

@@ -55,5 +55,8 @@
   "productivity_fifth" : "pretty productive",
   "productivity_sixth" : "extremely productive",
   "loading" : "Loading...",
-  "retry" : "Retry"
+  "retry" : "Retry",
+  "pick_chart_item" : "Analysed item:",
+  "from" : "From:",
+  "to" : "To :"
 }

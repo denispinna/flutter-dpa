@@ -1,3 +1,4 @@
+import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/material.dart';
@@ -18,13 +19,30 @@ class DateRangePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
+    return Flex(
+      direction: Axis.horizontal,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         SizedBox(
           width: Dimens.s,
         ),
+        Text(
+          AppLocalizations.of(context).translate('from'),
+          style: TextStyle(fontSize: Dimens.font_l, color: MyColors.second),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(
+          width: Dimens.s,
+        ),
         generateDateWidget(context, true),
+        SizedBox(
+          width: Dimens.s,
+        ),
+        Text(
+          AppLocalizations.of(context).translate('to'),
+          style: TextStyle(fontSize: Dimens.font_l, color: MyColors.second),
+          textAlign: TextAlign.center,
+        ),
         SizedBox(
           width: Dimens.s,
         ),
@@ -37,20 +55,50 @@ class DateRangePicker extends StatelessWidget {
   }
 
   Widget generateDateWidget(BuildContext context, bool isStartDate) {
-    return Expanded(
-      flex: 2,
-      child: GestureDetector(
-        onTap: () => _selectDate(context, isStartDate),
-        child: Card(
-          margin: EdgeInsets.symmetric(vertical: Dimens.s),
-          elevation: Dimens.m,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: Dimens.m),
-            child: Text(
-              DateFormat("MMM d, y")
-                  .format((isStartDate) ? startDateSelected : endDateSelected),
-              style: TextStyle(fontSize: Dimens.font_l, color: MyColors.second),
-              textAlign: TextAlign.center,
+    return GestureDetector(
+      onTap: () => _selectDate(context, isStartDate),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Dimens.xxxl),
+        ),
+        margin: EdgeInsets.symmetric(vertical: Dimens.s),
+        elevation: Dimens.m,
+        child: Padding(
+          padding: EdgeInsets.all(Dimens.xs),
+          child: Container(
+            width: Dimens.date_tile_width,
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Flex(
+                direction: Axis.vertical,
+                children: <Widget>[
+                  SizedBox(height: Dimens.xxs),
+                  Expanded(
+                    child: Text(
+                      DateFormat("MMM d").format(
+                          (isStartDate) ? startDateSelected : endDateSelected),
+                      style: TextStyle(
+                        fontSize: Dimens.font_m,
+                        color: MyColors.second,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      DateFormat("y").format(
+                          (isStartDate) ? startDateSelected : endDateSelected),
+                      style: TextStyle(
+                        fontSize: Dimens.font_m,
+                        color: MyColors.second,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

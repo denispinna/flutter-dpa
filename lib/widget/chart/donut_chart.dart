@@ -48,6 +48,11 @@ class DonutChart extends StatelessWidget {
           charts.DatumLegend(
             outsideJustification: charts.OutsideJustification.endDrawArea,
             horizontalFirst: true,
+            desiredMaxRows: 5,
+            desiredMaxColumns: 2,
+            entryTextStyle: charts.TextStyleSpec(
+                color: charts.MaterialPalette.black,
+                fontSize: 12),
             cellPadding: EdgeInsets.all(Dimens.xxxs)
           )
         ],
