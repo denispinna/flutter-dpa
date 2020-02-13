@@ -19,7 +19,7 @@ class ProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Logger.log(runtimeType.toString(), "build");
+    Logger.log(runtimeType.toString(), "build  $this");
     return StoreConnector<AppState, User>(
         converter: (store) => store.state.user, builder: buildWithUser);
   }

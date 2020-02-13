@@ -16,7 +16,7 @@ abstract class StoreConnectedState<W extends StatefulWidget, O>
     extends State<W> {
   @override
   Widget build(BuildContext context) {
-    Logger.log(runtimeType.toString(), "build");
+    Logger.log(runtimeType.toString(), "build $this");
 
     return StoreConnector<AppState, O>(
       converter: converter,
@@ -29,6 +29,7 @@ abstract class StoreConnectedState<W extends StatefulWidget, O>
   Widget buildWithStore(BuildContext context, O output);
 }
 
+//TODO: Add an empty state
 abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
   dynamic error;
   bool isLoading = true;
@@ -38,13 +39,14 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
   @override
   void initState() {
     super.initState();
-    if (shouldLoadOnInit()) load();
+    Logger.log(runtimeType.toString(), 'initState $this');
+    if (shouldLoad()) load();
   }
 
   @override
   Widget build(BuildContext context) {
     onBuild(context);
-    Logger.log(runtimeType.toString(), "build");
+    Logger.log(runtimeType.toString(), 'build $this');
     return (error != null)
         ? buildErrorWidget(context)
         : (displayDataWidget)
@@ -53,9 +55,13 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
   }
 
   Widget buildLoadingWidget(BuildContext context) {
+    Widget loading = LoadingWidget(showLabel: false);
+    if (backgroundColor == null) {
+      return loading;
+    }
     return Scaffold(
-      backgroundColor: MyColors.light,
-      body: LoadingWidget(showLabel: false),
+      backgroundColor: backgroundColor,
+      body: loading,
     );
   }
 
@@ -90,6 +96,7 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
   }
 
   Future load({bool showLoading = false}) async {
+    Logger.log(runtimeType.toString(), 'load $this');
     if (showLoading && mounted)
       setState(() {
         isLoading = true;
@@ -121,9 +128,11 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
     if (mounted) setState(() {});
   }
 
+  Color get backgroundColor => MyColors.light;
+
   Widget buildWidget(BuildContext context);
 
   void onBuild(BuildContext context) {}
 
-  bool shouldLoadOnInit() => true;
+  bool shouldLoad() => true;
 }

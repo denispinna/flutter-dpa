@@ -91,7 +91,7 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
   }
 
   @override
-  bool shouldLoadOnInit() => false;
+  bool shouldLoad() => false;
 
   Future _loadNextPage({bool isFirstPage = false}) async {
     QuerySnapshot query;

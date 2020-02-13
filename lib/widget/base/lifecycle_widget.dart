@@ -7,7 +7,7 @@ abstract class LifecycleWidgetState<T extends StatefulWidget> extends State<T>
     with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
-    Logger.log(runtimeType.toString(), "build");
+    Logger.log(runtimeType.toString(), "build $this");
     return buildWithLifecycle(context);
   }
 
