@@ -12,16 +12,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/src/store.dart';
-import 'package:rx/core.dart';
 import 'package:rxdart/rxdart.dart';
 
-class GlobalChartsScreen extends StatefulWidget {
+class PieChartsScreen extends StatefulWidget {
   @override
-  _GlobalChartsScreenState createState() => _GlobalChartsScreenState();
+  _PieChartsScreenState createState() => _PieChartsScreenState();
 }
 
-class _GlobalChartsScreenState
-    extends StoreConnectedState<GlobalChartsScreen, List<StatItem>> {
+class _PieChartsScreenState
+    extends StoreConnectedState<PieChartsScreen, List<StatItem>> {
   DateTime startDate;
   DateTime endDate;
   StatItem statItem;

@@ -43,7 +43,7 @@ class _StatisticState extends State<StatisticTabs> {
 
   void initPages() {
     _pages = List();
-    _pages.add(GlobalChartsScreen());
+    _pages.add(PieChartsScreen());
     _pages.add(Icon(Icons.directions_transit));
     _pages.add(Icon(Icons.directions_bike));
   }
