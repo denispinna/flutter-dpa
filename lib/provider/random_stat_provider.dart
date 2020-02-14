@@ -39,8 +39,13 @@ void postRandomStats() {
 
 StatEntry _generateFakeStat(DateTime date) {
   var random = new Random();
-  final mood = (random.nextInt(5) + 1).toDouble();
-  double productivity = random.nextInt(5).toDouble();
+  final mood = (random.nextInt(10) > 7)
+      ? (random.nextInt(2) + 1).toDouble()
+      : (random.nextInt(3) + 3).toDouble();
+  double productivity = (random.nextInt(10) > 7)
+      ? random.nextInt(3).toDouble()
+      : (random.nextInt(2) + 3).toDouble();
+
   if (random.nextBool()) {
     productivity = (productivity > 0) ? productivity - 0.5 : productivity;
   }
