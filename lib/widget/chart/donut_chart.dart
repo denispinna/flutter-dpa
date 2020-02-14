@@ -9,7 +9,7 @@ class DonutChart extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
 
-  DonutChart(this.seriesList, {this.animate = true});
+  DonutChart(this.seriesList, {this.animate = false});
 
   factory DonutChart.generate(
       List<StatEntry> entries, StatItem statItem, BuildContext context) {

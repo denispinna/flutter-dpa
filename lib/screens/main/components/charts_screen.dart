@@ -1,5 +1,10 @@
-import 'package:dpa/widget/chart/chart_widget.dart';
+import 'package:dpa/theme/dimens.dart';
+import 'package:dpa/theme/images.dart';
+import 'package:dpa/widget/chart/donut_chart_screen.dart';
+import 'package:dpa/widget/chart/line_chart_screen.dart';
+import 'package:dpa/widget/chart/stack_chart_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class StatisticTabs extends StatefulWidget {
   StatisticTabs({Key key}) : super(key: key);
@@ -8,6 +13,7 @@ class StatisticTabs extends StatefulWidget {
   _StatisticState createState() => _StatisticState();
 }
 
+//TODO: Save the page index
 class _StatisticState extends State<StatisticTabs> {
   static final contentKey = ValueKey('_StatisticState');
   List<Widget> _pages;
@@ -28,9 +34,18 @@ class _StatisticState extends State<StatisticTabs> {
           automaticallyImplyLeading: false,
           title: TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.directions_car)),
-              Tab(icon: Icon(Icons.directions_transit)),
-              Tab(icon: Icon(Icons.directions_bike)),
+              Tab(
+                icon: SvgPicture.asset(MyImages.donut_chart,
+                    height: Dimens.xxl, width: Dimens.xxl),
+              ),
+              Tab(
+                icon: SvgPicture.asset(MyImages.bar_chart,
+                    height: Dimens.xxl, width: Dimens.xxl),
+              ),
+              Tab(
+                icon: SvgPicture.asset(MyImages.line_chart,
+                    height: Dimens.xxl, width: Dimens.xxl),
+              ),
             ],
           ),
         ),
@@ -44,8 +59,8 @@ class _StatisticState extends State<StatisticTabs> {
   void initPages() {
     _pages = List();
     _pages.add(PieChartsScreen());
-    _pages.add(Icon(Icons.directions_transit));
-    _pages.add(Icon(Icons.directions_bike));
+    _pages.add(StackChartsScreen());
+    _pages.add(LineChartsScreen());
   }
 
   void recoverContent() {

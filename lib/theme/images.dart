@@ -15,4 +15,7 @@ class MyImages {
   static const take_picture = "assets/take_picture.svg";
   static const cross = "assets/cross.svg";
   static const error = "assets/error.svg";
+  static const bar_chart = "assets/bar_chart.svg";
+  static const donut_chart = "assets/donut_chart.svg";
+  static const line_chart = "assets/line_chart.svg";
 }

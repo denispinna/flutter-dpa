@@ -95,11 +95,11 @@ class ChartWidget extends StatefulWidget {
   });
 
   @override
-  _ChartWidgetState createState() => _ChartWidgetState();
+  _PieChartWidgetState createState() => _PieChartWidgetState();
 }
 
-class _ChartWidgetState extends StateWithLoading<ChartWidget> {
-  static final contentKey = ValueKey('_ChartWidgetState');
+class _PieChartWidgetState extends StateWithLoading<ChartWidget> {
+  static final contentKey = ValueKey('_PieChartWidgetState');
   _ChartWidgetStateContent _content;
   final _startLoading = BehaviorSubject<bool>.seeded(false);
 
