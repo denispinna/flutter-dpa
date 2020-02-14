@@ -12,6 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/src/store.dart';
+import 'package:rx/core.dart';
+import 'package:rxdart/rxdart.dart';
 
 class GlobalChartsScreen extends StatefulWidget {
   @override
@@ -100,6 +102,7 @@ class ChartWidget extends StatefulWidget {
 class _ChartWidgetState extends StateWithLoading<ChartWidget> {
   static final contentKey = ValueKey('_ChartWidgetState');
   _ChartWidgetStateContent _content;
+  final _startLoading = BehaviorSubject<bool>.seeded(false);
 
   @override
   void initState() {
@@ -112,18 +115,22 @@ class _ChartWidgetState extends StateWithLoading<ChartWidget> {
     _persistContent();
     if (shouldLoad()) {
       load();
-      //TODO: Find a way to not rebuild it
-      return BlinkingWidget(
-        child: getChartWidget(),
-      );
-    }
-    return getChartWidget();
-  }
-
-  Widget getChartWidget() => ConstrainedBox(
+      _startLoading.add(true);
+    } else _startLoading.add(false);
+    return BlinkingWidget(
+      startLoading: _startLoading.stream,
+      child: ConstrainedBox(
         constraints: BoxConstraints.expand(height: 400.0),
         child: _content.chartWidget,
-      );
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _startLoading.close();
+    super.dispose();
+  }
 
   @override
   Color get backgroundColor => null;
@@ -138,7 +145,6 @@ class _ChartWidgetState extends StateWithLoading<ChartWidget> {
 
   @override
   Future loadFunction() async {
-    await Future.delayed(Duration(seconds: 3));
     if (!shouldLoad()) return;
 
     if (_content.lastStartDate != widget.startDate ||

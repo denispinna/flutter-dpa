@@ -32,6 +32,9 @@ dependencies:
   cached_network_image: ^2.0.0
   charts_flutter: ^0.8.1
   stack_trace: ^1.9.3
+  rx: ^0.0.4
+  rxdart: ^0.23.1
+  flutter_rx_stream_builder: ^1.0.3
 
 
 dev_dependencies:

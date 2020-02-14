@@ -214,6 +214,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.0"
+  flutter_rx_stream_builder:
+    dependency: "direct main"
+    description:
+      name: flutter_rx_stream_builder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -308,6 +315,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.8"
+  more:
+    dependency: transitive
+    description:
+      name: more
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.18.2"
   path:
     dependency: "direct main"
     description:
@@ -378,6 +392,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  rx:
+    dependency: "direct main"
+    description:
+      name: rx
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
+  rxdart:
+    dependency: "direct main"
+    description:
+      name: rxdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.23.1"
   sky_engine:
     dependency: transitive
     description: flutter
