@@ -70,7 +70,7 @@ class _MainWidgetState extends StateWithLoading<_MainWidget> {
   @override
   void initState() {
     super.initState();
-    InputStat inputWidget = InputStat(key: PageStorageKey('inputWidget'));
+    InputStatEntry inputWidget = InputStatEntry(key: PageStorageKey('inputWidget'));
     StatsHistoryWidget statsWidget =
         StatsHistoryWidget(key: PageStorageKey('statsWidget'));
     ProfileWidget profileWidget =

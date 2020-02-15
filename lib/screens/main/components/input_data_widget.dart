@@ -11,27 +11,26 @@ import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/util/view_util.dart';
 import 'package:dpa/widget/base/connected_widget.dart';
 import 'package:dpa/widget/base/loading_widget.dart';
+import 'package:dpa/widget/base/persistent_widget.dart';
 import 'package:dpa/widget/camera_widget.dart';
 import 'package:dpa/widget/centerHorizontal.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/src/store.dart';
 
-class InputStat extends StatefulWidget {
-  InputStat({Key key}) : super(key: key);
+class InputStatEntry extends StatefulWidget {
+  InputStatEntry({Key key}) : super(key: key);
 
   @override
-  InputItemState createState() => InputItemState();
+  InputStatEntryState createState() => InputStatEntryState();
 }
 
-class InputItemState extends StoreConnectedState<InputStat, List<StatItem>> {
-  static final contentKey = ValueKey('InputItemState');
+class InputStatEntryState extends StoreConnectedState<InputStatEntry, List<StatItem>> with Persistent<InputStateData> {
   TakePictureWidget takePictureWidget;
-  StateData content;
   bool formPosted = false;
 
   @override
   Widget buildWithStore(BuildContext context, List<StatItem> statItems) {
-    persistAndRecoverContent(context);
+    persistOrRecoverContent(context);
     if (content.loading || statItems.length == 0) {
       return LoadingWidget(
         showLabel: false,
@@ -111,7 +110,7 @@ class InputItemState extends StoreConnectedState<InputStat, List<StatItem>> {
     API.statApi.postStatEntry(item).then((result) {
       formPosted = true;
       setState(() {
-        content = StateData();
+        content = InputStateData();
       });
     }, onError: onError);
   }
@@ -120,28 +119,20 @@ class InputItemState extends StoreConnectedState<InputStat, List<StatItem>> {
     displayMessage('generic_error_message', context, isError: true);
   }
 
-  void persistAndRecoverContent(BuildContext context) {
-    if (content == null) {
-      final content =
-          PageStorage.of(context).readState(context, identifier: contentKey);
-      this.content = content == null ? StateData() : content;
-    } else {
-      PageStorage.of(context)
-          .writeState(context, content, identifier: contentKey);
-    }
-  }
-
   onValueChanged({
     @required String key,
     @required Object value,
     @required BuildContext context,
   }) {
     content.elements[key] = value;
-    persistAndRecoverContent(context);
+    persistContent(context);
   }
+
+  @override
+  initContent() => InputStateData();
 }
 
-class StateData {
+class InputStateData {
   String imageUrl;
   bool loading = false;
   UploadImageTask task;
