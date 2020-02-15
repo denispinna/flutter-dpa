@@ -9,6 +9,7 @@ import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/widget/base/connected_widget.dart';
+import 'package:dpa/widget/base/persistent_widget.dart';
 import 'package:dpa/widget/centerHorizontal.dart';
 import 'package:dpa/widget/stat/stat_list_item.dart';
 import 'package:flutter/foundation.dart';
@@ -42,21 +43,15 @@ class StatHistoryList extends StatefulWidget {
   _StatHistoryListState createState() => _StatHistoryListState();
 }
 
-class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
+class _StatHistoryListState extends StateWithLoading<StatHistoryList> with Persistent<_StatHistoryListStateContent>{
   static const TAG = "StatsHistoryWidget";
   static const ITEM_PER_PAGE = 10;
-  static final contentKey = ValueKey(TAG);
   final authApi = AuthAPI.instance;
-  List<StatEntry> stats;
-  bool isLoadingNext = false;
-  bool lastPageReached = false;
-  DocumentSnapshot lastDocument;
   ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
-    stats =
-        PageStorage.of(context).readState(context, identifier: contentKey);
+    recoverContent(context: context);
     scrollController.addListener(() {
       double maxScroll = scrollController.position.maxScrollExtent;
       double currentScroll = scrollController.position.pixels;
@@ -70,7 +65,7 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
 
   @override
   Widget buildWidget(BuildContext context) {
-    _persistContent(context);
+    persistContent(context: context);
     return new RefreshIndicator(
       child: _renderStats(),
       onRefresh: _refreshData,
@@ -78,11 +73,8 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
   }
 
   Future<void> _refreshData() async {
-    stats = null;
-    lastDocument = null;
-    lastPageReached = false;
+    content = initContent();
     isLoading = false;
-    isLoadingNext = false;
     await Future.delayed(Duration(milliseconds: 500));
     await load();
   }
@@ -93,51 +85,51 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
   }
 
   @override
-  bool shouldLoad() => stats == null;
+  bool shouldLoad() => content.stats == null;
 
   Future _loadNextPage({bool isFirstPage = false}) async {
     QuerySnapshot query;
     if (isFirstPage) {
       query = await API.statApi
-          .getOrderedStats(lastVisible: lastDocument, limit: ITEM_PER_PAGE)
+          .getOrderedStats(lastVisible: content.lastDocument, limit: ITEM_PER_PAGE)
           .getDocuments();
     } else {
-      if (isLoading || isLoadingNext || lastPageReached) return;
+      if (isLoading || content.isLoadingNext || content.lastPageReached) return;
       setState(() {
-        isLoadingNext = true;
+        content.isLoadingNext = true;
       });
       query = await API.statApi
-          .getOrderedStats(lastVisible: lastDocument, limit: ITEM_PER_PAGE)
+          .getOrderedStats(lastVisible: content.lastDocument, limit: ITEM_PER_PAGE)
           .getDocuments()
           .catchError((error) {});
     }
 
     final documents = query.documents;
     final items = await compute(parseStatEntries, documents);
-    if (stats == null) stats = List<StatEntry>();
+    if (content.stats == null) content.stats = List<StatEntry>();
     /* We do not want to add the items from the first page if some other items were recovered from an earlier state */
-    if (!(isFirstPage && stats.length > 0)) {
-      stats.addAll(items);
+    if (!(isFirstPage && content.stats.length > 0)) {
+      content.stats.addAll(items);
     }
-    if (documents.length > 0) lastDocument = documents.last;
-    lastPageReached = items.length < ITEM_PER_PAGE;
+    if (documents.length > 0) content.lastDocument = documents.last;
+    content.lastPageReached = items.length < ITEM_PER_PAGE;
 
     /* We delay the setState to let the user see the loading icon instead of blinking on a fast network */
     await Future.delayed(Duration(milliseconds: 200));
-    if (mounted) setState(() => isLoadingNext = false);
+    if (mounted) setState(() => content.isLoadingNext = false);
   }
 
   Widget _renderStats() {
-    if (stats.isNotEmpty) {
+    if (content.stats.isNotEmpty) {
       List<Widget> items = List();
-      items.addAll(stats.map((stat) {
+      items.addAll(content.stats.map((stat) {
         return StatListWidget(
           statEntry: stat,
           statItems: widget.statItems.toKeyTypeMap(),
         );
       }).toList());
 
-      if (isLoadingNext) {
+      if (content.isLoadingNext) {
         items.add(Center(
           child: Container(
             margin: const EdgeInsets.all(Dimens.xxs),
@@ -190,7 +182,13 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> {
         ]));
   }
 
-  Future _persistContent(BuildContext context) async {
-    PageStorage.of(context).writeState(context, stats, identifier: contentKey);
-  }
+  @override
+  _StatHistoryListStateContent initContent() => _StatHistoryListStateContent();
+}
+
+class _StatHistoryListStateContent {
+  List<StatEntry> stats;
+  bool isLoadingNext = false;
+  bool lastPageReached = false;
+  DocumentSnapshot lastDocument;
 }

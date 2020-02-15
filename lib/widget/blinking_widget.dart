@@ -39,7 +39,7 @@ class _BlinkingWidgetState extends State<BlinkingWidget>
     widget.startLoading.listen((isLoading) {
       if(!mounted)
         return;
-      
+
       this.isLoading = isLoading;
       if (isLoading == true)
         controller.forward();
