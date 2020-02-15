@@ -1,5 +1,6 @@
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/images.dart';
+import 'package:dpa/widget/base/persistent_widget.dart';
 import 'package:dpa/widget/chart/donut_chart_screen.dart';
 import 'package:dpa/widget/chart/line_chart_screen.dart';
 import 'package:dpa/widget/chart/stack_chart_screen.dart';
@@ -13,21 +14,22 @@ class StatisticTabs extends StatefulWidget {
   _StatisticState createState() => _StatisticState();
 }
 
-//TODO: Save the page index
-class _StatisticState extends State<StatisticTabs> {
-  static final contentKey = ValueKey('_StatisticState');
-  List<Widget> _pages;
+class _StatisticState extends State<StatisticTabs>
+    with Persistent<_StatisticStateContent> {
+  final List<Widget> _pages = List();
 
   @override
   void initState() {
     super.initState();
-    recoverContent();
+    initPages();
+    recoverContent(context: context);
   }
 
   @override
   Widget build(BuildContext context) {
-    _persistContent();
+    persistContent(context: context);
     return DefaultTabController(
+      initialIndex: content.index,
       length: 3,
       child: Scaffold(
         appBar: AppBar(
@@ -57,17 +59,17 @@ class _StatisticState extends State<StatisticTabs> {
   }
 
   void initPages() {
-    _pages = List();
     _pages.add(PieChartsScreen());
     _pages.add(StackChartsScreen());
     _pages.add(LineChartsScreen());
   }
 
-  void recoverContent() {
-    _pages = PageStorage.of(context).readState(context, identifier: contentKey);
-    if (_pages == null) initPages();
-  }
+  @override
+  _StatisticStateContent initContent() => _StatisticStateContent();
+}
 
-  Future _persistContent() async => PageStorage.of(context)
-      .writeState(context, _pages, identifier: contentKey);
+class _StatisticStateContent {
+  int index;
+
+  _StatisticStateContent({this.index = 0});
 }

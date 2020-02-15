@@ -30,7 +30,7 @@ class InputStatEntryState extends StoreConnectedState<InputStatEntry, List<StatI
 
   @override
   Widget buildWithStore(BuildContext context, List<StatItem> statItems) {
-    persistOrRecoverContent(context);
+    persistOrRecoverContent(context: context);
     if (content.loading || statItems.length == 0) {
       return LoadingWidget(
         showLabel: false,
@@ -125,7 +125,7 @@ class InputStatEntryState extends StoreConnectedState<InputStatEntry, List<StatI
     @required BuildContext context,
   }) {
     content.elements[key] = value;
-    persistContent(context);
+    persistContent(context: context);
   }
 
   @override
