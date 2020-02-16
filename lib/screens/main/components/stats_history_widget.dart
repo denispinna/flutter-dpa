@@ -64,6 +64,12 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> with Persi
   }
 
   @override
+  Widget build(BuildContext context) {
+    persistContent(context: context);
+    return buildWithStorage(buildWidget(context));
+  }
+
+  @override
   Widget buildWidget(BuildContext context) {
     persistContent(context: context);
     return new RefreshIndicator(
@@ -120,7 +126,9 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> with Persi
   }
 
   Widget _renderStats() {
-    if (content.stats.isNotEmpty) {
+    if(content.stats == null)
+      return buildLoadingWidget(context);
+    else if (content.stats.isNotEmpty) {
       List<Widget> items = List();
       items.addAll(content.stats.map((stat) {
         return StatListWidget(

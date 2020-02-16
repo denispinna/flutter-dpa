@@ -42,18 +42,18 @@ extension MoodExt on Mood {
     }
   }
 
-  String getLabel(BuildContext context) {
+  String getLabel() {
     switch (this) {
       case Mood.first:
-        return AppLocalizations.of(context).translate('mood_first');
+        return 'mood_first';
       case Mood.second:
-        return AppLocalizations.of(context).translate('mood_second');
+        return 'mood_second';
       case Mood.third:
-        return AppLocalizations.of(context).translate('mood_third');
+        return 'mood_third';
       case Mood.fourth:
-        return AppLocalizations.of(context).translate('mood_fourth');
+        return 'mood_fourth';
       default:
-        return AppLocalizations.of(context).translate('mood_fifth');
+        return 'mood_fifth';
     }
   }
 

@@ -27,6 +27,10 @@ class _StatisticState extends State<StatisticTabs>
 
   @override
   Widget build(BuildContext context) {
+    return buildWithStorage(buildWidget(context));
+  }
+
+  Widget buildWidget(BuildContext context) {
     persistContent(context: context);
     return DefaultTabController(
       initialIndex: content.index,
@@ -59,7 +63,7 @@ class _StatisticState extends State<StatisticTabs>
   }
 
   void initPages() {
-    _pages.add(PieChartsScreen());
+    _pages.add(DonutChartsScreen());
     _pages.add(StackChartsScreen());
     _pages.add(LineChartsScreen());
   }

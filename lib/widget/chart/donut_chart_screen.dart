@@ -4,7 +4,7 @@ import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/services/api.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/widget/base/connected_widget.dart';
-import 'package:dpa/widget/blinking_widget.dart';
+import 'package:dpa/widget/base/persistent_widget.dart';
 import 'package:dpa/widget/chart/donut_chart.dart';
 import 'package:dpa/widget/date/date_range_picker.dart';
 import 'package:dpa/widget/stat/stat_item_picker.dart';
@@ -12,15 +12,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/src/store.dart';
-import 'package:rxdart/rxdart.dart';
 
-class PieChartsScreen extends StatefulWidget {
+class DonutChartsScreen extends StatefulWidget {
   @override
-  _PieChartsScreenState createState() => _PieChartsScreenState();
+  _DonutChartsScreenState createState() => _DonutChartsScreenState();
 }
 
-class _PieChartsScreenState
-    extends StoreConnectedState<PieChartsScreen, List<StatItem>> {
+class _DonutChartsScreenState
+    extends StoreConnectedState<DonutChartsScreen, List<StatItem>> {
   DateTime startDate;
   DateTime endDate;
   StatItem statItem;
@@ -76,7 +75,8 @@ class _PieChartsScreenState
   @override
   List<StatItem> converter(Store store) {
     /* Here, we want to keep only the kind of item that makes sense with this chart */
-    List<StatItem> filtered = store.state.statItems;
+    List<StatItem> filtered = List();
+    filtered.addAll(store.state.statItems);
     filtered.retainWhere(
         (element) => element is QuantityStatItem || element is McqStatItem);
     return filtered;
@@ -98,36 +98,30 @@ class ChartWidget extends StatefulWidget {
   _PieChartWidgetState createState() => _PieChartWidgetState();
 }
 
-class _PieChartWidgetState extends StateWithLoading<ChartWidget> {
-  static final contentKey = ValueKey('_PieChartWidgetState');
+class _PieChartWidgetState extends StateWithLoading<ChartWidget>
+    with Persistent<_ChartWidgetStateContent> {
   _ChartWidgetStateContent _content;
-  final _startLoading = BehaviorSubject<bool>.seeded(false);
+  Widget chartWidget;
 
   @override
   void initState() {
-    recoverContent();
+    recoverContent(context: context);
     super.initState();
   }
 
   @override
   Widget buildWidget(BuildContext context) {
-    _persistContent();
-    if (shouldLoad()) {
-      load();
-      _startLoading.add(true);
-    } else _startLoading.add(false);
-    return BlinkingWidget(
-      startLoading: _startLoading.stream,
-      child: ConstrainedBox(
-        constraints: BoxConstraints.expand(height: 400.0),
-        child: _content.chartWidget,
-      ),
+    persistOrRecoverContent(context: context);
+    if (shouldLoad()) load();
+
+    return ConstrainedBox(
+      constraints: BoxConstraints.expand(height: 400.0),
+      child: chartWidget,
     );
   }
 
   @override
   void dispose() {
-    _startLoading.close();
     super.dispose();
   }
 
@@ -136,7 +130,7 @@ class _PieChartWidgetState extends StateWithLoading<ChartWidget> {
 
   @override
   bool shouldLoad() =>
-      _content.chartWidget == null ||
+      chartWidget == null ||
       _content.entries == null ||
       _content.lastStatItem != widget.statItem ||
       _content.lastStartDate != widget.startDate ||
@@ -154,30 +148,23 @@ class _PieChartWidgetState extends StateWithLoading<ChartWidget> {
       final entries = await compute(parseStatEntries, snapshot.documents);
       _content.entries = entries;
     }
+    //TODO: Add empty state here
     if (_content.entries == null || _content.entries.length == 0)
-      _content.chartWidget = Container();
+      chartWidget = Container(width: 0);
     else
-      _content.chartWidget =
-          DonutChart.generate(_content.entries, widget.statItem, context);
+      chartWidget =
+          DonutChart(entries: _content.entries, statItem: widget.statItem);
     _content.lastStartDate = widget.startDate;
     _content.lastEndDate = widget.endDate;
     _content.lastStatItem = widget.statItem;
   }
 
-  void initContent() => _content = _ChartWidgetStateContent();
-
-  void recoverContent() {
-    _content =
-        PageStorage.of(context).readState(context, identifier: contentKey);
-    if (_content == null) initContent();
-  }
-
-  Future _persistContent() async => PageStorage.of(context)
-      .writeState(context, _content, identifier: contentKey);
+  @override
+  _ChartWidgetStateContent initContent() =>
+      _content = _ChartWidgetStateContent();
 }
 
 class _ChartWidgetStateContent {
-  Widget chartWidget;
   List<StatEntry> entries;
   DateTime lastStartDate;
   DateTime lastEndDate;

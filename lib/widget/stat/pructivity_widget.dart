@@ -1,3 +1,4 @@
+import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/models/productivity.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/icons.dart';
@@ -27,22 +28,23 @@ class ProductivityLabel extends StatelessWidget {
       text = isInt ? productivity.toInt().toString() : productivity.toString();
     else
       text =
-          productivity.getProductivityLabel(context).upperCaseFirstCharacter();
+          AppLocalizations.of(context).translate(
+              productivity.getProductivityLabel()).toUpperCase();
     TextStyle style = (bold)
-        ? TextStyle(
-            fontSize: fontSize,
-            color: productivity.productivityColor,
-            fontWeight: FontWeight.bold)
+    ? TextStyle(
+    fontSize: fontSize,
+    color: productivity.productivityColor,
+    fontWeight: FontWeight.bold)
         : TextStyle(
-            fontSize: fontSize,
-            color: productivity.productivityColor,
-          );
+    fontSize: fontSize,
+    color: productivity.productivityColor,
+    );
 
     return Text(
-      text,
-      textAlign: TextAlign.center,
-      style: style,
-      maxLines: 1,
+    text,
+    textAlign: TextAlign.center,
+    style: style,
+    maxLines: 1,
     );
   }
 }

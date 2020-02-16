@@ -78,7 +78,8 @@ class _LineChartsScreenState
   @override
   List<StatItem> converter(Store store) {
     /* Here, we want to keep only the kind of item that makes sense with this chart */
-    List<StatItem> filtered = store.state.statItems;
+    List<StatItem> filtered = List();
+    filtered.addAll(store.state.statItems);
     filtered.retainWhere(
         (element) => element is QuantityStatItem || element is McqStatItem);
     return filtered;

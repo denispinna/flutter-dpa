@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 
 abstract class Persistent<T> {
+  final _bucket = new PageStorageBucket();
   T content;
 
   T initContent();
+
+  Widget buildWithStorage(Widget child) {
+    return PageStorage(
+      child: child,
+      bucket: _bucket,
+      key: contentKey,
+    );
+  }
 
   void persistOrRecoverContent({
     @required BuildContext context,

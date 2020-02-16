@@ -71,20 +71,20 @@ extension ProductivityExt on int {
     }
   }
 
-  String productivityLabel(BuildContext context) {
+  String productivityLabel() {
     switch (this) {
       case 0:
-        return AppLocalizations.of(context).translate('productivity_first');
+        return 'productivity_first';
       case 1:
-        return AppLocalizations.of(context).translate('productivity_second');
+        return 'productivity_second';
       case 2:
-        return AppLocalizations.of(context).translate('productivity_third');
+        return 'productivity_third';
       case 3:
-        return AppLocalizations.of(context).translate('productivity_fourth');
+        return 'productivity_fourth';
       case 4:
-        return AppLocalizations.of(context).translate('productivity_fifth');
+        return 'productivity_fifth';
       default:
-        return AppLocalizations.of(context).translate('productivity_sixth');
+        return 'productivity_sixth';
     }
   }
 
@@ -125,8 +125,8 @@ extension ProductivityDoubleExt on double {
         .getProductivityIcon(size: size, filled: filled, color: color);
   }
 
-  String getProductivityLabel(BuildContext context) {
-    return this.floor().productivityLabel(context);
+  String getProductivityLabel() {
+    return this.floor().productivityLabel();
   }
 
   Color get productivityColor {

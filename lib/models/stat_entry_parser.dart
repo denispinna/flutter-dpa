@@ -28,7 +28,8 @@ extension ParseDocToStat on DocumentSnapshot {
     for (final statEntry in data[StatEntryFields.elements.label].entries) {
       elements[statEntry.key] = statEntry.value;
     }
-    return StatEntry(id: this.documentID, date: date.toDate(), elements: elements);
+    return StatEntry(
+        id: this.documentID, date: date.toDate(), elements: elements);
   }
 }
 
@@ -49,7 +50,7 @@ List<StatEntry> parseStatEntries(List<DocumentSnapshot> documents) {
 }
 
 extension GraphExt on List<StatEntry> {
-  List<DonutGraphData> toDonutGraphData(StatItem item, BuildContext context) {
+  List<DonutGraphData> toDonutGraphData(StatItem item) {
     Map<dynamic, DonutGraphData> data = Map();
     final key = item.key;
     int total = 0;
@@ -60,7 +61,7 @@ extension GraphExt on List<StatEntry> {
         total++;
         (data[value] == null)
             ? data[value] = DonutGraphData(
-                label: _getLabel(key, value, context),
+                label: _getLabel(key, value),
                 occurrences: 1,
                 value: value,
                 color: _getColor(key, value))
@@ -68,19 +69,19 @@ extension GraphExt on List<StatEntry> {
       }
     }
     final list = data.values.toList();
-    list.sort((a,b) => a.value.compareTo(b.value));
-    for(final entry in list) {
-      entry.percentage = entry.occurrences/total;
+    list.sort((a, b) => a.value.compareTo(b.value));
+    for (final entry in list) {
+      entry.percentage = entry.occurrences / total;
     }
     return list;
   }
 }
 
-String _getLabel(String itemKey, dynamic value, BuildContext context) {
+String _getLabel(String itemKey, dynamic value) {
   if (itemKey == DefaultStatItem.default_mood.label) {
-    return Mood.values[value.toInt() - 1].getLabel(context).toUpperCase();
+    return Mood.values[value.toInt() - 1].getLabel().toUpperCase();
   } else if (itemKey == DefaultStatItem.default_productivity.label) {
-    return (value as double).getProductivityLabel(context).toUpperCase();
+    return (value as double).getProductivityLabel().toUpperCase();
   } else
     return value.toString();
 }

@@ -1,3 +1,4 @@
+import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/models/mood.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class MoodLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      mood.getLabel(context).toUpperCase(),
+      AppLocalizations.of(context).translate(mood.getLabel()).toUpperCase(),
       textAlign: TextAlign.center,
       style: TextStyle(
           fontSize: Dimens.font_ml,
