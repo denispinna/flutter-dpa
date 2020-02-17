@@ -8,6 +8,7 @@ import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/provider/stat_item_provider.dart';
 import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/widget/chart/donut_chart_screen.dart';
+import 'package:dpa/widget/chart/line_chart_screen.dart';
 import 'package:flutter/material.dart';
 
 extension StatEntryExt on StatEntry {
@@ -74,6 +75,23 @@ extension GraphExt on List<StatEntry> {
       entry.percentage = entry.occurrences / total;
     }
     return list;
+  }
+
+  List<LineGraphData> toLinetGraphData(StatItem item) {
+    List<LineGraphData> data = List();
+    this.sort((a,b) => a.date.compareTo(b.date));
+    final key = item.key;
+
+    for (final entry in this) {
+      final value = entry.elements[key];
+      if (value != null) {
+        data.add(LineGraphData(
+          x: data.length + 1,
+          value: value
+        ));
+      }
+    }
+    return data;
   }
 }
 
