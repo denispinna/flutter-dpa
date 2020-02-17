@@ -47,6 +47,7 @@ abstract class StatItem<T> {
 class QuantityStatItem extends StatItem<double> {
   final double min;
   final double max;
+  final bool halfRating;
 
   const QuantityStatItem({
     @required String key,
@@ -62,6 +63,7 @@ class QuantityStatItem extends StatItem<double> {
     @required int position,
     @required this.min,
     @required this.max,
+    this.halfRating = false,
   }) : super(
           userEmail: userEmail,
           name: name,

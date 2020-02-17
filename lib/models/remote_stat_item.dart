@@ -9,6 +9,7 @@ class RemoteStatItem {
   final bool isCustom;
   final bool isEnabled;
   final bool localizedLabel;
+  final bool halfRating;
   final int position;
   final String inputLabel;
   final String outputLabel;
@@ -36,6 +37,7 @@ class RemoteStatItem {
     @required this.choices,
     @required this.type,
     @required this.name,
+    @required this.halfRating,
   });
 
   static RemoteStatItem fromFirestoreData(Map<String, dynamic> data) {
@@ -55,6 +57,7 @@ class RemoteStatItem {
     final maxLength = data[StatItemField.max_length.label];
     final type = data[StatItemField.type.label];
     final name = data[StatItemField.name.label];
+    final halfRating = data[StatItemField.halfRating.label];
     final choices = (choicesString != null)
         ? (choicesString as String).split(SPLIT_CHAR)
         : null;
@@ -76,6 +79,7 @@ class RemoteStatItem {
       choices: choices,
       name: name,
       type: type,
+      halfRating: halfRating,
     );
   }
 }
@@ -97,6 +101,7 @@ enum StatItemField {
   max_length,
   choices,
   name,
+  halfRating,
 }
 
 extension FieldExt on StatItemField {

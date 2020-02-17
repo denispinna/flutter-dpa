@@ -49,6 +49,7 @@ extension ParseRemoteItem on RemoteStatItem {
       StatItemField.max_length.label: maxLength,
       StatItemField.max_length.label: maxLength,
       StatItemField.type.label: type,
+      StatItemField.halfRating.label: halfRating,
       StatItemField.choices.label: choicesString,
     };
   }
@@ -89,6 +90,7 @@ extension ParseRemoteItem on RemoteStatItem {
           position: position,
           min: min,
           max: max,
+          halfRating: halfRating,
           name: name,
         );
       case 'TextStatItem':
@@ -131,10 +133,13 @@ extension ParseStatItem on StatItem {
     double max;
     List<String> choices;
     int maxLength;
+    bool halfRating;
+
     if (this is QuantityStatItem) {
       QuantityStatItem quantityStatItem = this as QuantityStatItem;
       min = quantityStatItem.min;
       max = quantityStatItem.max;
+      halfRating = quantityStatItem.halfRating;
     } else if (this is TextStatItem) {
       TextStatItem textStatItem = this as TextStatItem;
       maxLength = textStatItem.maxLength;
@@ -158,6 +163,7 @@ extension ParseStatItem on StatItem {
         choices: choices,
         maxLength: maxLength,
         name: name,
+        halfRating: halfRating,
         type: this.runtimeType.toString()
     );
   }
