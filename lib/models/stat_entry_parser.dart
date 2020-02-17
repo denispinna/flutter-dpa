@@ -141,16 +141,12 @@ extension GraphExt on List<StatEntry> {
     for (final number in STACKED_CHART_COLUMN_NUMBER) {
       int byColumn = (count / (number)).floor();
       int remainder = count % byColumn;
-      Logger.log(this.runtimeType.toString(),
-          "$count = $byColumn * $number + $remainder");
       double diff = remainder / number;
       if (diff <= lastDiff) {
         lastDiff = diff;
         best = number;
       }
     }
-
-    Logger.log(this.runtimeType.toString(), "best: $best");
     return best;
   }
 
