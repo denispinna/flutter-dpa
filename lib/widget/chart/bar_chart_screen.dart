@@ -147,7 +147,6 @@ class _BarChartWidgetState extends StateWithLoading<ChartWidget>
   @override
   Future loadFunction() async {
     if (!shouldLoad()) return;
-    await Future.delayed(Duration(seconds: 3));
 
     if (content.lastStartDate != widget.startDate ||
         content.lastEndDate != widget.endDate) {
