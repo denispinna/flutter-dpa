@@ -25,12 +25,7 @@ class _StatisticState extends State<StatisticTabs>
     recoverContent(context: context);
   }
 
-  @override
   Widget build(BuildContext context) {
-    return buildWithStorage(buildWidget(context));
-  }
-
-  Widget buildWidget(BuildContext context) {
     persistContent(context: context);
     return DefaultTabController(
       initialIndex: content.index,
@@ -42,15 +37,15 @@ class _StatisticState extends State<StatisticTabs>
             tabs: [
               Tab(
                 icon: SvgPicture.asset(MyImages.donut_chart,
-                    height: Dimens.xxl, width: Dimens.xxl),
+                    height: Dimens.xxl, width: Dimens.l),
               ),
               Tab(
                 icon: SvgPicture.asset(MyImages.bar_chart,
-                    height: Dimens.xxl, width: Dimens.xxl),
+                    height: Dimens.xxl, width: Dimens.l),
               ),
               Tab(
                 icon: SvgPicture.asset(MyImages.line_chart,
-                    height: Dimens.xxl, width: Dimens.xxl),
+                    height: Dimens.xxl, width: Dimens.l),
               ),
             ],
           ),

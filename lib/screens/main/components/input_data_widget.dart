@@ -29,11 +29,6 @@ class InputStatEntryState extends StoreConnectedState<InputStatEntry, List<StatI
   bool formPosted = false;
 
   @override
-  Widget build(BuildContext context) {
-    return buildWithStorage(super.build(context));
-  }
-
-  @override
   Widget buildWithStore(BuildContext context, List<StatItem> statItems) {
     persistOrRecoverContent(context: context);
     if (content.loading || statItems.length == 0) {

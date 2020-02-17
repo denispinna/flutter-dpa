@@ -66,7 +66,7 @@ class _StatHistoryListState extends StateWithLoading<StatHistoryList> with Persi
   @override
   Widget build(BuildContext context) {
     persistContent(context: context);
-    return buildWithStorage(buildWidget(context));
+    return buildWidget(context);
   }
 
   @override
