@@ -41,8 +41,10 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
   void initState() {
     super.initState();
     Logger.log(runtimeType.toString(), 'initState $this');
-    if (shouldLoad()) load();
-    else isLoading = false;
+    if (shouldLoad())
+      load();
+    else
+      isLoading = false;
   }
 
   @override
@@ -52,8 +54,8 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
     return (error != null)
         ? buildErrorWidget(context)
         : (displayDataWidget)
-            ? buildWidget(context)
-            : buildLoadingWidget(context);
+        ? buildWidget(context)
+        : buildLoadingWidget(context);
   }
 
   Widget buildLoadingWidget(BuildContext context) {
@@ -82,7 +84,7 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
             Text(
               AppLocalizations.of(context).translate('generic_error_message'),
               style:
-                  TextStyle(fontSize: Dimens.font_xl, color: MyColors.second),
+              TextStyle(fontSize: Dimens.font_xl, color: MyColors.second),
             ),
             SizedBox(height: Dimens.s),
             RaisedButton(
@@ -99,9 +101,10 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
 
   Future load({bool showLoading = false}) async {
     Logger.log(runtimeType.toString(), 'load $this');
-    if (showLoading && mounted){
-      isLoading = true;
-      setState(() {});
+    if (showLoading && mounted) {
+      setState(() {
+        isLoading = true;
+      });
     }
     await loadFunction().then(onSuccess).catchError(onError);
   }
@@ -117,11 +120,12 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
     load();
   }
 
-  void onError(dynamic error) {
+  void onError(dynamic error, StackTrace stackTrace) {
     isLoading = false;
     this.error = error;
     Logger.logError(
-        this.runtimeType.toString(), "Error while loading", error);
+        this.runtimeType.toString(), "Error while loading", error,
+        stackTrace: stackTrace);
     if (mounted) setState(() {});
   }
 

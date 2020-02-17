@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dpa/models/mood.dart';
 import 'package:dpa/models/productivity.dart';
@@ -77,19 +76,53 @@ extension GraphExt on List<StatEntry> {
     return list;
   }
 
+  static const MAX_LINE_CHART_ENTRIES = 10.0;
+
   List<LineGraphData> toLinetGraphData(StatItem item) {
     List<LineGraphData> data = List();
-    this.sort((a,b) => a.date.compareTo(b.date));
+    this.sort((a, b) => a.date.compareTo(b.date));
     final key = item.key;
 
     for (final entry in this) {
       final value = entry.elements[key];
       if (value != null) {
         data.add(LineGraphData(
-          x: data.length + 1,
-          value: value
+          startDate: entry.date,
+          endDate: entry.date,
+          value: value,
         ));
       }
+    }
+
+    if (data.length > MAX_LINE_CHART_ENTRIES) {
+      List<LineGraphData> avgData = List();
+      final groupSize =
+          (data.length.toDouble() / MAX_LINE_CHART_ENTRIES).ceil();
+      for (var i = 0; i < data.length; i++) {
+        double currentGroupSize = 0;
+        double currentGroupValue = 0;
+        DateTime startDate = this[i].date;
+        DateTime endDate = this[i].date;
+        for (var j = 0; j < groupSize; j++) {
+          if (i < data.length) {
+            currentGroupSize++;
+            currentGroupValue += data[i].value;
+            endDate = data[i].startDate;
+          }
+          i++;
+        }
+        if (currentGroupSize > 0)
+          avgData.add(LineGraphData(
+            value: currentGroupValue / currentGroupSize,
+            startDate: startDate,
+            endDate: endDate,
+          ));
+      }
+      data = avgData;
+    }
+
+    for (final item in data) {
+      item.color = _getColor(key, item.value);
     }
     return data;
   }

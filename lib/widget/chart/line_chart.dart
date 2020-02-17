@@ -1,4 +1,5 @@
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/material.dart';
 
 class LineChart extends StatelessWidget {
@@ -7,14 +8,18 @@ class LineChart extends StatelessWidget {
 
   LineChart({
     @required this.seriesList,
-    this.animate = false,
+    this.animate = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    return new charts.LineChart(seriesList,
-        defaultRenderer:
-            new charts.LineRendererConfig(includeArea: true, stacked: true),
-        animate: animate);
+    return Padding(
+      padding: EdgeInsets.fromLTRB(Dimens.s, 0,0,0),
+      child: new charts.BarChart(
+        seriesList,
+        animate: animate,
+        vertical: false,
+      ),
+    );
   }
 }

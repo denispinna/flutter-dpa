@@ -7,9 +7,9 @@ class Logger {
     developer.log(message, name: tag);
   }
 
-  static void logError(String tag, String message, dynamic error) {
+  static void logError(String tag, String message, dynamic error, {StackTrace stackTrace}) {
     if (message == null) message = "null";
 
-    developer.log(message, name: tag, error: error);
+    developer.log(message, name: tag, error: error, stackTrace: stackTrace);
   }
 }

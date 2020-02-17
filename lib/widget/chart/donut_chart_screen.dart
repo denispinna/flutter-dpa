@@ -118,7 +118,10 @@ class _DonutChartWidgetState extends StateWithLoading<ChartWidget>
 
   @override
   Widget buildWidget(BuildContext context) {
-    if (shouldLoad()) load();
+    if (shouldLoad()) {
+      load();
+      return buildLoadingWidget(context);
+    }
 
     return ConstrainedBox(
       constraints: BoxConstraints.expand(height: 400.0),

@@ -14,6 +14,7 @@ import 'package:dpa/widget/stat/stat_item_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:redux/src/store.dart';
 
 class LineChartsScreen extends StatefulWidget {
@@ -116,7 +117,10 @@ class _LineChartWidgetState extends StateWithLoading<ChartWidget>
 
   @override
   Widget buildWidget(BuildContext context) {
-    if (shouldLoad()) load();
+    if (shouldLoad()) {
+      load();
+      return buildLoadingWidget(context);
+    }
 
     return ConstrainedBox(
       constraints: BoxConstraints.expand(height: 400.0),
@@ -143,6 +147,7 @@ class _LineChartWidgetState extends StateWithLoading<ChartWidget>
   @override
   Future loadFunction() async {
     if (!shouldLoad()) return;
+    await Future.delayed(Duration(seconds: 3));
 
     if (content.lastStartDate != widget.startDate ||
         content.lastEndDate != widget.endDate) {
@@ -169,17 +174,14 @@ class _LineChartWidgetState extends StateWithLoading<ChartWidget>
           _LineGraphParams(
               statItem: widget.statItem, entries: content.entries));
       final seriesList = [
-        new charts.Series<LineGraphData, int>(
-          id:  DateTime.now().toString(),
-          // colorFn specifies that the line will be blue.
-          colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-          // areaColorFn specifies that the area skirt will be light blue.
-          areaColorFn: (_, __) =>
-              charts.MaterialPalette.blue.shadeDefault.lighter,
-          domainFn: (LineGraphData entry, _) => entry.x,
+        new charts.Series<LineGraphData, String>(
+          id: DateTime.now().toString(),
+          domainFn: (LineGraphData entry, _) => entry.label,
           measureFn: (LineGraphData entry, _) => entry.value,
+          colorFn: (LineGraphData entry, _) =>
+              charts.ColorUtil.fromDartColor(entry.color),
           data: data,
-        ),
+        )
       ];
       content.chartWidget = LineChart(seriesList: seriesList);
     }
@@ -202,13 +204,23 @@ class _ChartWidgetStateContent {
 }
 
 class LineGraphData {
-  final int x;
-  final dynamic value;
+  final DateTime startDate;
+  final DateTime endDate;
+  final double value;
+  Color color;
 
   LineGraphData({
-    @required this.x,
     @required this.value,
+    @required this.startDate,
+    @required this.endDate,
+    this.color,
   });
+
+  String get label {
+    return (startDate.difference(endDate).inDays == 0)
+        ? DateFormat("d MMM").format(startDate)
+        : "${DateFormat("d MMM").format(startDate)} - ${DateFormat("d MMM").format(endDate)}";
+  }
 }
 
 class _LineGraphParams {
