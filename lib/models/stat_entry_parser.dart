@@ -7,7 +7,7 @@ import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/provider/stat_item_provider.dart';
 import 'package:dpa/services/auth_services.dart';
 import 'package:dpa/widget/chart/donut_chart_screen.dart';
-import 'package:dpa/widget/chart/line_chart_screen.dart';
+import 'package:dpa/widget/chart/bar_chart_screen.dart';
 import 'package:flutter/material.dart';
 
 extension StatEntryExt on StatEntry {
@@ -78,15 +78,15 @@ extension GraphExt on List<StatEntry> {
 
   static const MAX_LINE_CHART_ENTRIES = 10.0;
 
-  List<LineGraphData> toLinetGraphData(StatItem item) {
-    List<LineGraphData> data = List();
+  List<BarGraphData> toBarGraphData(StatItem item) {
+    List<BarGraphData> data = List();
     this.sort((a, b) => a.date.compareTo(b.date));
     final key = item.key;
 
     for (final entry in this) {
       final value = entry.elements[key];
       if (value != null) {
-        data.add(LineGraphData(
+        data.add(BarGraphData(
           startDate: entry.date,
           endDate: entry.date,
           value: value,
@@ -95,7 +95,7 @@ extension GraphExt on List<StatEntry> {
     }
 
     if (data.length > MAX_LINE_CHART_ENTRIES) {
-      List<LineGraphData> avgData = List();
+      List<BarGraphData> avgData = List();
       final groupSize =
           (data.length.toDouble() / MAX_LINE_CHART_ENTRIES).ceil();
       for (var i = 0; i < data.length; i++) {
@@ -112,7 +112,7 @@ extension GraphExt on List<StatEntry> {
           i++;
         }
         if (currentGroupSize > 0)
-          avgData.add(LineGraphData(
+          avgData.add(BarGraphData(
             value: currentGroupValue / currentGroupSize,
             startDate: startDate,
             endDate: endDate,

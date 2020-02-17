@@ -2,11 +2,11 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:dpa/theme/dimens.dart';
 import 'package:flutter/material.dart';
 
-class LineChart extends StatelessWidget {
+class BarChart extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
 
-  LineChart({
+  BarChart({
     @required this.seriesList,
     this.animate = true,
   });

@@ -8,7 +8,7 @@ import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/widget/base/connected_widget.dart';
 import 'package:dpa/widget/base/persistent_widget.dart';
-import 'package:dpa/widget/chart/line_chart.dart';
+import 'package:dpa/widget/chart/bar_chart.dart';
 import 'package:dpa/widget/date/date_range_picker.dart';
 import 'package:dpa/widget/stat/stat_item_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,13 +17,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:redux/src/store.dart';
 
-class LineChartsScreen extends StatefulWidget {
+class BarChartsScreen extends StatefulWidget {
   @override
-  _LineChartsScreenState createState() => _LineChartsScreenState();
+  _BarChartsScreenState createState() => _BarChartsScreenState();
 }
 
-class _LineChartsScreenState
-    extends StoreConnectedState<LineChartsScreen, List<StatItem>> {
+class _BarChartsScreenState
+    extends StoreConnectedState<BarChartsScreen, List<StatItem>> {
   DateTime startDate;
   DateTime endDate;
   StatItem statItem;
@@ -98,10 +98,10 @@ class ChartWidget extends StatefulWidget {
   });
 
   @override
-  _LineChartWidgetState createState() => _LineChartWidgetState();
+  _BarChartWidgetState createState() => _BarChartWidgetState();
 }
 
-class _LineChartWidgetState extends StateWithLoading<ChartWidget>
+class _BarChartWidgetState extends StateWithLoading<ChartWidget>
     with Persistent<_ChartWidgetStateContent> {
   @override
   void initState() {
@@ -170,20 +170,20 @@ class _LineChartWidgetState extends StateWithLoading<ChartWidget>
       );
     else {
       final data = await compute(
-          entriesToLineGraphData,
-          _LineGraphParams(
+          entriesToBarGraphData,
+          _BarGraphParams(
               statItem: widget.statItem, entries: content.entries));
       final seriesList = [
-        new charts.Series<LineGraphData, String>(
+        new charts.Series<BarGraphData, String>(
           id: DateTime.now().toString(),
-          domainFn: (LineGraphData entry, _) => entry.label,
-          measureFn: (LineGraphData entry, _) => entry.value,
-          colorFn: (LineGraphData entry, _) =>
+          domainFn: (BarGraphData entry, _) => entry.label,
+          measureFn: (BarGraphData entry, _) => entry.value,
+          colorFn: (BarGraphData entry, _) =>
               charts.ColorUtil.fromDartColor(entry.color),
           data: data,
         )
       ];
-      content.chartWidget = LineChart(seriesList: seriesList);
+      content.chartWidget = BarChart(seriesList: seriesList);
     }
     content.lastStartDate = widget.startDate;
     content.lastEndDate = widget.endDate;
@@ -203,13 +203,13 @@ class _ChartWidgetStateContent {
   Widget chartWidget;
 }
 
-class LineGraphData {
+class BarGraphData {
   final DateTime startDate;
   final DateTime endDate;
   final double value;
   Color color;
 
-  LineGraphData({
+  BarGraphData({
     @required this.value,
     @required this.startDate,
     @required this.endDate,
@@ -223,16 +223,16 @@ class LineGraphData {
   }
 }
 
-class _LineGraphParams {
+class _BarGraphParams {
   final List<StatEntry> entries;
   final StatItem statItem;
 
-  _LineGraphParams({
+  _BarGraphParams({
     @required this.entries,
     @required this.statItem,
   });
 }
 
-List<LineGraphData> entriesToLineGraphData(_LineGraphParams params) {
-  return params.entries.toLinetGraphData(params.statItem);
+List<BarGraphData> entriesToBarGraphData(_BarGraphParams params) {
+  return params.entries.toBarGraphData(params.statItem);
 }

@@ -2,7 +2,7 @@ import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/theme/images.dart';
 import 'package:dpa/widget/base/persistent_widget.dart';
 import 'package:dpa/widget/chart/donut_chart_screen.dart';
-import 'package:dpa/widget/chart/line_chart_screen.dart';
+import 'package:dpa/widget/chart/bar_chart_screen.dart';
 import 'package:dpa/widget/chart/stack_chart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -65,7 +65,7 @@ class _StatisticState extends State<StatisticTabs>
   void initPages() {
     _pages.add(DonutChartsScreen());
     _pages.add(StackChartsScreen());
-    _pages.add(LineChartsScreen());
+    _pages.add(BarChartsScreen());
   }
 
   @override
