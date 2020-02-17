@@ -64,7 +64,7 @@ class _StatisticState extends State<StatisticTabs>
 
   void initPages() {
     _pages.add(DonutChartsScreen());
-    _pages.add(StackChartsScreen());
+    _pages.add(StackedBarChartsScreen());
     _pages.add(BarChartsScreen());
   }
 

@@ -1,14 +1,18 @@
 import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dpa/components/logger.dart';
 import 'package:dpa/models/mood.dart';
 import 'package:dpa/models/productivity.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/provider/stat_item_provider.dart';
 import 'package:dpa/services/auth_services.dart';
-import 'package:dpa/widget/chart/donut_chart_screen.dart';
 import 'package:dpa/widget/chart/bar_chart_screen.dart';
+import 'package:dpa/widget/chart/donut_chart_screen.dart';
+import 'package:dpa/widget/chart/stack_chart_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 extension StatEntryExt on StatEntry {
   Map<String, dynamic> toFirestoreData() {
@@ -122,13 +126,91 @@ extension GraphExt on List<StatEntry> {
     }
 
     for (final item in data) {
-      item.color = _getColor(key, item.value);
+      item.color = _getColor(key, item.value.toInt());
     }
+    return data;
+  }
+
+  //TODO: improve division
+  static const STACKED_CHART_COLUMN_NUMBER = [3, 4, 5, 6];
+
+  int getBestColumnNumber(int count) {
+    int best = STACKED_CHART_COLUMN_NUMBER[0];
+    double lastDiff = count.toDouble();
+
+    for (final number in STACKED_CHART_COLUMN_NUMBER) {
+      int byColumn = (count / (number)).floor();
+      int remainder = count % byColumn;
+      Logger.log(this.runtimeType.toString(),
+          "$count = $byColumn * $number + $remainder");
+      double diff = remainder / number;
+      if (diff <= lastDiff) {
+        lastDiff = diff;
+        best = number;
+      }
+    }
+
+    Logger.log(this.runtimeType.toString(), "best: $best");
+    return best;
+  }
+
+  List<List<StackedBarGraphData>> toStackedBarGraphData(StatItem item) {
+    final key = item.key;
+    this.sort((a, b) => a.date.compareTo(b.date));
+    int days = this.first.date.difference(this.last.date).inDays.abs();
+    int columnNumber = getBestColumnNumber(days);
+    int daysByColumn = (days / columnNumber).round();
+    Set<int> values = Set();
+    DateTime before = DateTime(
+        this.first.date.year, this.first.date.month, this.first.date.day);
+
+    Map<String, Map<int, int>> occurrencesByColumn = Map();
+
+    for (var i = 0; i < columnNumber; i++) {
+      DateTime after = before;
+      before = before.add(Duration(days: daysByColumn));
+      final column = List<StatEntry>.from(this);
+      column.retainWhere(
+          (entry) => entry.date.isBefore(before) && entry.date.isAfter(after));
+
+      DateTime startDate = column.first.date;
+      DateTime endDate = column.last.date;
+      String label =
+          "${DateFormat("d MMM").format(startDate)}\n${DateFormat("d MMM").format(endDate)}";
+      Map<int, int> occurrences = Map();
+      for (final entry in column) {
+        final value = entry.elements[key].round();
+        if (value != null) {
+          occurrences[value] =
+              (occurrences[value] == null) ? 1 : occurrences[value] + 1;
+          values.add(value);
+        }
+      }
+      occurrencesByColumn[label] = occurrences;
+    }
+
+    List<List<StackedBarGraphData>> data = List();
+    for (final value in values) {
+      List<StackedBarGraphData> columnData = List();
+      for (final key in occurrencesByColumn.keys) {
+        columnData.add(StackedBarGraphData(
+            label: key,
+            occurrences: occurrencesByColumn[key][value],
+            value: value));
+      }
+      data.add(columnData);
+    }
+
+    for (final column in data) {
+      for (final item in column) item.color = _getColor(key, item.value);
+    }
+
+    data.sort((a, b) => b.first.value.compareTo(a.first.value));
     return data;
   }
 }
 
-String _getLabel(String itemKey, dynamic value) {
+String _getLabel(String itemKey, num value) {
   if (itemKey == DefaultStatItem.default_mood.label) {
     return Mood.values[value.toInt() - 1].getLabel().toUpperCase();
   } else if (itemKey == DefaultStatItem.default_productivity.label) {
@@ -137,11 +219,11 @@ String _getLabel(String itemKey, dynamic value) {
     return value.toString();
 }
 
-Color _getColor(String itemKey, dynamic value) {
+Color _getColor(String itemKey, num value) {
   if (itemKey == DefaultStatItem.default_mood.label) {
     return Mood.values[value.toInt() - 1].color;
   } else if (itemKey == DefaultStatItem.default_productivity.label) {
-    return (value as double).productivityColor;
+    return value.toDouble().productivityColor;
   } else
     return null;
 }
