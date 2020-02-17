@@ -58,5 +58,6 @@
   "retry" : "Retry",
   "pick_chart_item" : "Analysed item:",
   "from" : "From:",
-  "to" : "To :"
+  "to" : "To :",
+  "chart_empty" : "Sorry, there is not enough content to draw a chart with these parameters."
 }

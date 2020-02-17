@@ -121,7 +121,7 @@ abstract class StateWithLoading<W extends StatefulWidget> extends State<W> {
     isLoading = false;
     this.error = error;
     Logger.logError(
-        this.runtimeType.toString(), "Error while fetching data", error);
+        this.runtimeType.toString(), "Error while loading", error);
     if (mounted) setState(() {});
   }
 

@@ -1,7 +1,10 @@
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:dpa/components/app_localization.dart';
 import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_entry_parser.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/services/api.dart';
+import 'package:dpa/theme/colors.dart';
 import 'package:dpa/theme/dimens.dart';
 import 'package:dpa/widget/base/connected_widget.dart';
 import 'package:dpa/widget/base/persistent_widget.dart';
@@ -39,15 +42,6 @@ class _DonutChartsScreenState
       body: Flex(
         direction: Axis.vertical,
         children: <Widget>[
-          SizedBox(height: Dimens.s),
-          StatItemPicker(
-            statItems: statItems,
-            selected: statItem,
-            onItemSelected: (item) {
-              statItem = item;
-              setState(() {});
-            },
-          ),
           DateRangePicker(
             startDateSelected: startDate,
             endDateSelected: endDate,
@@ -57,6 +51,14 @@ class _DonutChartsScreenState
             },
             onEndDateChanged: (date) {
               endDate = date;
+              setState(() {});
+            },
+          ),
+          StatItemPicker(
+            statItems: statItems,
+            selected: statItem,
+            onItemSelected: (item) {
+              statItem = item;
               setState(() {});
             },
           ),
@@ -95,13 +97,11 @@ class ChartWidget extends StatefulWidget {
   });
 
   @override
-  _PieChartWidgetState createState() => _PieChartWidgetState();
+  _DonutChartWidgetState createState() => _DonutChartWidgetState();
 }
 
-class _PieChartWidgetState extends StateWithLoading<ChartWidget>
+class _DonutChartWidgetState extends StateWithLoading<ChartWidget>
     with Persistent<_ChartWidgetStateContent> {
-  _ChartWidgetStateContent _content;
-  Widget chartWidget;
 
   @override
   void initState() {
@@ -109,14 +109,20 @@ class _PieChartWidgetState extends StateWithLoading<ChartWidget>
     super.initState();
   }
 
+
+  @override
+  Widget build(BuildContext context) {
+    persistOrRecoverContent(context: context);
+    return super.build(context);
+  }
+
   @override
   Widget buildWidget(BuildContext context) {
-    persistOrRecoverContent(context: context);
     if (shouldLoad()) load();
 
     return ConstrainedBox(
       constraints: BoxConstraints.expand(height: 400.0),
-      child: chartWidget,
+      child: content.chartWidget,
     );
   }
 
@@ -130,38 +136,61 @@ class _PieChartWidgetState extends StateWithLoading<ChartWidget>
 
   @override
   bool shouldLoad() =>
-      chartWidget == null ||
-      _content.entries == null ||
-      _content.lastStatItem != widget.statItem ||
-      _content.lastStartDate != widget.startDate ||
-      _content.lastEndDate != widget.endDate;
+      content.chartWidget == null ||
+      content.entries == null ||
+          content.lastStatItem != widget.statItem ||
+          content.lastStartDate != widget.startDate ||
+          content.lastEndDate != widget.endDate;
 
   @override
   Future loadFunction() async {
     if (!shouldLoad()) return;
 
-    if (_content.lastStartDate != widget.startDate ||
-        _content.lastEndDate != widget.endDate) {
+    if (content.lastStartDate != widget.startDate ||
+        content.lastEndDate != widget.endDate) {
       final snapshot = await API.statApi
           .getStats(from: widget.startDate, to: widget.endDate)
           .getDocuments();
       final entries = await compute(parseStatEntries, snapshot.documents);
-      _content.entries = entries;
+      content.entries = entries;
     }
-    //TODO: Add empty state here
-    if (_content.entries == null || _content.entries.length == 0)
-      chartWidget = Container(width: 0);
-    else
-      chartWidget =
-          DonutChart(entries: _content.entries, statItem: widget.statItem);
-    _content.lastStartDate = widget.startDate;
-    _content.lastEndDate = widget.endDate;
-    _content.lastStatItem = widget.statItem;
+    if (content.entries == null || content.entries.length == 0)
+      content.chartWidget = Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Dimens.xxxxxl),
+          child: Text(
+            AppLocalizations.of(context).translate('chart_empty'),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: MyColors.dark, fontSize: Dimens.font_l),
+          ),
+        ),
+      );
+    else {
+      final data = await compute(entriesToDonutGraphData,
+          _DonutGraphParams(statItem: widget.statItem, entries: content.entries));
+      final seriesList = [
+        new charts.Series<DonutGraphData, String>(
+          id: DateTime.now().toString(),
+          data: data,
+          domainFn: (DonutGraphData entry, _) => entry.label,
+          measureFn: (DonutGraphData entry, _) => entry.percentage,
+          labelAccessorFn: (DonutGraphData entry, _) =>
+              entry.occurrences.toString(),
+          colorFn: (DonutGraphData entry, _) =>
+              charts.ColorUtil.fromDartColor(entry.color),
+        )
+      ];
+      content.chartWidget =
+          DonutChart(seriesList: seriesList);
+    }
+    content.lastStartDate = widget.startDate;
+    content.lastEndDate = widget.endDate;
+    content.lastStatItem = widget.statItem;
   }
 
   @override
   _ChartWidgetStateContent initContent() =>
-      _content = _ChartWidgetStateContent();
+      content = _ChartWidgetStateContent();
 }
 
 class _ChartWidgetStateContent {
@@ -169,4 +198,34 @@ class _ChartWidgetStateContent {
   DateTime lastStartDate;
   DateTime lastEndDate;
   StatItem lastStatItem;
+  Widget chartWidget;
+}
+
+class DonutGraphData {
+  final String label;
+  final dynamic value;
+  final Color color;
+  int occurrences;
+  double percentage;
+
+  DonutGraphData({
+    @required this.label,
+    @required this.value,
+    @required this.occurrences,
+    @required this.color,
+  });
+}
+
+class _DonutGraphParams {
+  final List<StatEntry> entries;
+  final StatItem statItem;
+
+  _DonutGraphParams({
+    @required this.entries,
+    @required this.statItem,
+  });
+}
+
+List<DonutGraphData> entriesToDonutGraphData(_DonutGraphParams params) {
+  return params.entries.toDonutGraphData(params.statItem);
 }

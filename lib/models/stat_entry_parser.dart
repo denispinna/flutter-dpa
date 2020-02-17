@@ -7,7 +7,7 @@ import 'package:dpa/models/stat_entry.dart';
 import 'package:dpa/models/stat_item.dart';
 import 'package:dpa/provider/stat_item_provider.dart';
 import 'package:dpa/services/auth_services.dart';
-import 'package:dpa/widget/chart/donut_chart.dart';
+import 'package:dpa/widget/chart/donut_chart_screen.dart';
 import 'package:flutter/material.dart';
 
 extension StatEntryExt on StatEntry {
