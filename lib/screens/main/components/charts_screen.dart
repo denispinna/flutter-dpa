@@ -47,7 +47,7 @@ class _StatisticState extends State<StatisticTabs>
                   height: Dimens.xxl, width: Dimens.l),
             ),
             Tab(
-              icon: SvgPicture.asset(MyImages.line_chart,
+              icon: SvgPicture.asset(MyImages.horizontal_line_chart,
                   height: Dimens.xxl, width: Dimens.l),
             ),
           ],

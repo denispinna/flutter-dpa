@@ -17,5 +17,5 @@ class MyImages {
   static const error = "assets/error.svg";
   static const bar_chart = "assets/bar_chart.svg";
   static const donut_chart = "assets/donut_chart.svg";
-  static const line_chart = "assets/line_chart.svg";
+  static const horizontal_line_chart = "assets/horizonal_bar_chart.svg";
 }
