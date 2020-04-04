@@ -14,4 +14,4 @@ The aim of the app is to offer a tool to track daily data like productivity, moo
 
 # Screenshots
 
-<img src="images/login.gif" height="300em" /><img src="images/input.gif" height="300em" /><img src="images/history.gif" height="300em" /><img src="images/statistics.gif" height="300em" />
+<img src="images/login.gif" height="300em" />		<img src="images/input.gif" height="300em" />		<img src="images/history.gif" height="300em" />		<img src="images/statistics.gif" height="300em" />
