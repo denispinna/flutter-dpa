@@ -1,4 +1,4 @@
-![Image](images/flutter_logo.png)
+![Image](images/header.png)
 # The project
 
 This project was implemented to try out **flutter** and its **widgets** while building a prototype for a friend. If you go through the code you can see that I use a wide range of tools offered by the framework and many additional [packges](https://pub.dev/packages/). 
