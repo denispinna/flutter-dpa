@@ -13,28 +13,11 @@ The aim of the app is to offer a tool to track daily data like productivity, moo
 # The screens
 
 The apps counts a few number of screens organized this way
+![Image](images/screens.png)
 
-```mermaid
-graph LR
-A{Login} 
-A --> J{Email login}
-J --> K{Register}
-A --> B{Home}
-B --> C(Input form)
-B --> D(History list)
-B --> E(Statistics)
-B --> F(Logout)
-F --> A
-J --> B
-K --> B
-E --> G(Donut chart)
-E --> H(Bar chart)
-E --> I(Stack chart)
-```
 # Screenshots
 
-<img src="images/whatsapp.gif" height="300em" />
-<img src="images/dpa_login.gif", height="300em">
-<img src="images/dpa_input.gif", height="300em">
-<img src="images/dpa_history.gif", height="300em">
-<img src="images/dpa_statistic.gif", height="300em">
+<img src="images/dpa_login.gif", height="300em" />
+<img src="images/dpa_input.gif", height="300em" />
+<img src="images/dpa_history.gif", height="300em" />
+<img src="images/dpa_statistic.gif", height="300em" />
