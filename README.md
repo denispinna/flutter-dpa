@@ -35,3 +35,4 @@ E --> I(Stack chart)
 <img src="http://drive.google.com/uc?export=view&id=1l68pBh4mPzhl-Bm-xgQFlvSayfCsRwgC", height="360em">
 <img src="http://drive.google.com/uc?export=view&id=1xwWoAHsOepfdhiplWI7YlqCrv7zWhG5h", height="360em">
 <img src="http://drive.google.com/uc?export=view&id=1GlH1t1TTWk4k5Fwc9dbcAVZdK0iYxxRw", height="360em">
+<img src="https://thumbs.gfycat.com/GoldenCaringBurro-size_restricted.gif" height="300em" />
