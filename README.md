@@ -1,5 +1,4 @@
 ![Image](images/flutter_logo.png)
-
 # The project
 
 This project was implemented to try out **flutter** and its **widgets** while building a prototype for a friend. If you go through the code you can see that I use a wide range of tools offered by the framework and many additional [packges](https://pub.dev/packages/). 
@@ -11,13 +10,11 @@ Some other interesting packages were in use like `flutter_redux` to have differe
 The aim of the app is to offer a tool to track daily data like productivity, mood and other things people want to keep track of. The user should be able to manage his own items and track what matters to him. From this data the app provides a history and some statistics (charts) to help the user to understand it.
 
 # The screens
-
-The apps counts a few number of screens organized this way
 ![Image](images/screens.png)
 
 # Screenshots
 
-<img src="images/dpa_login.gif", height="300em" />
-<img src="images/dpa_input.gif", height="300em" />
-<img src="images/dpa_history.gif", height="300em" />
-<img src="images/dpa_statistic.gif", height="300em" />
+<img src="images/login.gif" height="300em" />
+<img src="images/input.gif" height="300em" />
+<img src="images/history.gif" height="300em" />
+<img src="images/statistics.gif" height="300em" />
